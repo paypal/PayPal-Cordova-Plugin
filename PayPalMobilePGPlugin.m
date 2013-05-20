@@ -62,23 +62,36 @@
 }
 
 - (void)presentPaymentUI:(CDVInvokedUrlCommand *)command {  
-  // check number of arguments
+  // check number and type of arguments
   if ([command.arguments count] != 4) {
     [self sendErrorToDelegate:@"presentPaymentUI requires precisely four arguments"];
     return;
   }
   
-  // todo: make more robust to check the type?
   NSString *clientId = [command.arguments objectAtIndex:0];
-  NSString *email = [command.arguments objectAtIndex:1];
-  NSString *payerId = [command.arguments objectAtIndex:2];
-  NSDictionary *payment = [command.arguments objectAtIndex:3];
-  
-  if (!payment) {
-    [self sendErrorToDelegate:@"payment object is nil"];
+  if (![clientId isKindOfClass:[NSString class]]) {
+    [self sendErrorToDelegate:@"clientId must be a string"];
     return;
   }
-  
+
+  NSString *email = [command.arguments objectAtIndex:1];
+  if (![email isKindOfClass:[NSString class]]) {
+    [self sendErrorToDelegate:@"email must be a string"];
+    return;
+  }
+
+  NSString *payerId = [command.arguments objectAtIndex:2];
+  if (payerId && ![payerId isKindOfClass:[NSString class]]) {
+    [self sendErrorToDelegate:@"payerId must be a string or null"];
+    return;
+  }
+
+  NSDictionary *payment = [command.arguments objectAtIndex:3];
+  if (![payment isKindOfClass:[NSDictionary class]]) {
+    [self sendErrorToDelegate:@"payment must be a PayPalPayment object"];
+    return;
+  }
+
   NSString *amount = payment[@"amount"];
   NSString *currency = payment[@"currency"];
   NSString *shortDescription = payment[@"shortDescription"];
@@ -98,13 +111,13 @@
                                                                                           payment:pppayment
                                                                                          delegate:self];
   if (!controller) {
-    [self sendErrorToDelegate:@"one of the arguments has invalid type"];
+    [self sendErrorToDelegate:@"could not instantiate PayPalPaymentViewController"]; // should never happen
     return;
-  } else {
-    self.command = command;
-    self.paymentController = controller;
-    [self.viewController presentModalViewController:controller animated:YES];
   }
+
+  self.command = command;
+  self.paymentController = controller;
+  [self.viewController presentModalViewController:controller animated:YES];
 }
 
 
