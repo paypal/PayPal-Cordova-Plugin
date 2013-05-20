@@ -18,9 +18,9 @@ Sample code
 window.plugins.PayPalMobile.setEnvironment("mock");
 window.plugins.PayPalMobile.prepareForPayment("my client id");
 
-var buyBtn = document.getElementById("buyBtn");
-buyBtn.disabled = false;
-buyBtn.onclick = function(e) {
+var buyButton = document.getElementById("buyButton");
+buyButton.disabled = false;
+buyButton.onclick = function(e) {
   var payment = new PayPalPayment("1.99", "USD", "my payment details");
   
   var resultCallback = function(result) {
