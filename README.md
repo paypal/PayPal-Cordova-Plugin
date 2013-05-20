@@ -16,7 +16,6 @@ Sample code
 
 ```javascript
 window.plugins.PayPalMobile.setEnvironment("mock");
-window.plugins.PayPalMobile.prepareForPayment("my client id");
 
 var buyButton = document.getElementById("buyButton");
 buyButton.disabled = false;
