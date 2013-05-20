@@ -1,9 +1,5 @@
 //
 //  PayPalMobilePGPlugin.h
-//  PayPal-iOS-SDK-PhoneGap
-//
-//  Created by Roman Punskyy on 23/04/2013.
-//
 //
 
 #import <Cordova/CDV.h>

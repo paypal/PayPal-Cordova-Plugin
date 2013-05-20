@@ -1,5 +1,6 @@
-//  Copyright (c) 2013, PayPal 
-//  All rights reserved.
+//
+//  PayPalMobilePGPlugin.js
+//
 
 function PayPalPayment(amount, currency, shortDescription) {
   this.amount = amount;
