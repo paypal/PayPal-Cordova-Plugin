@@ -37,7 +37,7 @@
   CDVPluginResult *pluginResult = nil;
   NSString *environment = [command.arguments objectAtIndex:0];
   
-  if (environment != nil && environment.length) {
+  if (environment.length > 0) {
     [PayPalPaymentViewController setEnvironment:[environment lowercaseString]];
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
   } else {
@@ -51,7 +51,7 @@
   CDVPluginResult *pluginResult = nil;
   NSString *clientId = [command.arguments objectAtIndex:0];
   
-  if (clientId != nil && clientId.length) {
+  if (clientId.length > 0) {
     [PayPalPaymentViewController prepareForPaymentUsingClientId:clientId];
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
   } else {
