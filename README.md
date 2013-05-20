@@ -34,6 +34,6 @@ buyButton.onclick = function(e) {
     console.log("Payment cancelled: " + reason);
   }
   
-  window.plugins.PayPalMobile.payment("YOUR_CLIENT_ID", "YOUR_PAYPAL_EMAIL_ADDRESS", "someuser@somedomain.com", payment, completionCallback, cancelCallback);
+  window.plugins.PayPalMobile.presentPaymentUI("YOUR_CLIENT_ID", "YOUR_PAYPAL_EMAIL_ADDRESS", "someuser@somedomain.com", payment, completionCallback, cancelCallback);
 }
 ```

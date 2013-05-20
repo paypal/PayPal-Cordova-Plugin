@@ -13,6 +13,6 @@
 - (void)environment:(CDVInvokedUrlCommand *)command;
 - (void)setEnvironment:(CDVInvokedUrlCommand *)command;
 
-- (void)payment:(CDVInvokedUrlCommand *)command;
+- (void)presentPaymentUI:(CDVInvokedUrlCommand *)command;
 
 @end

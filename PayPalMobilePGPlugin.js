@@ -86,7 +86,7 @@ PayPalMobile.prototype.prepareForPayment = function(clientId) {
  * @parameter completionCallback: a callback function accepting a js object, called when the user has completed payment
  * @parameter cancelCallback: a callback function accepting a reason string, called when the user cancels the payment
  */
-PayPalMobile.prototype.payment = function(clientId, email, payerId, payment, resultCallback, cancelCallback) {
+PayPalMobile.prototype.presentPaymentUI = function(clientId, email, payerId, payment, resultCallback, cancelCallback) {
   cordova.exec(resultCallback, cancelCallback, "PayPalMobile", "payment", [clientId, email, payerId, payment]);
 };
 

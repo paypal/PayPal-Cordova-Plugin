@@ -58,7 +58,7 @@
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void)payment:(CDVInvokedUrlCommand *)command
+- (void)presentPaymentUI:(CDVInvokedUrlCommand *)command
 {  
   // check number of arguments
   if ([command.arguments count] != 4) {
