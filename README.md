@@ -4,13 +4,14 @@
 Integration
 -----------
 0. Download the [PayPal iOS SDK](https://github.com/paypal/PayPal-iOS-SDK)
-1. Copy `libPayPalMobile.a` and headers from the SDK into your project
-2. Add `PayPalMobilePGPlugin.[h|m]` to your project, in the Plugins group
-3. Copy `PayPalMobilePGPlugin.js` to your project's `www` folder   
-4. Add the following to `config.xml`, under the `plugins` tag:
+1. Read the [iOS Integration Guide](https://developer.paypal.com/webapps/developer/docs/integration/mobile/ios-integration-guide/) for
+   conceptual information that will be useful during integration.
+2. Follow the "Initial setup" instructions in the [iOS Integration Guide](https://developer.paypal.com/webapps/developer/docs/integration/mobile/ios-integration-guide/) to add the
+   required files, linker flags, frameworks, and acknowledgments to your app.
+3. Add `PayPalMobilePGPlugin.[h|m]` to your project, in the Plugins group
+4. Copy `PayPalMobilePGPlugin.js` to your project's `www` folder   
+5. Add the following to `config.xml`, under the `plugins` tag:
     <plugin name="PayPalMobile" value="PayPalMobilePGPlugin" />
-5. Read through the [iOS Integration Guide](https://developer.paypal.com/webapps/developer/docs/integration/mobile/ios-integration-guide/) for
-   conceptual information useful during integration.
 
 
 Sample code
