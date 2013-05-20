@@ -87,7 +87,7 @@
                                                  currencyCode:currency
                                              shortDescription:shortDescription];
   
-  if (!(pppayment || pppayment.processable)) {
+  if (!pppayment.processable) {
     [self sendErrorToDelegate:@"payment not processable"];
     return;
   }
