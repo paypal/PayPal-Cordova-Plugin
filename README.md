@@ -1,0 +1,2 @@
+PayPal-PhoneGap-iOS-Plugin
+==========================
