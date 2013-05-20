@@ -1,22 +1,20 @@
-PayPal iOS SDK Plugin for PhoneGap
----------------------------------
+# PayPal iOS SDK PhoneGap Plug-in
 
-Using PhoneGap for your projects ? now you can use PayPal  iOS SDK in your HTML5+JS project with no effort !
 
-Get started by getting the SDK from https://github.com/paypal/PayPal-iOS-SDK
+Integration
+-----------
+0. Download the [PayPal iOS SDK](https://github.com/paypal/PayPal-iOS-SDK)
+1. Copy `libPayPalMobile.a` and headers from the SDK into your project
+2. Add `PayPalMobilePGPlugin.[h|m]` to your project (Plugins group)
+3. Copy `PayPalMobilePGPlugin` to your project's `www` folder   
+4. Add the following to `config.xml`, under the `plugins` tag:
+    <plugin name="PayPalMobile" value="PayPalMobilePGPlugin" />
 
-Integration instructions
-------------------------
-0. Copy `libPayPalMobile.a` and headers into your project from the SDK
-1. Add `PayPalMobilePGPlugin.[h|m]` to your project (Plugins group).  
-2. Copy `PayPalMobilePGPlugin` to your project's `www` folder   
-3. Add the following to your `config.xml` to your `plugins` tag:  
-`<plugin name="PayPalMobile" value="PayPalMobilePGPlugin" />`
 
-### EXAMPLE JS
+Sample code
+-----------
 
-```
-console.log("prepare for payment");
+```javascript
 window.plugins.PayPalMobile.setEnvironment("mock");
 window.plugins.PayPalMobile.prepareForPayment("my client id");
 
