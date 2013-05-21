@@ -11,8 +11,10 @@ Integration
 3. Add `PayPalMobilePGPlugin.[h|m]` to your project, in the Plugins group
 4. Copy `PayPalMobilePGPlugin.js` to your project's `www` folder   
 5. Add the following to `config.xml`, under the `plugins` tag:
+    
+    ```xml
     <plugin name="PayPalMobile" value="PayPalMobilePGPlugin" />
-
+    ```
 
 Sample code
 -----------
