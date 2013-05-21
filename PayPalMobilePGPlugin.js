@@ -36,8 +36,8 @@ PayPalMobile.prototype.version = function(callback) {
  * @parameter environment: string, one of "mock", "sandbox" or "live"
  */
 PayPalMobile.prototype.setEnvironment = function(environment) {
-  var failureCallback = function() {
-    console.log("Could not set PayPal environment");
+  var failureCallback = function(error) {
+    console.log(error);
   };
 
   cordova.exec(null, failureCallback, "PayPalMobile", "setEnvironment", [environment]);

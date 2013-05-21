@@ -34,14 +34,22 @@
 }
 
 - (void)setEnvironment:(CDVInvokedUrlCommand *)command {
-  CDVPluginResult *pluginResult = nil;
-  NSString *environment = [command.arguments objectAtIndex:0];
-  
-  if (environment.length > 0) {
-    [PayPalPaymentViewController setEnvironment:[environment lowercaseString]];
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+  NSString *environment = [[command.arguments objectAtIndex:0] lowercaseString];
+
+  NSString *environmentToUse = nil;
+  if ([environment isEqualToString:@"mock"]) {
+    environmentToUse = PayPalEnvironmentNoNetwork;
+  } else if ([environment isEqualToString:@"live"]) {
+    environmentToUse = PayPalEnvironmentProduction;
+  } else if ([environment isEqualToString:@"sandbox"]) {
+    environmentToUse = PayPalEnvironmentSandbox;
   } else {
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"The provided environment was null or empty"];
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"The provided environment is not supported"];
+  }
+  
+  if (environmentToUse) {
+    [PayPalPaymentViewController setEnvironment:environmentToUse];
   }
   
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
