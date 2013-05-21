@@ -1,38 +1,40 @@
-PayPal iOS SDK Plugin for PhoneGap
----------------------------------
+# PayPal iOS SDK PhoneGap Plug-in
 
-Using PhoneGap for your projects ? now you can use PayPal  iOS SDK in your HTML5+JS project with no effort !
 
-Get started by getting the SDK from https://github.com/paypal/PayPal-iOS-SDK
+Integration
+-----------
+0. Download the [PayPal iOS SDK](https://github.com/paypal/PayPal-iOS-SDK)
+1. Read the [iOS Integration Guide](https://developer.paypal.com/webapps/developer/docs/integration/mobile/ios-integration-guide/) for
+   conceptual information that will be useful during integration.
+2. Follow the "Initial setup" instructions in the [iOS Integration Guide](https://developer.paypal.com/webapps/developer/docs/integration/mobile/ios-integration-guide/) to add the
+   required files, linker flags, frameworks, and acknowledgments to your app.
+3. Add `PayPalMobilePGPlugin.[h|m]` to your project, in the Plugins group
+4. Copy `PayPalMobilePGPlugin.js` to your project's `www` folder   
+5. Add the following to `config.xml`, under the `plugins` tag:
+    <plugin name="PayPalMobile" value="PayPalMobilePGPlugin" />
 
-Integration instructions
-------------------------
-0. Copy `libPayPalMobile.a` and headers into your project from the SDK
-1. Add `PayPalMobilePGPlugin.[h|m]` to your project (Plugins group).  
-2. Copy `PayPalMobilePGPlugin` to your project's `www` folder   
-3. Add the following to your `config.xml` to your `plugins` tag:  
-`<plugin name="PayPalMobile" value="PayPalMobilePGPlugin" />`
 
-### EXAMPLE JS
+Sample code
+-----------
 
-```
-console.log("prepare for payment");
+```javascript
 window.plugins.PayPalMobile.setEnvironment("mock");
-window.plugins.PayPalMobile.prepareForPayment("my client id");
 
-var buyBtn = document.getElementById("buyBtn");
-buyBtn.disabled = false;
-buyBtn.onclick = function(e) {
-  var payment = new PayPalPayment("1.99", "USD", "my payment details");
+var buyButton = document.getElementById("buyButton");
+buyButton.disabled = false;
+buyButton.onclick = function(e) {
+  var payment = new PayPalPayment("1.99", "USD", "Awesome saws");
   
-  var resultCallback = function(result) {
-    console.log("payment result :" + JSON.stringify(result));
+  var completionCallback = function(proofOfPayment) {
+    // TODO: Send this result to the server for verification;
+    // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/ for details.
+    console.log("Proof of payment: " + JSON.stringify(proofOfPayment));
   }
+
   var cancelCallback = function(reason) {
-    console.log("payment cancelled :" + reason);
+    console.log("Payment cancelled: " + reason);
   }
   
-  console.log("launching paypal payment library");
-  window.plugins.PayPalMobile.payment("my client id", "myemail@myemail.com", "myref", payment, resultCallback, cancelCallback);
+  window.plugins.PayPalMobile.presentPaymentUI("YOUR_CLIENT_ID", "YOUR_PAYPAL_EMAIL_ADDRESS", "someuser@somedomain.com", payment, completionCallback, cancelCallback);
 }
 ```

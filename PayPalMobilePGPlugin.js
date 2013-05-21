@@ -1,5 +1,6 @@
-//  Copyright (c) 2013, PayPal 
-//  All rights reserved.
+//
+//  PayPalMobilePGPlugin.js
+//
 
 function PayPalPayment(amount, currency, shortDescription) {
   this.amount = amount;
@@ -8,22 +9,21 @@ function PayPalPayment(amount, currency, shortDescription) {
 }
 
 /**
- * This class exposes PayPalMobile's library functionality to JavaScript.
+ * This class exposes the PayPal iOS SDK functionality to javascript.
  *
  * @constructor
  */
-
 function PayPalMobile() {}
 
 
 /**
- * Retrieve the version of the PayPalMobile library. Useful when contacting support.
+ * Retrieve the version of the PayPal iOS SDK library. Useful when contacting support.
  *
- * @parameter callback: a callback function accepting a string.
+ * @parameter callback: a callback function accepting a string
  */
 PayPalMobile.prototype.version = function(callback) {
   var failureCallback = function() {
-    console.log("Could not retrieve library version");
+    console.log("Could not retrieve PayPal library version");
   };
 
   cordova.exec(callback, failureCallback, "PayPalMobile", "version", []);
@@ -31,26 +31,26 @@ PayPalMobile.prototype.version = function(callback) {
 
 
 /**
- * Set envrionment for PayPalMobile library.
+ * Set the environment that the PayPal iOS SDK uses.
  *
- * @parameter environment: set environment settings, either mock, sandbox or live.
+ * @parameter environment: string, one of "mock", "sandbox" or "live"
  */
 PayPalMobile.prototype.setEnvironment = function(environment) {
   var failureCallback = function() {
-    console.log("Could not retrieve environemnt");
+    console.log("Could not set PayPal environment");
   };
 
   cordova.exec(null, failureCallback, "PayPalMobile", "setEnvironment", [environment]);
 };
 
 /**
- * Retrieve environment settings: mock, sandbox, live
+ * Retrieve the current PayPal iOS SDK environment: mock, sandbox, or live.
  *
- * @parameter callback: a callback function accepting a string.
+ * @parameter callback: a callback function accepting a string
  */
 PayPalMobile.prototype.environment = function(callback) {
   var failureCallback = function() {
-    console.log("Could not retrieve environemnt");
+    console.log("Could not retrieve PayPal environment");
   };
 
   cordova.exec(callback, failureCallback, "PayPalMobile", "environment", []);
@@ -60,11 +60,10 @@ PayPalMobile.prototype.environment = function(callback) {
  * You SHOULD preconnect to PayPal to prepare the device for processing payments.
  * This improves the user experience, by making the presentation of the
  * UI faster. The preconnect is valid for a limited time, so
- * the recommended time to preconnect is when you present the UI in
- * which users may choose to initiate payment.
+ * the recommended time to preconnect is on page load.
  *
- * @parameter clientID your client id from developer.paypal.com
- * @parameter callback: a callback function success
+ * @parameter clientID: your client id from developer.paypal.com
+ * @parameter callback: a parameter-less success callback function (normally not used)
  */
 PayPalMobile.prototype.prepareForPayment = function(clientId) {
   var failureCallback = function(message) {
@@ -76,17 +75,19 @@ PayPalMobile.prototype.prepareForPayment = function(clientId) {
 
 
 /**
- * start payment UI for processing
+ * Start PayPal UI to collect payment from the user.
+ * See https://developer.paypal.com/webapps/developer/docs/integration/mobile/ios-integration-guide/
+ * for more documentation of the parameters.
  *
  * @parameter clientId: clientId from developer.paypal.com
  * @parameter email: receiver's email address
- * @parameter payerId: your own reference can be nil
+ * @parameter payerId: a string that uniquely identifies a user within the scope of your system, such as an email address or user ID
  * @parameter payment: PayPalPayment object
- * @parameter resultCallback: a callback function accepting js object.
- * @parameter cancelCallback: user canceled payment UI
+ * @parameter completionCallback: a callback function accepting a js object, called when the user has completed payment
+ * @parameter cancelCallback: a callback function accepting a reason string, called when the user cancels the payment
  */
-PayPalMobile.prototype.payment = function(clientId, email, payerId, payment, resultCallback, cancelCallback) {
-  cordova.exec(resultCallback, cancelCallback, "PayPalMobile", "payment", [clientId, email, payerId, payment]);
+PayPalMobile.prototype.presentPaymentUI = function(clientId, email, payerId, payment, completionCallback, cancelCallback) {
+  cordova.exec(completionCallback, cancelCallback, "PayPalMobile", "payment", [clientId, email, payerId, payment]);
 };
 
 /**
