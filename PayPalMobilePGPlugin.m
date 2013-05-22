@@ -35,14 +35,14 @@
 
 - (void)setEnvironment:(CDVInvokedUrlCommand *)command {
   CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-  NSString *environment = [[command.arguments objectAtIndex:0] lowercaseString];
+  NSString *environment = [command.arguments objectAtIndex:0];
 
   NSString *environmentToUse = nil;
-  if ([environment isEqualToString:@"mock"]) {
+  if ([environment isEqualToString:@"PayPalEnvironmentNoNetwork"]) {
     environmentToUse = PayPalEnvironmentNoNetwork;
-  } else if ([environment isEqualToString:@"live"]) {
+  } else if ([environment isEqualToString:@"PayPalEnvironmentProduction"]) {
     environmentToUse = PayPalEnvironmentProduction;
-  } else if ([environment isEqualToString:@"sandbox"]) {
+  } else if ([environment isEqualToString:@"PayPalEnvironmentSandbox"]) {
     environmentToUse = PayPalEnvironmentSandbox;
   } else {
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"The provided environment is not supported"];

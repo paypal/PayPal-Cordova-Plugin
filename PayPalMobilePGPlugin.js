@@ -33,7 +33,8 @@ PayPalMobile.prototype.version = function(callback) {
 /**
  * Set the environment that the PayPal iOS SDK uses.
  *
- * @parameter environment: string, one of "mock", "sandbox" or "live"
+ * @parameter environment: string
+ * Choices are "PayPalEnvironmentNoNetwork", "PayPalEnvironmentSandbox", or "PayPalEnvironmentProduction"
  */
 PayPalMobile.prototype.setEnvironment = function(environment) {
   var failureCallback = function(error) {
