@@ -20,7 +20,7 @@ Sample code
 -----------
 
 ```javascript
-window.plugins.PayPalMobile.setEnvironment("mock");
+window.plugins.PayPalMobile.setEnvironment("PayPalEnvironmentNoNetwork");
 
 var buyButton = document.getElementById("buyButton");
 buyButton.disabled = false;
