@@ -10,7 +10,15 @@ Integration
    required files, linker flags, frameworks, and acknowledgments to your app.
 3. Add `PayPalMobilePGPlugin.[h|m]` to your project, in the Plugins group
 4. Copy `PayPalMobilePGPlugin.js` to your project's `www` folder   
-5. Add the following to `config.xml`, under the `plugins` tag:
+5. Add the following to `config.xml`, for PhoneGap version 3.0+:
+
+   ```xml
+     <feature name="PayPalMobile">
+       <param name="ios-package" value="PayPalMobilePGPlugin" />
+     </feature>
+    ```
+ 
+   for older versions under the `plugins` tag:
     
     ```xml
     <plugin name="PayPalMobile" value="PayPalMobilePGPlugin" />
