@@ -8,11 +8,13 @@
 @interface PayPalMobilePGPlugin : CDVPlugin<PayPalPaymentDelegate>
 
 - (void)version:(CDVInvokedUrlCommand *)command;
-- (void)prepareForPayment:(CDVInvokedUrlCommand *)command;
 
-- (void)environment:(CDVInvokedUrlCommand *)command;
-- (void)setEnvironment:(CDVInvokedUrlCommand *)command;
+- (void)initializeWithClientIdsForEnvironments:(CDVInvokedUrlCommand *)command;
+- (void)preconnectWithEnvironment:(CDVInvokedUrlCommand *)command;
 
-- (void)presentPaymentUI:(CDVInvokedUrlCommand *)command;
+- (void)presentSinglePaymentUI:(CDVInvokedUrlCommand *)command;
+
+- (void)applicationCorrelationIDForEnvironment:(CDVInvokedUrlCommand *)command;
+- (void)presentFuturePaymentUI:(CDVInvokedUrlCommand *)command;
 
 @end

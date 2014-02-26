@@ -26,14 +26,16 @@
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void)environment:(CDVInvokedUrlCommand *)command {
+- (void)initializeWithClientIdsForEnvironments:(CDVInvokedUrlCommand *)command {
+  // TODO: implement
   CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                                     messageAsString:[[PayPalPaymentViewController environment] lowercaseString]];
   
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void)setEnvironment:(CDVInvokedUrlCommand *)command {
+- (void)preconnectWithEnvironment:(CDVInvokedUrlCommand *)command {
+  // TODO: implement
   CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
   NSString *environment = [command.arguments objectAtIndex:0];
 
@@ -55,7 +57,8 @@
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void)prepareForPayment:(CDVInvokedUrlCommand *)command {
+- (void)applicationCorrelationIDForEnvironment:(CDVInvokedUrlCommand *)command {
+  // TODO: implement
   CDVPluginResult *pluginResult = nil;
   NSString *clientId = [command.arguments objectAtIndex:0];
   
@@ -69,7 +72,8 @@
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void)presentPaymentUI:(CDVInvokedUrlCommand *)command {  
+- (void)presentSinglePaymentUI:(CDVInvokedUrlCommand *)command {  
+  // TODO: implement
   // check number and type of arguments
   if ([command.arguments count] != 4) {
     [self sendErrorToDelegate:@"presentPaymentUI requires precisely four arguments"];
@@ -128,6 +132,9 @@
   [self.viewController presentModalViewController:controller animated:YES];
 }
 
+- (void)presentFuturePaymentUI:(CDVInvokedUrlCommand *)command {
+  // TODO:
+}
 
 #pragma mark - Cordova convenience helpers
 
