@@ -12,12 +12,15 @@
             <engine name="cordova" version="&gt;=3.0.0" />
     </engines>
 
+
+    <js-module src="www/PayPalMobilePGPlugin.js" name="PayPalMobile">
+        <clobbers target="PayPalMobile" />
+    </js-module>
+
+    <asset src="www/paypal-mobile-js-helper.js" target="paypal-mobile-js-helper.js" />
+
     <!-- ios -->
     <platform name="ios">
-        <js-module src="www/PayPalMobilePGPlugin.js" name="PayPalMobile">
-            <clobbers target="window.PayPalMobile" />
-        </js-module>
-
         <config-file target="config.xml" parent="/*">
             <feature name="PayPalMobile">
                 <param name="ios-package" value="PayPalMobilePGPlugin" onload="true" />
