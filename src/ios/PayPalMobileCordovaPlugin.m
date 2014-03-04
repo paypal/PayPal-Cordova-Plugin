@@ -1,10 +1,10 @@
 //
-//  PayPalMobilePGPlugin.m
+//  PayPalMobileCordovaPlugin.m
 //
 
-#import "PayPalMobilePGPlugin.h"
+#import "PayPalMobileCordovaPlugin.h"
 
-@interface PayPalMobilePGPlugin ()
+@interface PayPalMobileCordovaPlugin ()
 
 - (void)sendErrorToDelegate:(NSString *)errorMessage;
 
@@ -17,7 +17,7 @@
 
 #pragma mark -
 
-@implementation PayPalMobilePGPlugin
+@implementation PayPalMobileCordovaPlugin
 
 - (void)version:(CDVInvokedUrlCommand *)command {
   CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK

@@ -13,7 +13,7 @@
     </engines>
 
 
-    <js-module src="www/PayPalMobilePGPlugin.js" name="PayPalMobile">
+    <js-module src="www/cdv-plugin-paypal-mobile-sdk.js" name="PayPalMobile">
         <clobbers target="PayPalMobile" />
     </js-module>
 
@@ -23,12 +23,12 @@
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
             <feature name="PayPalMobile">
-                <param name="ios-package" value="PayPalMobilePGPlugin" onload="true" />
+                <param name="ios-package" value="PayPalMobileCordovaPlugin" onload="true" />
             </feature>
         </config-file>
         
-        <header-file src="src/ios/PayPalMobilePGPlugin.h" />
-        <source-file src="src/ios/PayPalMobilePGPlugin.m" />
+        <header-file src="src/ios/PayPalMobileCordovaPlugin.h" />
+        <source-file src="src/ios/PayPalMobileCordovaPlugin.m" />
 
         <framework src="AVFoundation.framework" />
         <framework src="SystemConfiguration.framework" />
