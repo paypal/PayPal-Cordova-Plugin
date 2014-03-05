@@ -13,7 +13,7 @@ function PayPalMobile() {}
 /**
  * Retrieve the version of the PayPal iOS SDK library. Useful when contacting support.
  *
- * @parameter completionCallback: a callback function accepting a string
+ * @param {Function} completionCallback: a callback function accepting a string
  */
 PayPalMobile.prototype.version = function(completionCallback) {
   var failureCallback = function() {
@@ -25,13 +25,16 @@ PayPalMobile.prototype.version = function(completionCallback) {
 
 
 /**
- * Set the environment that the PayPal iOS SDK uses.
+ * You MUST call this method to initialize the PayPal Mobile SDK.
  *
- * @parameter initializeWithClientIdsForEnvironments: object
+ * The PayPal Mobile SDK can operate in different environments to facilitate development and testing.
+ *
+ * @param {Object} clientIdsForEnvironments: set of client ids for environments
  * Example: var clientIdsForEnvironments = {
- *  live : @"my-client-id-for-Production",
- *  sandbox : @"my-client-id-for-Sandbox"
+ *  PayPalEnvironmentProduction : @"my-client-id-for-Production",
+ *  PayPalEnvironmentSandbox : @"my-client-id-for-Sandbox"
  *  }
+ * @param {Function} completionCallback: a callback function on success
  */
 PayPalMobile.prototype.initializeWithClientIdsForEnvironments = function(clientIdsForEnvironments, completionCallback) {
   var failureCallback = function(error) {
@@ -42,12 +45,13 @@ PayPalMobile.prototype.initializeWithClientIdsForEnvironments = function(clientI
 };
 
 /**
- * You SHOULD preconnect to PayPal to prepare the device for processing payments.
+ * You must preconnect to PayPal to prepare the device for processing payments.
  * This improves the user experience, by making the presentation of the
  * UI faster. The preconnect is valid for a limited time, so
  * the recommended time to preconnect is on page load.
  *
- * @parameter environment: available options are "PayPalEnvironmentNoNetwork", "PayPalEnvironmentProduction" and "PayPalEnvironmentSandbox"
+ * @param {String} environment: available options are "PayPalEnvironmentNoNetwork", "PayPalEnvironmentProduction" and "PayPalEnvironmentSandbox"
+ * @param {Function} completionCallback: a callback function on success
  */
 PayPalMobile.prototype.preconnectWithEnvironment = function(environment, completionCallback) {
   var failureCallback = function(error) {
@@ -61,13 +65,12 @@ PayPalMobile.prototype.preconnectWithEnvironment = function(environment, complet
 /**
  * Start PayPal UI to collect payment from the user.
  * See https://developer.paypal.com/webapps/developer/docs/integration/mobile/ios-integration-guide/
- * for more documentation of the parameters.
+ * for more documentation of the params.
  *
- * @parameter payment: PayPalPayment object
- * @parameter paymentDetails: PayPalPaymentDetails object (optional can be null)
- * @parameter configuration: PayPalConfiguration object (optional can be null)
- * @parameter completionCallback: a callback function accepting a js object, called when the user has completed payment
- * @parameter cancelCallback: a callback function accepting a reason string, called when the user cancels the payment
+ * @param {Object} payment: PayPalPayment object
+ * @param {PayPalConfiguraiton} configuration: PayPalConfiguration object (optional can be null)
+ * @param {Function} completionCallback: a callback function accepting a js object, called when the user has completed payment
+ * @param {Function} cancelCallback: a callback function accepting a reason string, called when the user cancels the payment
  */
 PayPalMobile.prototype.presentSinglePaymentUI = function(payment, configuration, completionCallback, cancelCallback) {
   cordova.exec(completionCallback, cancelCallback, "PayPalMobile", "presentSinglePaymentUI", [payment, configuration]);
@@ -83,8 +86,8 @@ PayPalMobile.prototype.presentSinglePaymentUI = function(payment, configuration,
  * Pass the result to your server, to include in the payment request sent to PayPal.
  * Do not otherwise cache or store this value.
  *
- * @parameter environment: available options are "PayPalEnvironmentNoNetwork", "PayPalEnvironmentProduction" and "PayPalEnvironmentSandbox"
- * @parameter callback: applicationCorrelationID Your server will send this to PayPal in a 'Paypal-Application-Correlation-Id' header.
+ * @param {String} environment: available options are "PayPalEnvironmentNoNetwork", "PayPalEnvironmentProduction" and "PayPalEnvironmentSandbox"
+ * @param {Function} callback: applicationCorrelationID Your server will send this to PayPal in a 'Paypal-Application-Correlation-Id' header.
  */
 PayPalMobile.prototype.applicationCorrelationIDForEnvironment = function(environment, completionCallback) {
   var failureCallback = function(message) {
@@ -97,8 +100,10 @@ PayPalMobile.prototype.applicationCorrelationIDForEnvironment = function(environ
 /**
  * Please Read Docs on Future Payments at https://github.com/paypal/PayPal-iOS-SDK#future-payments
  * 
- * @parameter configuration: cannot be null, merchantName, merchantPrivacyPolicyURL and merchantUserAgreementURL must be
- * set using PayPalConfiguraiton object
+ * @param {PayPalConfiguration} configuration: merchantName, merchantPrivacyPolicyURL 
+ *      and merchantUserAgreementURL must be set be set
+ * @param {Function} completionCallback: a callback function accepting a js object with future payment authorization
+ * @param {Function} cancelCallback: a callback function accepting a reason string, called when the user canceled without agreement
  */
 PayPalMobile.prototype.presentFuturePaymentUI = function(configuration, completionCallback, cancelCallback) {
   cordova.exec(completionCallback, cancelCallback, "PayPalMobile", "presentFuturePaymentUI", [configuration]);

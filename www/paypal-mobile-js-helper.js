@@ -1,8 +1,8 @@
 /**
  * The PayPalPaymentDetails class defines optional amount details.
- * @param subtotal Sub-total (amount) of items being paid for. 10 characters max with support for 2 decimal places.
- * @param shipping Amount charged for shipping. 10 characters max with support for 2 decimal places.
- * @param tax Amount charged for tax. 10 characters max with support for 2 decimal places.
+ * @param {String} subtotal: Sub-total (amount) of items being paid for. 10 characters max with support for 2 decimal places.
+ * @param {String} shipping: Amount charged for shipping. 10 characters max with support for 2 decimal places.
+ * @param {String} tax: Amount charged for tax. 10 characters max with support for 2 decimal places.
  * @see https://developer.paypal.com/webapps/developer/docs/api/#details-object for more details.
  */
 function PayPalPaymentDetails(subtotal, shipping, tax) {
@@ -13,12 +13,12 @@ function PayPalPaymentDetails(subtotal, shipping, tax) {
 
 /**
  * Convenience constructor. Returns a PayPalPayment with the specified amount, currency code, and short description.
- * @param amount The amount of the payment.
- * @param currencyCode The ISO 4217 currency for the payment.
- * @param shortDescription A short descripton of the payment.
- * @param intent Sale for an immediate payment or Auth
+ * @param {String} amount: The amount of the payment.
+ * @param {String} currencyCode: The ISO 4217 currency for the payment.
+ * @param {String} shortDescription: A short descripton of the payment.
+ * @param {String} intent: Sale for an immediate payment or Auth
  *                 for payment authorization only, to be captured separately at a later time.
- * @param details PayPalPaymentDetails object (optional)
+ * @param {PayPalPaymentDetails} details: PayPalPaymentDetails object (optional)
  */
 function PayPalPayment(amount, currency, shortDescription, intent, details) {
   this.amount = amount;
