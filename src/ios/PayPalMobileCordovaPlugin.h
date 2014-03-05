@@ -5,7 +5,7 @@
 #import <Cordova/CDV.h>
 #import "PayPalMobile.h"
 
-@interface PayPalMobileCordovaPlugin : CDVPlugin<PayPalPaymentDelegate>
+@interface PayPalMobileCordovaPlugin : CDVPlugin<PayPalPaymentDelegate, PayPalFuturePaymentDelegate>
 
 - (void)version:(CDVInvokedUrlCommand *)command;
 

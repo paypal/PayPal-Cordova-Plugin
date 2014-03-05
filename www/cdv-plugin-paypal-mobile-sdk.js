@@ -10,12 +10,6 @@
 function PayPalMobile() {}
 
 
-PayPalMobile.prototype.environment = {
-  SANDBOX: "PayPalEnvironmentSandbox",
-  PRODUCTION: "PayPalEnvironmentProduction",
-  NONETWORK: "PayPalEnvironmentNoNetwork"
-};
-
 /**
  * Retrieve the version of the PayPal iOS SDK library. Useful when contacting support.
  *
@@ -107,24 +101,10 @@ PayPalMobile.prototype.applicationCorrelationIDForEnvironment = function(environ
  * set using PayPalConfiguraiton object
  */
 PayPalMobile.prototype.presentFuturePaymentUI = function(configuration, completionCallback, cancelCallback) {
-  cordova.exec(completionCallback, cancelCallback, "PayPalMobile", "presentFuturePaymentUI", [payment, configuration]);
+  cordova.exec(completionCallback, cancelCallback, "PayPalMobile", "presentFuturePaymentUI", [configuration]);
 };
 
 /**
  * Plugin setup boilerplate.
  */
-
-module.exports = {
-  version : function(completionCallback) {
-    var failureCallback = function() {
-      console.log("Could not retrieve PayPal library version");
-    };
-
-    cordova.exec(completionCallback, failureCallback, "PayPalMobile", "version", []);
-  }
-};
-
-// module.exports.PayPalMobile = new PayPalMobile();
-// module.exports.PayPalPaymentDetails = new PayPalPaymentDetails();
-// module.exports.PayPalPayment = new PayPalPayment();
-// module.exports.PayPalConfiguration = new PayPalConfiguration();
+module.exports = new PayPalMobile();

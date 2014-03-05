@@ -32,7 +32,7 @@ function PayPalPayment(amount, currency, shortDescription, intent, details) {
  */
 function PayPalConfiguration(options) {
 
-  defaults = {
+  var defaults = {
       /// Will be overridden by email used in most recent PayPal login.
       defaultUserEmail : null,
       /// Will be overridden by phone country code used in most recent PayPal login
@@ -99,8 +99,10 @@ function PayPalConfiguration(options) {
       return defaults;
   }
 
-  for(var i in defaults) {
-        defaults[i] = options[i] || defaults[i];
+  for(var i in options) {
+    if (defaults.hasOwnProperty(i)) {
+        defaults[i] = options[i];
+    }
   }
 
   return defaults;

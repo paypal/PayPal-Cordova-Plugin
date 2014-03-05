@@ -29,8 +29,8 @@
 - (void)initializeWithClientIdsForEnvironments:(CDVInvokedUrlCommand *)command {
   NSDictionary* clientIdsReceived = [command.arguments objectAtIndex:0];
   // todo: add error checking
-  NSDictionary* clientIds = @{PayPalEnvironmentProduction: clientIdsReceived[@"PayPalEnvironmentProduction"],
-                              PayPalEnvironmentSandbox: clientIdsReceived[@"PayPalEnvironmentSandbox"]};
+  NSDictionary* clientIds = @{PayPalEnvironmentProduction: clientIdsReceived[@"live"],
+                              PayPalEnvironmentSandbox: clientIdsReceived[@"sandbox"]};
   
   [PayPalMobile initializeWithClientIdsForEnvironments:clientIds];
   
@@ -69,8 +69,8 @@
 - (void)presentSinglePaymentUI:(CDVInvokedUrlCommand *)command {  
   // TODO: implement
   // check number and type of arguments
-  if ([command.arguments count] != 3) {
-    [self sendErrorToDelegate:@"presentSinglePaymentUI requires precisely 3 arguments"];
+  if ([command.arguments count] != 2) {
+    [self sendErrorToDelegate:@"presentSinglePaymentUI requires precisely 2 arguments"];
     return;
   }
   
@@ -93,19 +93,19 @@
                                              shortDescription:shortDescription
                                                        intent:intent];
   
-  pppayment.paymentDetails = [self getPaymentDetailsFromDictionary:[command.arguments objectAtIndex:1]];
+  pppayment.paymentDetails = [self getPaymentDetailsFromDictionary:payment[@"details"]];
   if (!pppayment.processable) {
     [self sendErrorToDelegate:@"payment not processable"];
     return;
   }
   
-  PayPalConfiguration *configuraton = [self getPayPalConfigurationFromDictionary:[command.arguments objectAtIndex:2]];
+  PayPalConfiguration *configuraton = [self getPayPalConfigurationFromDictionary:[command.arguments objectAtIndex:1]];
   
   PayPalPaymentViewController *controller = [[PayPalPaymentViewController alloc] initWithPayment:pppayment
                                                                                    configuration:configuraton
                                                                                         delegate:self];
   if (!controller) {
-    [self sendErrorToDelegate:@"could not instantiate PayPalPaymentViewController"]; // should never happen
+    [self sendErrorToDelegate:@"could not instantiate UI please check your arguments"];
     return;
   }
 
@@ -116,6 +116,16 @@
 
 - (void)presentFuturePaymentUI:(CDVInvokedUrlCommand *)command {
   // TODO:
+  PayPalConfiguration *configuraton = [self getPayPalConfigurationFromDictionary:[command.arguments objectAtIndex:0]];
+  PayPalFuturePaymentViewController *controller = [[PayPalFuturePaymentViewController alloc] initWithConfiguration:configuraton delegate:self];
+  if (!controller) {
+    [self sendErrorToDelegate:@"could not instantiate UI please check your arguments"];
+    return;
+  }
+  
+  self.command = command;
+  self.futurePaymentController = controller;
+  [self.viewController presentModalViewController:controller animated:YES];
 }
 
 #pragma mark - Cordova convenience helpers
@@ -129,11 +139,11 @@
 - (NSString*)parseEnvironment:(NSString*)environment {
   NSString *environmentToUse = nil;
   environment = [environment lowercaseString];
-  if ([environment isEqualToString:[@"PayPalEnvironmentNoNetwork" lowercaseString]]) {
+  if ([environment isEqualToString:[@"mock" lowercaseString]]) {
     environmentToUse = PayPalEnvironmentNoNetwork;
-  } else if ([environment isEqualToString:[@"PayPalEnvironmentProduction" lowercaseString]]) {
+  } else if ([environment isEqualToString:[@"live" lowercaseString]]) {
     environmentToUse = PayPalEnvironmentProduction;
-  } else if ([environment isEqualToString:[@"PayPalEnvironmentSandbox" lowercaseString]]) {
+  } else if ([environment isEqualToString:[@"sandbox" lowercaseString]]) {
     environmentToUse = PayPalEnvironmentSandbox;
   }
   return environmentToUse;
@@ -145,9 +155,11 @@
   }
   
   PayPalPaymentDetails *paymentDetails = [PayPalPaymentDetails new];
-  [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-    [paymentDetails setValue:obj forKey:key];
-  }];
+  for (NSString *key in dictionary) {
+    if (dictionary[key] != [NSNull null]) {
+      [paymentDetails setValue:dictionary[key] forKey:key];
+    }
+  }
   return paymentDetails;
 }
 
@@ -156,9 +168,11 @@
     return nil;
   }
   PayPalConfiguration *configuration = [PayPalConfiguration new];
-  [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-    [configuration setValue:obj forKey:key];
-  }];
+  for (NSString *key in dictionary) {
+    if (dictionary[key] != [NSNull null]) {
+      [configuration setValue:dictionary[key] forKey:key];
+    }
+  }
   
   return configuration;
 }
@@ -177,5 +191,22 @@
   
   [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
 }
+  
+  
+#pragma mark - PayPalFuturePaymentDelegate implementaiton
+  
+- (void)payPalFuturePaymentDidCancel:(PayPalFuturePaymentViewController *)futurePaymentViewController {
+  [self.viewController dismissModalViewControllerAnimated:YES];
+  [self sendErrorToDelegate:@"future payment cancelled"];
+}
+  
+- (void)payPalFuturePaymentViewController:(PayPalFuturePaymentViewController *)futurePaymentViewController didAuthorizeFuturePayment:(NSDictionary *)futurePaymentAuthorization
+  {
+    [self.viewController dismissModalViewControllerAnimated:YES];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                  messageAsDictionary:futurePaymentAuthorization];
+    
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
+  }
 
 @end
