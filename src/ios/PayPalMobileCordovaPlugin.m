@@ -28,8 +28,8 @@
 
 - (void)initializeWithClientIdsForEnvironments:(CDVInvokedUrlCommand *)command {
   NSDictionary* clientIdsReceived = [command.arguments objectAtIndex:0];
-  NSDictionary* clientIds = @{PayPalEnvironmentProduction: clientIdsReceived[@"live"],
-                              PayPalEnvironmentSandbox: clientIdsReceived[@"sandbox"]};
+  NSDictionary* clientIds = @{PayPalEnvironmentProduction: clientIdsReceived[@"PayPalEnvironmentProduction"],
+                              PayPalEnvironmentSandbox: clientIdsReceived[@"PayPalEnvironmentSandbox"]};
   
   [PayPalMobile initializeWithClientIdsForEnvironments:clientIds];
   
@@ -136,11 +136,11 @@
 - (NSString*)parseEnvironment:(NSString*)environment {
   NSString *environmentToUse = nil;
   environment = [environment lowercaseString];
-  if ([environment isEqualToString:[@"mock" lowercaseString]]) {
+  if ([environment isEqualToString:[@"PayPalEnvironmentNoNetwork" lowercaseString]]) {
     environmentToUse = PayPalEnvironmentNoNetwork;
-  } else if ([environment isEqualToString:[@"live" lowercaseString]]) {
+  } else if ([environment isEqualToString:[@"PayPalEnvironmentProduction" lowercaseString]]) {
     environmentToUse = PayPalEnvironmentProduction;
-  } else if ([environment isEqualToString:[@"sandbox" lowercaseString]]) {
+  } else if ([environment isEqualToString:[@"PayPalEnvironmentSandbox" lowercaseString]]) {
     environmentToUse = PayPalEnvironmentSandbox;
   }
   return environmentToUse;
