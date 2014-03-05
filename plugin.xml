@@ -17,7 +17,7 @@
         <clobbers target="PayPalMobile" />
     </js-module>
 
-    <asset src="www/paypal-mobile-js-helper.js" target="paypal-mobile-js-helper.js" />
+    <asset src="www/paypal-mobile-js-helper.js" target="js/paypal-mobile-js-helper.js" />
 
     <!-- ios -->
     <platform name="ios">
