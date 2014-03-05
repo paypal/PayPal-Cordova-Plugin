@@ -1,10 +1,13 @@
 /**
  * The PayPalPaymentDetails class defines optional amount details.
+ * @param subtotal Sub-total (amount) of items being paid for. 10 characters max with support for 2 decimal places.
+ * @param shipping Amount charged for shipping. 10 characters max with support for 2 decimal places.
+ * @param tax Amount charged for tax. 10 characters max with support for 2 decimal places.
  * @see https://developer.paypal.com/webapps/developer/docs/api/#details-object for more details.
  */
-function PayPalPaymentDetails(shipping, subtotal, tax) {
-  this.shipping = shipping;
+function PayPalPaymentDetails(subtotal, shipping, tax) {
   this.subtotal = subtotal;
+  this.shipping = shipping;
   this.tax = tax;
 }
 
