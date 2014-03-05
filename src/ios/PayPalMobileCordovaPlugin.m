@@ -28,7 +28,6 @@
 
 - (void)initializeWithClientIdsForEnvironments:(CDVInvokedUrlCommand *)command {
   NSDictionary* clientIdsReceived = [command.arguments objectAtIndex:0];
-  // todo: add error checking
   NSDictionary* clientIds = @{PayPalEnvironmentProduction: clientIdsReceived[@"live"],
                               PayPalEnvironmentSandbox: clientIdsReceived[@"sandbox"]};
   
@@ -67,7 +66,6 @@
 }
 
 - (void)presentSinglePaymentUI:(CDVInvokedUrlCommand *)command {  
-  // TODO: implement
   // check number and type of arguments
   if ([command.arguments count] != 2) {
     [self sendErrorToDelegate:@"presentSinglePaymentUI requires precisely 2 arguments"];
@@ -115,7 +113,6 @@
 }
 
 - (void)presentFuturePaymentUI:(CDVInvokedUrlCommand *)command {
-  // TODO:
   PayPalConfiguration *configuraton = [self getPayPalConfigurationFromDictionary:[command.arguments objectAtIndex:0]];
   PayPalFuturePaymentViewController *controller = [[PayPalFuturePaymentViewController alloc] initWithConfiguration:configuraton delegate:self];
   if (!controller) {
