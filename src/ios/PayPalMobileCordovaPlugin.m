@@ -153,8 +153,9 @@
   
   PayPalPaymentDetails *paymentDetails = [PayPalPaymentDetails new];
   for (NSString *key in dictionary) {
-    if (dictionary[key] != [NSNull null]) {
-      [paymentDetails setValue:dictionary[key] forKey:key];
+    if (dictionary[key] != [NSNull null] && [dictionary[key] isKindOfClass:[NSString class]]) {
+      NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithString:dictionary[key]];
+      [paymentDetails setValue:number forKey:key];
     }
   }
   return paymentDetails;
@@ -166,9 +167,8 @@
   }
   PayPalConfiguration *configuration = [PayPalConfiguration new];
   for (NSString *key in dictionary) {
-    if (dictionary[key] != [NSNull null] && [dictionary[key] isKindOfClass:[NSString class]]) {
-      NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithString:dictionary[key]];
-      [paymentDetails setValue:number forKey:key];
+    if (dictionary[key] != [NSNull null]) {
+      [configuration setValue:dictionary[key] forKey:key];
     }
   }
   
