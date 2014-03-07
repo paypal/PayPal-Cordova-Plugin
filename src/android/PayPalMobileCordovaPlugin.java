@@ -10,33 +10,41 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 
-import com.paypal.android.sdk.payments.PayPalPayment;
-import com.paypal.android.sdk.payments.PayPalService;
-import com.paypal.android.sdk.payments.PaymentActivity;
-import com.paypal.android.sdk.payments.PaymentConfirmation;
-import com.paypal.android.sdk.payments.Version;
+import com.paypal.android.sdk.payments.*;
 
 public class PayPalMobileCordovaPlugin extends CordovaPlugin {
 
 	private CallbackContext callbackContext;
-	private String environemnt = PaymentActivity.ENVIRONMENT_LIVE;
+	private String environment = PayPalConfiguration.ENVIRONMENT_PRODUCTION;
+	private String productionClientId = null;
+	private String sandboxClientId = null;
+	private PayPalConfiguration configuration = new PayPalConfiguration();
+	private Activity activity = null;
+	private boolean serverStarted = false;
+	
+	private static final int REQUEST_SINGLE_PAYMENT = 1;
+    private static final int REQUEST_CODE_FUTURE_PAYMENT = 2;
 
 	@Override
 	public boolean execute(String action, JSONArray args,
 			CallbackContext callbackContext) throws JSONException {
 		this.callbackContext = callbackContext;
+		this.activity = this.cordova.getActivity();
 		boolean retValue = true;
 		if (action.equals("version")) {
 			this.version();
-		} else if (action.equals("setEnvironment")) {
-			this.setEnvironment(args);
-		} else if (action.equals("environment")) {
-			this.environment();
-		} else if (action.equals("prepareForPayment")) {
-			this.prepareForPayment(args);
-		} else if (action.equals("presentPaymentUI")) {
-			this.presentPaymentUI(args);
+		} else if (action.equals("initializeWithClientIdsForEnvironments")) {
+			this.initializeWithClientIdsForEnvironments(args);
+		} else if (action.equals("preconnectWithEnvironment")) {
+			this.preconnectWithEnvironment(args);
+		} else if (action.equals("applicationCorrelationIDForEnvironment")) {
+			this.applicationCorrelationIDForEnvironment(args);
+		} else if (action.equals("presentSinglePaymentUI")) {
+			this.presentSinglePaymentUI(args);
+		} else if (action.equals("presentFuturePaymentUI")) {
+			this.presentFuturePaymentUI(args);
 		} else {
 			retValue = false;
 		}
@@ -46,8 +54,9 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
 
 	@Override
 	public void onDestroy() {
-		this.cordova.getActivity().stopService(
-				new Intent(this.cordova.getActivity(), PayPalService.class));
+		if (null != this.activity && serverStarted) {
+			this.activity.stopService(new Intent(this.activity, PayPalService.class));
+		}
 		super.onDestroy();
 	}
 
@@ -56,89 +65,195 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
 		this.callbackContext.success(Version.PRODUCT_VERSION);
 	}
 	
-	private void setEnvironment(JSONArray args) throws JSONException {
+	
+	private void initializeWithClientIdsForEnvironments(JSONArray args) throws JSONException {
+		JSONObject jObject = args.getJSONObject(0);
+		this.productionClientId = jObject.getString("PayPalEnvironmentProduction");
+		this.sandboxClientId = jObject.getString("PayPalEnvironmentSandbox");
+		this.callbackContext.success();
+	}
+	
+	private void preconnectWithEnvironment(JSONArray args) throws JSONException {
 		// make sure we use the same environment ids
 		String env = args.getString(0);
-		if (env.equals("PayPalEnvironmentNoNetwork")) {
-			this.environemnt = PaymentActivity.ENVIRONMENT_NO_NETWORK;
-		} else if (env.equals("PayPalEnvironmentProduction")) {
-			this.environemnt = PaymentActivity.ENVIRONMENT_LIVE;
-		} else if (env.equals("PayPalEnvironmentSandbox")) {
-			this.environemnt = PaymentActivity.ENVIRONMENT_SANDBOX;
+		if (env.equalsIgnoreCase("PayPalEnvironmentNoNetwork")) {
+			this.environment = PayPalConfiguration.ENVIRONMENT_NO_NETWORK;
+		} else if (env.equalsIgnoreCase("PayPalEnvironmentProduction")) {
+			this.environment = PayPalConfiguration.ENVIRONMENT_PRODUCTION;
+			this.configuration.clientId(this.productionClientId);
+		} else if (env.equalsIgnoreCase("PayPalEnvironmentSandbox")) {
+			this.environment = PayPalConfiguration.ENVIRONMENT_SANDBOX;
+			this.configuration.clientId(this.sandboxClientId);
 		} else {
 			this.callbackContext
 					.error("The provided environment is not supported");
 			return;
 		}
 
-		this.callbackContext.success();
-
-	}
-
-	private void environment() {
-		this.callbackContext.success(this.environemnt);
-	}
-
-	private void prepareForPayment(JSONArray args) throws JSONException {
-		String clientId = args.getString(0);
-		Activity activity = this.cordova.getActivity();
-		Intent serviceIntent = new Intent(activity, PayPalService.class);
-		serviceIntent.putExtra(PaymentActivity.EXTRA_PAYPAL_ENVIRONMENT,
-				this.environemnt);
-		serviceIntent.putExtra(PaymentActivity.EXTRA_CLIENT_ID, clientId);
-		activity.startService(serviceIntent);
+		this.configuration.environment(environment);
 		
 		this.callbackContext.success();
+
 	}
 
-	private void presentPaymentUI(JSONArray args) throws JSONException {
-		if (args.length() != 4) {
+	private void applicationCorrelationIDForEnvironment(JSONArray args) throws JSONException {
+		// Environment not used on android
+		//String env = args.getString(0);
+		String correlationId = PayPalConfiguration.getApplicationCorrelationId(this.cordova.getActivity());
+		this.callbackContext.success(correlationId);
+	}
+	
+	private void startService() {
+		if (serverStarted) {  
+			serverStarted = this.activity.stopService(new Intent(this.activity, PayPalService.class));
+		}
+		
+		Intent intent = new Intent(this.activity, PayPalService.class);
+    	intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, this.configuration);
+    	this.activity.startService(intent);
+    	serverStarted = true;
+	    	
+	}
+	
+	private void presentSinglePaymentUI(JSONArray args) throws JSONException {
+		if (args.length() != 2) {
 			this.callbackContext
-					.error("presentPaymentUI requires precisely four arguments");
+					.error("presentPaymentUI requires precisely 2 arguments");
 			return;
 		}
 
-		String clientId = args.getString(0);
-		String email = args.getString(1);
-		String payerId = args.getString(2);
-		JSONObject paymentObject = args.getJSONObject(3);
-
+		
+		// get payment details
+		JSONObject paymentObject = args.getJSONObject(0);
 		String amount = paymentObject.getString("amount");
 		String currency = paymentObject.getString("currency");
 		String shortDescription = paymentObject.getString("shortDescription");
+		String paymentIntent = ("sale".equalsIgnoreCase(paymentObject.getString("intent"))) ? PayPalPayment.PAYMENT_INTENT_SALE : PayPalPayment.PAYMENT_INTENT_AUTHORIZE;
+		JSONObject paymentDetails = paymentObject.has("details") ? paymentObject.getJSONObject("details") : null;
 
+		// create payment object
 		PayPalPayment payment = new PayPalPayment(new BigDecimal(amount),
-				currency, shortDescription);
-
-		Intent intent = new Intent(this.cordova.getActivity(),
-				PaymentActivity.class);
-		intent.putExtra(PaymentActivity.EXTRA_PAYPAL_ENVIRONMENT, environemnt);
-		intent.putExtra(PaymentActivity.EXTRA_CLIENT_ID, clientId);
-		intent.putExtra(PaymentActivity.EXTRA_RECEIVER_EMAIL, email);
-
-		intent.putExtra(PaymentActivity.EXTRA_PAYER_ID, payerId);
+				currency, shortDescription, paymentIntent);
+		payment.paymentDetails(this.parsePaymentDetails(paymentDetails));
+		
+		// get configuration and update
+		JSONObject config = args.getJSONObject(1);
+		this.updatePayPalConfiguration(config);
+		
+		// start service
+		this.startService();
+		
+		Intent intent = new Intent(this.activity, PaymentActivity.class);
 		intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
-		this.cordova.startActivityForResult(this, intent, 0);
+		this.cordova.startActivityForResult(this, intent, REQUEST_SINGLE_PAYMENT);
+	}
+	
+	
+	private void presentFuturePaymentUI(JSONArray args) throws JSONException {
+		// get configuration and update
+		JSONObject config = args.getJSONObject(0);
+		this.updatePayPalConfiguration(config);
+		
+		this.startService();
+		
+		Intent intent = new Intent(this.activity, PayPalFuturePaymentActivity.class);
+		this.cordova.startActivityForResult(this, intent, REQUEST_CODE_FUTURE_PAYMENT);
+	}
+	
+	private void updatePayPalConfiguration(JSONObject object) throws JSONException {
+		if (object == null || 0 == object.length()) {
+			return;
+		}
+		
+		
+		if (object.has("defaultUserEmail") && !object.isNull("defaultUserEmail")) {
+			this.configuration.defaultUserEmail(object.getString("defaultUserEmail"));
+		}
+		if (object.has("defaultUserPhoneCountryCode") && !object.isNull("defaultUserPhoneCountryCode")) {
+			this.configuration.defaultUserPhoneCountryCode(object.getString("defaultUserPhoneCountryCode"));
+		}
+		if (object.has("defaultUserPhoneNumber") && !object.isNull("defaultUserPhoneNumber")) {
+			this.configuration.defaultUserPhone(object.getString("defaultUserPhoneNumber"));
+		}
+		if (object.has("merchantName") && !object.isNull("merchantName")) {
+			this.configuration.merchantName(object.getString("merchantName"));
+		}
+		if (object.has("merchantPrivacyPolicyURL") && !object.isNull("merchantPrivacyPolicyURL")) {
+			this.configuration.merchantPrivacyPolicyUri(Uri.parse(object.getString("merchantPrivacyPolicyURL")));
+		}
+		if (object.has("merchantUserAgreementURL") && !object.isNull("merchantUserAgreementURL")) {
+			this.configuration.merchantUserAgreementUri(Uri.parse(object.getString("merchantUserAgreementURL")));
+		}
+		if (object.has("acceptCreditCards")) {
+			this.configuration.acceptCreditCards(object.getBoolean("acceptCreditCards"));
+		}
+		if (object.has("rememberUser")) {
+			this.configuration.rememberUser(object.getBoolean("rememberUser"));
+		}
+		if (object.has("forceDefaultsInSandbox")) {
+			this.configuration.forceDefaultsOnSandbox(object.getBoolean("forceDefaultsInSandbox"));
+		}
+		if (object.has("languageOrLocale") && !object.isNull("languageOrLocale")) {
+			this.configuration.languageOrLocale(object.getString("languageOrLocale"));
+		}
+		if (object.has("sandboxUserPassword") && !object.isNull("sandboxUserPassword")) {
+			this.configuration.sandboxUserPassword(object.getString("sandboxUserPassword"));
+		}
+		if (object.has("sandboxUserPin") && !object.isNull("sandboxUserPin")) {
+			this.configuration.sandboxUserPin(object.getString("sandboxUserPin"));
+		}	
+	}
+	
+	private PayPalPaymentDetails parsePaymentDetails(JSONObject object) throws JSONException {
+		if (object == null || 0 == object.length()) {
+			return null;
+		}
+		
+		BigDecimal subtotal = object.has("subtotal") ? new BigDecimal(object.getString("subtotal")) : null;
+		BigDecimal shipping = object.has("shipping") ? new BigDecimal(object.getString("shipping")) : null;
+		BigDecimal tax = object.has("tax") ? new BigDecimal(object.getString("tax")) : null;
+		
+		PayPalPaymentDetails paymentDetails =  new PayPalPaymentDetails(subtotal, shipping, tax);
+		return paymentDetails;
+		
+		
 	}
 	
 	// onActivityResult
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		if (resultCode == Activity.RESULT_OK) {
-			PaymentConfirmation confirmation = null;
-			if (intent.hasExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION)) {
-				confirmation = intent
-						.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
-				this.callbackContext.success(confirmation.toJSONObject());
+		if (REQUEST_SINGLE_PAYMENT == requestCode) {
+			if (resultCode == Activity.RESULT_OK) {
+				PaymentConfirmation confirmation = null;
+				if (intent.hasExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION)) {
+					confirmation = intent
+							.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+					this.callbackContext.success(confirmation.toJSONObject());
+				} else {
+					this.callbackContext
+							.error("payment was ok but no confirmation");
+				}
+			} else if (resultCode == Activity.RESULT_CANCELED) {
+				this.callbackContext.error("payment cancelled");
+			} else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+				this.callbackContext.error("An invalid Payment was submitted. Please see the docs.");
 			} else {
-				this.callbackContext
-						.error("payment was ok but no confirmation");
+				this.callbackContext.error(resultCode);
 			}
-		} else if (resultCode == Activity.RESULT_CANCELED) {
-			this.callbackContext.error("payment cancelled");
-		} else if (resultCode == PaymentActivity.RESULT_PAYMENT_INVALID) {
-			this.callbackContext.error("payment invalid");
-		} else {
-			this.callbackContext.error(resultCode);
+		} else if (requestCode == REQUEST_CODE_FUTURE_PAYMENT) {
+			if (resultCode == Activity.RESULT_OK) {
+                PayPalAuthorization auth = null;
+                if (intent.hasExtra(PayPalFuturePaymentActivity.EXTRA_RESULT_AUTHORIZATION)) {
+                        auth = intent.getParcelableExtra(PayPalFuturePaymentActivity.EXTRA_RESULT_AUTHORIZATION);
+                this.callbackContext.success(auth.toJSONObject());
+                } else {
+                	this.callbackContext
+					.error("Authorization was ok but no code");
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+            	this.callbackContext.error("Future Payment user canceled.");
+            } else if (resultCode == PayPalFuturePaymentActivity.RESULT_EXTRAS_INVALID) {
+            	this.callbackContext.error("Possibly configuration submitted is invalid");
+            }
 		}
 	}
 }
