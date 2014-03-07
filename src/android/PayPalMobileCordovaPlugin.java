@@ -35,16 +35,16 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
 		boolean retValue = true;
 		if (action.equals("version")) {
 			this.version();
-		} else if (action.equals("initializeWithClientIdsForEnvironments")) {
-			this.initializeWithClientIdsForEnvironments(args);
-		} else if (action.equals("preconnectWithEnvironment")) {
-			this.preconnectWithEnvironment(args);
+		} else if (action.equals("init")) {
+			this.init(args);
+		} else if (action.equals("prepareToRender")) {
+			this.prepareToRender(args);
 		} else if (action.equals("applicationCorrelationIDForEnvironment")) {
 			this.applicationCorrelationIDForEnvironment(args);
-		} else if (action.equals("presentSinglePaymentUI")) {
-			this.presentSinglePaymentUI(args);
-		} else if (action.equals("presentFuturePaymentUI")) {
-			this.presentFuturePaymentUI(args);
+		} else if (action.equals("renderSinglePaymentUI")) {
+			this.renderSinglePaymentUI(args);
+		} else if (action.equals("renderFuturePaymentUI")) {
+			this.renderFuturePaymentUI(args);
 		} else {
 			retValue = false;
 		}
@@ -66,14 +66,14 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
 	}
 	
 	
-	private void initializeWithClientIdsForEnvironments(JSONArray args) throws JSONException {
+	private void init(JSONArray args) throws JSONException {
 		JSONObject jObject = args.getJSONObject(0);
 		this.productionClientId = jObject.getString("PayPalEnvironmentProduction");
 		this.sandboxClientId = jObject.getString("PayPalEnvironmentSandbox");
 		this.callbackContext.success();
 	}
 	
-	private void preconnectWithEnvironment(JSONArray args) throws JSONException {
+	private void prepareToRender(JSONArray args) throws JSONException {
 		// make sure we use the same environment ids
 		String env = args.getString(0);
 		if (env.equalsIgnoreCase("PayPalEnvironmentNoNetwork")) {
@@ -89,9 +89,17 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
 					.error("The provided environment is not supported");
 			return;
 		}
-
 		this.configuration.environment(environment);
+
+		// get configuration and update
+		if (args.length() > 1) {
+			JSONObject config = args.getJSONObject(1);
+			this.updatePayPalConfiguration(config);
+		}
 		
+		// start service
+		this.startService();
+
 		this.callbackContext.success();
 
 	}
@@ -115,13 +123,12 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
 	    	
 	}
 	
-	private void presentSinglePaymentUI(JSONArray args) throws JSONException {
-		if (args.length() != 2) {
+	private void renderSinglePaymentUI(JSONArray args) throws JSONException {
+		if (args.length() != 1) {
 			this.callbackContext
-					.error("presentPaymentUI requires precisely 2 arguments");
+					.error("renderPaymentUI payment object must be provided");
 			return;
 		}
-
 		
 		// get payment details
 		JSONObject paymentObject = args.getJSONObject(0);
@@ -136,12 +143,6 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
 				currency, shortDescription, paymentIntent);
 		payment.paymentDetails(this.parsePaymentDetails(paymentDetails));
 		
-		// get configuration and update
-		JSONObject config = args.getJSONObject(1);
-		this.updatePayPalConfiguration(config);
-		
-		// start service
-		this.startService();
 		
 		Intent intent = new Intent(this.activity, PaymentActivity.class);
 		intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
@@ -149,12 +150,7 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
 	}
 	
 	
-	private void presentFuturePaymentUI(JSONArray args) throws JSONException {
-		// get configuration and update
-		JSONObject config = args.getJSONObject(0);
-		this.updatePayPalConfiguration(config);
-		
-		this.startService();
+	private void renderFuturePaymentUI(JSONArray args) throws JSONException {
 		
 		Intent intent = new Intent(this.activity, PayPalFuturePaymentActivity.class);
 		this.cordova.startActivityForResult(this, intent, REQUEST_CODE_FUTURE_PAYMENT);
@@ -214,9 +210,7 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
 		BigDecimal tax = object.has("tax") ? new BigDecimal(object.getString("tax")) : null;
 		
 		PayPalPaymentDetails paymentDetails =  new PayPalPaymentDetails(subtotal, shipping, tax);
-		return paymentDetails;
-		
-		
+		return paymentDetails;	
 	}
 	
 	// onActivityResult

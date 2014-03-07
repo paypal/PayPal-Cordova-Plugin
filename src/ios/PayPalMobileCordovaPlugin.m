@@ -11,6 +11,7 @@
 @property(nonatomic, strong, readwrite) CDVInvokedUrlCommand *command;
 @property(nonatomic, strong, readwrite) PayPalPaymentViewController *paymentController;
 @property(nonatomic, strong, readwrite) PayPalFuturePaymentViewController *futurePaymentController;
+@property(nonatomic, strong, readwrite) PayPalConfiguration *configuration;
 
 @end
 
@@ -26,7 +27,7 @@
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void)initializeWithClientIdsForEnvironments:(CDVInvokedUrlCommand *)command {
+- (void)init:(CDVInvokedUrlCommand *)command {
   NSDictionary* clientIdsReceived = [command.arguments objectAtIndex:0];
   NSDictionary* clientIds = @{PayPalEnvironmentProduction: clientIdsReceived[@"PayPalEnvironmentProduction"],
                               PayPalEnvironmentSandbox: clientIdsReceived[@"PayPalEnvironmentSandbox"]};
@@ -37,13 +38,17 @@
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void)preconnectWithEnvironment:(CDVInvokedUrlCommand *)command {
+- (void)prepareToRender:(CDVInvokedUrlCommand *)command {
   CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
   NSString *environment = [command.arguments objectAtIndex:0];
 
   NSString *environmentToUse = [self parseEnvironment:environment];
   if (environmentToUse) {
+    // do preconnect
     [PayPalMobile preconnectWithEnvironment:environmentToUse];
+    // save configuration
+    PayPalConfiguration *configuration = [self getPayPalConfigurationFromDictionary:[command.arguments objectAtIndex:1]];
+    self.configuration = configuration;
   } else {
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"The provided environment is not supported"];
   }
@@ -65,10 +70,10 @@
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void)presentSinglePaymentUI:(CDVInvokedUrlCommand *)command {  
+- (void)renderSinglePaymentUI:(CDVInvokedUrlCommand *)command {  
   // check number and type of arguments
-  if ([command.arguments count] != 2) {
-    [self sendErrorToDelegate:@"presentSinglePaymentUI requires precisely 2 arguments"];
+  if ([command.arguments count] != 1) {
+    [self sendErrorToDelegate:@"renderSinglePaymentUI payment object must be provided"];
     return;
   }
   
@@ -97,10 +102,9 @@
     return;
   }
   
-  PayPalConfiguration *configuraton = [self getPayPalConfigurationFromDictionary:[command.arguments objectAtIndex:1]];
   
   PayPalPaymentViewController *controller = [[PayPalPaymentViewController alloc] initWithPayment:pppayment
-                                                                                   configuration:configuraton
+                                                                                   configuration:self.configuration
                                                                                         delegate:self];
   if (!controller) {
     [self sendErrorToDelegate:@"could not instantiate UI please check your arguments"];
@@ -112,9 +116,8 @@
   [self.viewController presentModalViewController:controller animated:YES];
 }
 
-- (void)presentFuturePaymentUI:(CDVInvokedUrlCommand *)command {
-  PayPalConfiguration *configuraton = [self getPayPalConfigurationFromDictionary:[command.arguments objectAtIndex:0]];
-  PayPalFuturePaymentViewController *controller = [[PayPalFuturePaymentViewController alloc] initWithConfiguration:configuraton delegate:self];
+- (void)renderFuturePaymentUI:(CDVInvokedUrlCommand *)command {
+  PayPalFuturePaymentViewController *controller = [[PayPalFuturePaymentViewController alloc] initWithConfiguration:self.configuration delegate:self];
   if (!controller) {
     [self sendErrorToDelegate:@"could not instantiate UI please check your arguments"];
     return;

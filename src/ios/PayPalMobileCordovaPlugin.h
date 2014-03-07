@@ -9,12 +9,12 @@
 
 - (void)version:(CDVInvokedUrlCommand *)command;
 
-- (void)initializeWithClientIdsForEnvironments:(CDVInvokedUrlCommand *)command;
-- (void)preconnectWithEnvironment:(CDVInvokedUrlCommand *)command;
+- (void)init:(CDVInvokedUrlCommand *)command;
+- (void)prepareToRender:(CDVInvokedUrlCommand *)command;
 
-- (void)presentSinglePaymentUI:(CDVInvokedUrlCommand *)command;
+- (void)renderSinglePaymentUI:(CDVInvokedUrlCommand *)command;
 
 - (void)applicationCorrelationIDForEnvironment:(CDVInvokedUrlCommand *)command;
-- (void)presentFuturePaymentUI:(CDVInvokedUrlCommand *)command;
+- (void)renderFuturePaymentUI:(CDVInvokedUrlCommand *)command;
 
 @end
