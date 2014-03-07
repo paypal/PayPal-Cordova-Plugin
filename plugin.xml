@@ -38,4 +38,47 @@
         
     </platform>
 
+    <!-- android -->
+    <platform name="android">
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="PayPalMobile">
+                <param name="android-package" value="com.paypal.cordova.sdk.PayPalMobileCordovaPlugin" />
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/PayPalMobileCordovaPlugin.java" target-dir="src/com/paypal/cordova/sdk" />
+
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <!-- for card.io card scanning -->
+            <uses-permission android:name="android.permission.CAMERA" />
+            <uses-permission android:name="android.permission.VIBRATE" />
+            
+            <uses-feature android:name="android.hardware.camera" android:required="false" />
+            <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+
+            <!-- for most things, including card.io & paypal -->
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+            <uses-permission android:name="android.permission.INTERNET"/>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <service android:name="com.paypal.android.sdk.payments.PayPalService"
+            android:exported="false" />
+            <activity android:name="com.paypal.android.sdk.payments.PaymentActivity" />
+            <activity android:name="com.paypal.android.sdk.payments.LoginActivity" />
+            <activity android:name="com.paypal.android.sdk.payments.PaymentMethodActivity" />
+            <activity android:name="com.paypal.android.sdk.payments.PaymentConfirmActivity" />
+            <activity android:name="com.paypal.android.sdk.payments.PayPalFuturePaymentActivity" />
+            <activity android:name="com.paypal.android.sdk.payments.FuturePaymentConsentActivity" />
+            <activity android:name="com.paypal.android.sdk.payments.FuturePaymentInfoActivity" />
+            <activity
+                android:name="io.card.payment.CardIOActivity"
+                android:configChanges="keyboardHidden|orientation" />
+            <activity android:name="io.card.payment.DataEntryActivity" />
+        </config-file>
+
+    </platform>
+
 </plugin>
