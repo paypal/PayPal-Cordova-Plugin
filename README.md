@@ -63,7 +63,7 @@ PayPalMobile.init(clientIDs, initComplete);
 
 Future Payment authorization example
 ------------------------------------
-```json
+```javascript
 var onSuccessfulAuthorization = function(result) {
    console.log("auth successful: " + JSON.stringify(result, null, 4));
    // send result object to your server for next steps
