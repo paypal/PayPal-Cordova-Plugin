@@ -4,12 +4,12 @@
 Installation
 ------------
 
-The PayPal SDK Cordova Plugin adds support for the PayPal SDK on iOS and Android platforms. It has a depencency on the native SDK libraries, which you must also download. Cordova plugin management will set up all the required capabilities/frameworks for the project. The only bit left for you to do is to add necessary files, as described below.
+The PayPal SDK Cordova Plugin adds support for the PayPal SDK on iOS and Android platforms. It uses the native PayPal Mobile SDK libraries, which you must also download. Cordova plugin management will set up all the required capabilities/frameworks for the project. The only bit left for you to do is to add necessary files, as described below.
 
 
 1. Download the [PayPal iOS SDK](https://github.com/paypal/PayPal-iOS-SDK).
 2. Download the [PayPal Android SDK] (https://github.com/paypal/PayPal-Android-SDK).
-3. Follow official [Cordova](https://cordova.apache.org) documentation to install command line tools and how to create a project.
+3. Follow the official [Cordova](https://cordova.apache.org) documentation to install command line tools and create a project.
 4. Run `cordova plugin add https://github.com/paypal/PayPal-Cordova-Plugin`.
 5. Run `cordova platform add ios` or/and `cordova platform add android`.
 6. For iOS, open the Xcode project in the `platforms/ios` folder and add the `PayPalMobile` folder from step 1.
@@ -29,8 +29,8 @@ You must add `<script type="text/javascript" src="js/paypal-mobile-js-helper.js"
 
 Documentation
 -------------
-- See `cdv-plugin-paypal-mobile-sdk.js` and `cdv-plugin-paypal-mobile-sdk.js` for more details
-- Plugin is fully dependent on [PayPal Mobile SDK](https://developer.paypal.com/webapps/developer/docs/integration/mobile/mobile-sdk-overview/) implmentation.
+- See `cdv-plugin-paypal-mobile-sdk.js` and `cdv-plugin-paypal-mobile-sdk.js` for more details.
+- For complete documentation regarding the PayPal SDK Cordova Plugin, please refer to the documentation for the underlying [PayPal Mobile SDK](https://developer.paypal.com/webapps/developer/docs/integration/mobile/mobile-sdk-overview/).
 
 
 Basic Example of the app (defined in index.js)
