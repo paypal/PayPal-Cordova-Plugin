@@ -1,34 +1,34 @@
-# PayPal iOS SDK Cordova Plug-in
+# PayPal SDK Cordova Plug-in
 
 
 Integration
 -----------
 
-PayPal iOS SDK Cordova Plugin adds support for PayPal SDK on iOS and Android platforms. It has a depencency on the native sdk libraries which are required to be downloaded manually. Cordova plugin management will setup all the required capabilities/frameworks to the project. The only bit left to do is to add necessary files. Here are the steps how to do it.
+The PayPal SDK Cordova Plugin adds support for the PayPal SDK on iOS and Android platforms. It has a depencency on the native SDK libraries, which you must also download. Cordova plugin management will set up all the required capabilities/frameworks for the project. The only bit left for you to do is to add necessary files, as described below.
 
 
-1. Download the [PayPal iOS SDK](https://github.com/paypal/PayPal-iOS-SDK)
-2. Download the [PayPal Android SDK] (https://github.com/paypal/PayPal-Android-SDK)
-3. Install [Cordova](https://cordova.apache.org) command line tools
-4. Run `cordova plugin add https://github.com/paypal/PayPal-Cordova-Plugin`
-5. Run `cordova platform add ios` or/and `cordova platform add android`
-6. For iOS open xcode project in `platforms/ios` folder and add `PayPalMobile` folder from step 1.
-7. For Android copy `libs` folder from step 2. to `libs` folder in `platforms/android`
-8. Run `cordova build` to build all the platforms
+1. Download the [PayPal iOS SDK](https://github.com/paypal/PayPal-iOS-SDK).
+2. Download the [PayPal Android SDK] (https://github.com/paypal/PayPal-Android-SDK).
+3. Install the [Cordova](https://cordova.apache.org) command line tools.
+4. Run `cordova plugin add https://github.com/paypal/PayPal-Cordova-Plugin`.
+5. Run `cordova platform add ios` or/and `cordova platform add android`.
+6. For iOS, open the Xcode project in the `platforms/ios` folder and add the `PayPalMobile` folder from step 1.
+7. For Android, copy the `libs` folder from step 2 to the `libs` folder in `platforms/android`.
+8. Run `cordova build` to build the projects for all of the platforms.
 
 
 Your app integration
 --------------------
-Plugin adds 2 javascript files to your project.
+The PayPal SDK Cordova Plugin adds 2 JavaScript files to your project.
 
-1. `cdv-plugin-paypal-mobile-sdk.js` wrapper around native sdk. PayPalMobile oject is immidiately available to use in your `.js` files.
-2. `paypal-mobile-js-helper.js` helper file defines _PayPalPayment_, _PayPalPaymentDetails_ and _PayPalConfiguration_ objects to help working with _PayPalMobile_
+1. `cdv-plugin-paypal-mobile-sdk.js`: a wrapper around the native SDK. The `PayPalMobile` object is immediately available to use in your `.js` files.
+2. `paypal-mobile-js-helper.js`: a helper file which defines the `PayPalPayment`, `PayPalPaymentDetails` and `PayPalConfiguration` classes for use with `PayPalMobile`.
 
-You have to add `<script type="text/javascript" src="js/paypal-mobile-js-helper.js"></script>` in your `www/index.html` file after `cordova.js` import to be able to use it.
+You must add `<script type="text/javascript" src="js/paypal-mobile-js-helper.js"></script>` to your `www/index.html` file, following the `cordova.js` import.
 
 
-Taking a Single Payment example
--------------------------------
+Single Payment example
+----------------------
 
 ```javascript
    
@@ -42,13 +42,13 @@ var onSuccessPayment = function(payment) {
 
 var prepareToRenderCallback = function(result) {
   PayPalMobile.renderSinglePaymentUI(payment, onSuccessPayment, function (result) {
-  // user cancelled
+  // user canceled
   console.log(result);
   });
 };
 
 var initComplete = function() {
-  // set envrionment you want to use along with configuration
+  // set envrionment and configuration
   PayPalMobile.prepareToRender("PayPalEnvironmentNoNetwork", new PayPalConfiguration(), prepareToRenderCallback);
 };
 
@@ -61,8 +61,8 @@ PayPalMobile.init(clientIDs, initComplete);
 
 ```
 
-Getting Future Payment authorization example
---------------------------------------------
+Future Payment authorization example
+------------------------------------
 ```json
 var onSuccessfulAuthorization = function(result) {
    console.log("auth successful: " + JSON.stringify(result, null, 4));
@@ -72,13 +72,13 @@ var onSuccessfulAuthorization = function(result) {
 
 var prepareToRenderCallback = function(result) {
   PayPalMobile.renderFuturePaymentUI(onSuccessfulAuthorization, function (result) {
-  // user cancelled
+  // user canceled
   console.log(result);
   });
 };
 
 var initComplete = function() {
-  // set envrionment you want to use along with configuration
+  // set envrionment and configuration
   var config = new PayPalConfiguration({merchantName: "My Awesome Merchant", merchantPrivacyPolicyURL: "https://mymerchant.com/policy.html", merchantUserAgreementURL: "https://mymerchant.com/useragreement.html"});
   PayPalMobile.prepareToRender("PayPalEnvironmentNoNetwork", config, prepareToRenderCallback);
 };
