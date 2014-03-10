@@ -1,8 +1,8 @@
 # PayPal SDK Cordova Plug-in
 
 
-Integration
------------
+Installation
+------------
 
 The PayPal SDK Cordova Plugin adds support for the PayPal SDK on iOS and Android platforms. It has a depencency on the native SDK libraries, which you must also download. Cordova plugin management will set up all the required capabilities/frameworks for the project. The only bit left for you to do is to add necessary files, as described below.
 
