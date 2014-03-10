@@ -1,3 +1,5 @@
+//  Copyright (c) 2014 PayPal. All rights reserved.
+
 package com.paypal.cordova.sdk;
 
 import java.math.BigDecimal;

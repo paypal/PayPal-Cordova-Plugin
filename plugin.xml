@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!-- Copyright (c) 2014 PayPal. All rights reserved. -->
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:rim="http://www.blackberry.com/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -7,7 +7,7 @@
     version="2.0.0">
     <name>PayPalMobile</name>
     <description>This plugin allows to add to add PayPal Payments to your application using PayPal Mobile SDK Native library</description>
-    <license>BSD License</license>
+    <license>BSD License, see LICENSE.md for details</license>
     <engines>
             <engine name="cordova" version="&gt;=3.0.0" />
     </engines>

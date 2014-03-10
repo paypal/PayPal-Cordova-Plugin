@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2014 PayPal. All rights reserved.
+//
+
 /**
  * The PayPalPaymentDetails class defines optional amount details.
  * @param {String} subtotal: Sub-total (amount) of items being paid for. 10 characters max with support for 2 decimal places.

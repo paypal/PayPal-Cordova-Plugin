@@ -1,6 +1,8 @@
 //
 //  PayPalMobileCordovaPlugin.h
+//  Copyright (c) 2014 PayPal. All rights reserved.
 //
+
 
 #import <Cordova/CDV.h>
 #import "PayPalMobile.h"
