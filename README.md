@@ -1,4 +1,4 @@
-# PayPal SDK Cordova/Phonegap Plug-in
+# PayPal SDK Cordova/Phonegap Plugin
 
 
 Installation
