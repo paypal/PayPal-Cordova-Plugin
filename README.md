@@ -1,10 +1,10 @@
-# PayPal SDK Cordova Plug-in
+# PayPal SDK Cordova/Phonegap Plug-in
 
 
 Installation
 ------------
 
-The PayPal SDK Cordova Plugin adds support for the PayPal SDK on iOS and Android platforms. It uses the native PayPal Mobile SDK libraries, which you must also download. Cordova plugin management will set up all the required capabilities/frameworks for the project. The only bit left for you to do is to add necessary files, as described below.
+The PayPal SDK Cordova/Phonegap Plugin adds support for the PayPal SDK on iOS and Android platforms. It uses the native PayPal Mobile SDK libraries, which you must also download. Cordova plugin management will set up all the required capabilities/frameworks for the project. The only bit left for you to do is to add necessary files, as described below.
 
 
 1. Download the [PayPal iOS SDK](https://github.com/paypal/PayPal-iOS-SDK).
@@ -19,7 +19,7 @@ The PayPal SDK Cordova Plugin adds support for the PayPal SDK on iOS and Android
 
 Your app integration
 --------------------
-The PayPal SDK Cordova Plugin adds 2 JavaScript files to your project.
+The PayPal SDK Cordova/Phonegap Plugin adds 2 JavaScript files to your project.
 
 1. `cdv-plugin-paypal-mobile-sdk.js`: a wrapper around the native SDK. The `PayPalMobile` object is immediately available to use in your `.js` files.
 2. `paypal-mobile-js-helper.js`: a helper file which defines the `PayPalPayment`, `PayPalPaymentDetails` and `PayPalConfiguration` classes for use with `PayPalMobile`.
