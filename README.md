@@ -33,7 +33,7 @@ Documentation
 - For complete documentation regarding the PayPal SDK Cordova Plugin, please refer to the documentation for the underlying [PayPal Mobile SDK](https://developer.paypal.com/webapps/developer/docs/integration/mobile/mobile-sdk-overview/).
 
 
-Basic Example of the app (defined in index.js)
+Basic Example of the app (defined in `www/js/index.js`)
 ------------------------
 
 ```javascript
