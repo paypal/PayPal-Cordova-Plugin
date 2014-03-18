@@ -133,7 +133,7 @@ var app = {
     },
     onPayPalMobileInit : function() {
       // must be called
-      // use PayPalEnvrionmentNoNetwork mode to get look and feel of the flow
+      // use PayPalEnvironmentNoNetwork mode to get look and feel of the flow
       PayPalMobile.prepareToRender("PayPalEnvironmentNoNetwork", app.configuration(), app.onPrepareRender);
     },
     onUserCanceled : function(result) {
