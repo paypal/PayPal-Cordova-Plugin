@@ -33,8 +33,18 @@ Documentation
 - For complete documentation regarding the PayPal SDK Cordova Plugin, please refer to the documentation for the underlying [PayPal Mobile SDK](https://developer.paypal.com/webapps/developer/docs/integration/mobile/mobile-sdk-overview/).
 
 
-Basic Example of the app (defined in `www/js/index.js`)
+Basic Example of the app
 ------------------------
+
+In `index.html` please add the following to lines after ` <p class="event received">Device is Ready</p>`
+
+```javascript
+   <button id="buyNowBtn"> Buy Now !</button>
+   <button id="buyInFutureBtn"> Pay in Future !</button>
+```
+
+Here is the full example of `www/js/index.js`
+
 
 ```javascript
    
