@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PayPal Cordova Plugin</title>
+  </head>
+  <body>
+        <div class="app">
+            <h1>PayPal Cordova Plugin</h1>
+            <div id="deviceready" class="blink">
+                <p class="event listening">Connecting to Device</p>
+                <div class="event received">
+                  <p>Device is Ready</p>
+                  <button id="buyNowBtn"> Buy Now !</button>
+                  <button id="buyInFutureBtn"> Pay in Future !</button>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/paypal-mobile-js-helper.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript">
+            app.initialize();
+        </script>
+    </body>
+</html>
