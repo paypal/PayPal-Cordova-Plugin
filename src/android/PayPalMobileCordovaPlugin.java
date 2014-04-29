@@ -211,7 +211,7 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
 		BigDecimal shipping = object.has("shipping") ? new BigDecimal(object.getString("shipping")) : null;
 		BigDecimal tax = object.has("tax") ? new BigDecimal(object.getString("tax")) : null;
 		
-		PayPalPaymentDetails paymentDetails =  new PayPalPaymentDetails(subtotal, shipping, tax);
+		PayPalPaymentDetails paymentDetails =  new PayPalPaymentDetails(shipping, subtotal, tax);
 		return paymentDetails;	
 	}
 	
