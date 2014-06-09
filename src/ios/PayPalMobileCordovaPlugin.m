@@ -61,7 +61,7 @@
   NSString *environment = [command.arguments objectAtIndex:0];
   CDVPluginResult *pluginResult = nil;
   environment = [self parseEnvironment:environment];
-  if (!environment) {
+  if (environment) {
     NSString *applicaitonId = [PayPalMobile applicationCorrelationIDForEnvironment:environment];
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:applicaitonId];
   } else {
