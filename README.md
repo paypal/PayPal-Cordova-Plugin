@@ -1,7 +1,7 @@
 # PayPal SDK Cordova/Phonegap Plugin
 
 
-Disclaimer:
+Disclaimer
 -----------
 The intention for this plugin is to make it community driven. 
 We have created this version of the plugin to show how easy it is to use our native SDKs (iOS and Android) on the Cordova/Phonegap platforms.
