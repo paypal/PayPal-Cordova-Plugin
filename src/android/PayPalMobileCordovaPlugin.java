@@ -64,7 +64,7 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
 
 	// internal implementation 
 	private void version() {
-		this.callbackContext.success(Version.PRODUCT_VERSION);
+		this.callbackContext.success(BuildConfig.PRODUCT_VERSION);
 	}
 	
 	
