@@ -10,8 +10,6 @@
 - (void)sendErrorToDelegate:(NSString *)errorMessage;
 
 @property(nonatomic, strong, readwrite) CDVInvokedUrlCommand *command;
-@property(nonatomic, strong, readwrite) PayPalPaymentViewController *paymentController;
-@property(nonatomic, strong, readwrite) PayPalFuturePaymentViewController *futurePaymentController;
 @property(nonatomic, strong, readwrite) PayPalConfiguration *configuration;
 
 @end
@@ -113,8 +111,7 @@
   }
 
   self.command = command;
-  self.paymentController = controller;
-  [self.viewController presentModalViewController:controller animated:YES];
+  [self.viewController presentViewController:controller animated:YES completion:nil];
 }
 
 - (void)renderFuturePaymentUI:(CDVInvokedUrlCommand *)command {
@@ -125,8 +122,35 @@
   }
   
   self.command = command;
-  self.futurePaymentController = controller;
-  [self.viewController presentModalViewController:controller animated:YES];
+  [self.viewController presentViewController:controller animated:YES completion:nil];
+}
+
+- (void)renderProfileSharing:(CDVInvokedUrlCommand *)command {
+  if ([command.arguments count] != 1) {
+    [self sendErrorToDelegate:@"renderProfileSharing scopes object must be provided"];
+    return;
+  }
+
+  NSArray *jsArray = [command.arguments objectAtIndex:0];
+  if (![jsArray isKindOfClass:[NSArray class]]) {
+    [self sendErrorToDelegate:@"scopes must be a Array"];
+    return;
+  }
+
+  NSSet *scopes = [self getPayPalScopesSetFromJSArray:jsArray];
+  if (!scopes.count) {
+    [self sendErrorToDelegate:@"at least 1 scope must be provided"];
+    return;
+  }
+
+  PayPalProfileSharingViewController *controller = [[PayPalProfileSharingViewController alloc] initWithScopeValues:scopes configuration:self.configuration delegate:self];
+  if (!controller) {
+    [self sendErrorToDelegate:@"could not instantiate UI please check your arguments"];
+    return;
+  }
+
+  self.command = command;
+  [self.viewController presentViewController:controller animated:YES completion:nil];
 }
 
 #pragma mark - Cordova convenience helpers
@@ -179,36 +203,82 @@
   return configuration;
 }
 
-#pragma mark - PayPalPaymentDelegate implementaiton
+- (NSSet *)getPayPalScopesSetFromJSArray:(NSArray *)array {
+  // go through array and so simple matching, if we don't match allow mSDK to decide if the scope allowed
+  NSDictionary* knownScopes = @{
+    @"openid": kPayPalOAuth2ScopeOpenId,
+    @"profile": kPayPalOAuth2ScopeProfile,
+    @"address": kPayPalOAuth2ScopeAddress,
+    @"email": kPayPalOAuth2ScopeEmail,
+    @"phone": kPayPalOAuth2ScopePhone,
+    @"futurepayments": kPayPalOAuth2ScopeFuturePayments,
+    @"paypalattributes": kPayPalOAuth2ScopePayPalAttributes,
+  };
 
-- (void)payPalPaymentDidCancel:(PayPalPaymentViewController *)paymentViewController{
-  [self.viewController dismissModalViewControllerAnimated:YES];
-  [self sendErrorToDelegate:@"payment cancelled"];
+  NSMutableSet *scopeSet = [NSMutableSet set];
+  for (NSString *jsscope in array) {
+    if ([jsscope isKindOfClass:[NSString class]] && jsscope.length) {
+      NSString *scope = knownScopes[jsscope.lowercaseString];
+      if (!scope) {
+        scope = jsscope;
+      }
+      [scopeSet addObject:scope];
+    }
+  }
+  return scopeSet;
+}
+
+#pragma mark - PayPalPaymentDelegate implementation
+
+- (void)payPalPaymentDidCancel:(PayPalPaymentViewController *)paymentViewController {
+  [paymentViewController dismissViewControllerAnimated:YES completion:^{
+    [self sendErrorToDelegate:@"payment cancelled"];
+  }];
 }
 
 - (void)payPalPaymentViewController:(PayPalPaymentViewController *)paymentViewController didCompletePayment:(PayPalPayment *)completedPayment {
-  [self.viewController dismissModalViewControllerAnimated:YES];
-  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                                messageAsDictionary:completedPayment.confirmation];
+  [paymentViewController dismissViewControllerAnimated:YES completion:^{
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                  messageAsDictionary:completedPayment.confirmation];
+    
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
+  }];
   
-  [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
 }
   
   
-#pragma mark - PayPalFuturePaymentDelegate implementaiton
+#pragma mark - PayPalFuturePaymentDelegate implementation
   
 - (void)payPalFuturePaymentDidCancel:(PayPalFuturePaymentViewController *)futurePaymentViewController {
-  [self.viewController dismissModalViewControllerAnimated:YES];
-  [self sendErrorToDelegate:@"future payment cancelled"];
+  [futurePaymentViewController dismissViewControllerAnimated:YES completion:^{
+    [self sendErrorToDelegate:@"future payment cancelled"];
+  }];
 }
   
-- (void)payPalFuturePaymentViewController:(PayPalFuturePaymentViewController *)futurePaymentViewController didAuthorizeFuturePayment:(NSDictionary *)futurePaymentAuthorization
-  {
-    [self.viewController dismissModalViewControllerAnimated:YES];
+- (void)payPalFuturePaymentViewController:(PayPalFuturePaymentViewController *)futurePaymentViewController didAuthorizeFuturePayment:(NSDictionary *)futurePaymentAuthorization {
+  [futurePaymentViewController dismissViewControllerAnimated:YES completion:^{
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                                   messageAsDictionary:futurePaymentAuthorization];
     
     [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
-  }
+  }];
+}
+
+#pragma mark - PayPalProfileSharingDelegate implementation
+
+- (void)userDidCancelPayPalProfileSharingViewController:(PayPalProfileSharingViewController *)profileSharingViewController {
+  [profileSharingViewController dismissViewControllerAnimated:YES completion:^{
+    [self sendErrorToDelegate:@"profile sharing cancelled"];
+  }];
+}
+
+- (void)payPalProfileSharingViewController:(PayPalProfileSharingViewController *)profileSharingViewController userDidLogInWithAuthorization:(NSDictionary *)profileSharingAuthorization {
+  [profileSharingViewController dismissViewControllerAnimated:YES completion:^{
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                  messageAsDictionary:profileSharingAuthorization];
+    
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
+  }];
+}
 
 @end

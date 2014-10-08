@@ -109,6 +109,18 @@ PayPalMobile.prototype.renderFuturePaymentUI = function(completionCallback, canc
 };
 
 /**
+ * Please Read Docs on Profile Sharing at https://github.com/paypal/PayPal-iOS-SDK#profile-sharing
+ * 
+ * @param {Array} scopes: scopes Set of requested scope-values. Accepted scopes are: openid, profile, address, email, phone, futurepayments and paypalattributes
+ * See https://developer.paypal.com/docs/integration/direct/identity/attributes/ for more details
+ * @param {Function} completionCallback: a callback function accepting a js object with future payment authorization
+ * @param {Function} cancelCallback: a callback function accepting a reason string, called when the user canceled without agreement
+ */
+PayPalMobile.prototype.renderProfileSharingUI = function(scopes, completionCallback, cancelCallback) {
+  cordova.exec(completionCallback, cancelCallback, "PayPalMobile", "renderProfileSharing", [scopes]);
+};
+
+/**
  * Plugin setup boilerplate.
  */
 module.exports = new PayPalMobile();
