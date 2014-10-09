@@ -117,7 +117,7 @@ PayPalMobile.prototype.renderFuturePaymentUI = function(completionCallback, canc
  * @param {Function} cancelCallback: a callback function accepting a reason string, called when the user canceled without agreement
  */
 PayPalMobile.prototype.renderProfileSharingUI = function(scopes, completionCallback, cancelCallback) {
-  cordova.exec(completionCallback, cancelCallback, "PayPalMobile", "renderProfileSharing", [scopes]);
+  cordova.exec(completionCallback, cancelCallback, "PayPalMobile", "renderProfileSharingUI", [scopes]);
 };
 
 /**

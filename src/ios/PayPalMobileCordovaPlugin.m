@@ -125,7 +125,7 @@
   [self.viewController presentViewController:controller animated:YES completion:nil];
 }
 
-- (void)renderProfileSharing:(CDVInvokedUrlCommand *)command {
+- (void)renderProfileSharingUI:(CDVInvokedUrlCommand *)command {
   if ([command.arguments count] != 1) {
     [self sendErrorToDelegate:@"renderProfileSharing scopes object must be provided"];
     return;

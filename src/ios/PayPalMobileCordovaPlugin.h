@@ -18,6 +18,6 @@
 
 - (void)applicationCorrelationIDForEnvironment:(CDVInvokedUrlCommand *)command;
 - (void)renderFuturePaymentUI:(CDVInvokedUrlCommand *)command;
-- (void)renderProfileSharing:(CDVInvokedUrlCommand *)command;
+- (void)renderProfileSharingUI:(CDVInvokedUrlCommand *)command;
 
 @end
