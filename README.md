@@ -14,11 +14,11 @@ The PayPal SDK Cordova/Phonegap Plugin adds support for the PayPal SDK on iOS an
 
 
 1. Download the [PayPal iOS SDK](https://github.com/paypal/PayPal-iOS-SDK).
-2. Download the [PayPal Android SDK] (https://github.com/paypal/PayPal-Android-SDK).
+2. Download the [PayPal Android SDK](https://github.com/paypal/PayPal-Android-SDK).
 3. Follow the official [Cordova](https://cordova.apache.org) documentation to install command line tools and create a project.
 4. Run `cordova plugin add https://github.com/paypal/PayPal-Cordova-Plugin`.
 5. Run `cordova platform add ios` or/and `cordova platform add android`.
-6. For iOS, open the Xcode project in the `platforms/ios` folder and add the `PayPalMobile` folder from step 1.
+6. For iOS, open the Xcode project in the `platforms/ios` folder and add the `PayPalMobile` folder from step 1. Make sure to read https://github.com/paypal/PayPal-iOS-SDK#add-the-sdk-to-your-project in case of linking errors
 7. For Android, copy the `libs` folder from step 2 to the `libs` folder in `platforms/android`.
 8. Run `cordova build` to build the projects for all of the platforms.
 
@@ -116,13 +116,13 @@ var app = {
     onSuccesfulPayment : function(payment) {
       console.log("payment success: " + JSON.stringify(payment, null, 4));
     },
-    onFuturePaymentAuthorization : function(authorization) {
+    onAuthorizationCallback : function(authorization) {
       console.log("authorization: " + JSON.stringify(authorization, null, 4));
     },
     createPayment : function () {
       // for simplicity use predefined amount
-      var paymentDetails = new PayPalPaymentDetails("1.50", "0.40", "0.05");
-      var payment = new PayPalPayment("1.95", "USD", "Awesome Sauce", "Sale", paymentDetails);
+      var paymentDetails = new PayPalPaymentDetails("50.00", "0.00", "0.00");
+      var payment = new PayPalPayment("50.00", "SGD", "Awesome Sauce", "Sale", paymentDetails);
       return payment;
     },
     configuration : function () {
@@ -134,8 +134,10 @@ var app = {
       // buttons defined in index.html
       //  <button id="buyNowBtn"> Buy Now !</button>
       //  <button id="buyInFutureBtn"> Pay in Future !</button>
+      //  <button id="profileSharingBtn"> ProfileSharing !</button>
       var buyNowBtn = document.getElementById("buyNowBtn");
       var buyInFutureBtn = document.getElementById("buyInFutureBtn");
+      var profileSharingBtn = document.getElementById("profileSharingBtn");
 
       buyNowBtn.onclick = function(e) {
         // single payment
@@ -144,18 +146,25 @@ var app = {
 
       buyInFutureBtn.onclick = function(e) {
         // future payment
-        PayPalMobile.renderFuturePaymentUI(app.onFuturePaymentAuthorization, app.onUserCanceled);
+        PayPalMobile.renderFuturePaymentUI(app.onAuthorizationCallback, app.onUserCanceled);
+      };
+
+      profileSharingBtn.onclick = function(e) {
+        // profile sharing
+        PayPalMobile.renderProfileSharingUI(["profile", "email", "phone", "address", "futurepayments", "paypalattributes"], app.onAuthorizationCallback, app.onUserCanceled);
       };
     },
     onPayPalMobileInit : function() {
       // must be called
-      // use PayPalEnvironmentNoNetwork mode to get look and feel of the flow
-      PayPalMobile.prepareToRender("PayPalEnvironmentNoNetwork", app.configuration(), app.onPrepareRender);
+      // use PayPalEnvrionmentNoNetwork mode to get look and feel of the flow
+      PayPalMobile.prepareToRender("PayPalEnvironmentSandbox", app.configuration(), app.onPrepareRender);
     },
     onUserCanceled : function(result) {
       console.log(result);
     }
 };
+
+app.initialize();
 
 
 ```
