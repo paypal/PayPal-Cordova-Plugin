@@ -7,7 +7,7 @@
 #import <Cordova/CDV.h>
 #import "PayPalMobile.h"
 
-@interface PayPalMobileCordovaPlugin : CDVPlugin<PayPalPaymentDelegate, PayPalFuturePaymentDelegate>
+@interface PayPalMobileCordovaPlugin : CDVPlugin<PayPalPaymentDelegate, PayPalFuturePaymentDelegate, PayPalProfileSharingDelegate>
 
 - (void)version:(CDVInvokedUrlCommand *)command;
 
@@ -18,5 +18,6 @@
 
 - (void)applicationCorrelationIDForEnvironment:(CDVInvokedUrlCommand *)command;
 - (void)renderFuturePaymentUI:(CDVInvokedUrlCommand *)command;
+- (void)renderProfileSharingUI:(CDVInvokedUrlCommand *)command;
 
 @end
