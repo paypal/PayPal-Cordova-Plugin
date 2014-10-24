@@ -23,13 +23,18 @@ function PayPalPaymentDetails(subtotal, shipping, tax) {
  * @param {String} intent: Sale for an immediate payment or Auth
  *                 for payment authorization only, to be captured separately at a later time.
  * @param {PayPalPaymentDetails} details: PayPalPaymentDetails object (optional)
+ * @param {object} extra: Other properties for the payment, currently only invoiceNumber is implemented (optional)
  */
-function PayPalPayment(amount, currency, shortDescription, intent, details) {
+function PayPalPayment(amount, currency, shortDescription, intent, details, extra) {
   this.amount = amount;
   this.currency = currency;
   this.shortDescription = shortDescription;
   this.intent = intent;
   this.details = details;
+
+  if (extra && typeof extra === "object") {
+      this.invoiceNumber = extra.invoiceNumber;
+  }
 }
 
 
