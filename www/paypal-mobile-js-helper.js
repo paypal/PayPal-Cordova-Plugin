@@ -32,8 +32,8 @@ function PayPalPayment(amount, currency, shortDescription, intent, details, extr
   this.intent = intent;
   this.details = details;
 
-  if (extra && typeof extra === "object") {
-      this.invoiceNumber = extra.invoiceNumber;
+  if (extra) {
+      this.invoiceNumber = String(extra.invoiceNumber);
   }
 }
 
