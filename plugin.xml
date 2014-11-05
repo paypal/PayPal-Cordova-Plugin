@@ -4,7 +4,7 @@
     xmlns:rim="http://www.blackberry.com/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.paypal.cordova.mobilesdk"
-    version="2.1.0">
+    version="2.2.0">
     <name>PayPalMobile</name>
     <description>This plugin allows to add to add PayPal Payments to your application using PayPal Mobile SDK Native library</description>
     <license>BSD License, see LICENSE.md for details</license>
@@ -26,7 +26,7 @@
                 <param name="ios-package" value="PayPalMobileCordovaPlugin" onload="true" />
             </feature>
         </config-file>
-        
+
         <header-file src="src/ios/PayPalMobileCordovaPlugin.h" />
         <source-file src="src/ios/PayPalMobileCordovaPlugin.m" />
 
@@ -36,7 +36,7 @@
         <framework src="MessageUI.framework" />
         <framework src="libc++.dylib" />
         <framework src="CoreLocation.framework" weak="true" />
-        
+
     </platform>
 
     <!-- android -->
@@ -54,7 +54,7 @@
             <!-- for card.io card scanning -->
             <uses-permission android:name="android.permission.CAMERA" />
             <uses-permission android:name="android.permission.VIBRATE" />
-            
+
             <uses-feature android:name="android.hardware.camera" android:required="false" />
             <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 
