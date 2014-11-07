@@ -32,6 +32,14 @@ function PayPalPayment(amount, currency, shortDescription, intent, details) {
   this.details = details;
 }
 
+/**
+ * Sets the PayPalPayment invoiceNumber property.
+ * @param {String} invoiceNumber: The invoiceNumber for the payment.
+ */
+PayPalPayment.prototype.invoiceNumber = function(invoiceNumber) {
+  this.invoiceNumber = String(invoiceNumber);
+};
+
 
 /**
  * You use a PayPalConfiguration object to configure many aspects of how the SDK behaves.
