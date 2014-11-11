@@ -41,7 +41,7 @@ The PayPal SDK Cordova/Phonegap Plugin adds 2 JavaScript files to your project.
 Documentation
 -------------
 - All calls to PayPalMobile are asynchronous
-- See `cdv-plugin-paypal-mobile-sdk.js` and `cdv-plugin-paypal-mobile-sdk.js` for details and functionality available.
+- See `cdv-plugin-paypal-mobile-sdk.js` and `paypal-mobile-js-helper.js` for details and functionality available.
 - For complete documentation regarding the PayPal SDK Cordova Plugin, please refer to the documentation for the underlying [PayPal Mobile SDK](https://developer.paypal.com/webapps/developer/docs/integration/mobile/mobile-sdk-overview/).
 - Not all features available in native sdks have been implemented.
 
