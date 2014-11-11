@@ -143,7 +143,11 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
         String amount = paymentObject.getString("amount");
         String currency = paymentObject.getString("currency");
         String shortDescription = paymentObject.getString("shortDescription");
-        String invoiceNumber = paymentObject.getString("invoiceNumber");
+        // invoice number is optional
+        String invoiceNumber = null;
+        if (paymentObject.has("invoiceNumber") && !paymentObject.isNull("invoiceNumber")) {
+            invoiceNumber = paymentObject.getString("invoiceNumber");
+        }
         String paymentIntent = ("sale".equalsIgnoreCase(paymentObject.getString("intent"))) ? PayPalPayment.PAYMENT_INTENT_SALE : PayPalPayment.PAYMENT_INTENT_AUTHORIZE;
         JSONObject paymentDetails = paymentObject.has("details") ? paymentObject.getJSONObject("details") : null;
 
