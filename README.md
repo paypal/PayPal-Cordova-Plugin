@@ -35,7 +35,7 @@ The PayPal SDK Cordova/Phonegap Plugin adds 2 JavaScript files to your project.
 
 1. `cdv-plugin-paypal-mobile-sdk.js`: a wrapper around the native SDK. The `PayPalMobile` object is immediately available to use in your `.js` files.
 2. `paypal-mobile-js-helper.js`: a helper file which defines the `PayPalPayment`, `PayPalPaymentDetails` and `PayPalConfiguration` classes for use with `PayPalMobile`.
-3. You must add `<script type="text/javascript" src="js/cdv-plugin-paypal-mobile-sdk.js"/>` and `<script type="text/javascript" src="js/paypal-mobile-js-helper.js"/>` to your `MyShop/www/index.html` file, after the `cordova.js` import.
+3. You must add `<script type="text/javascript" src="js/paypal-mobile-js-helper.js"/>` to your `MyShop/www/index.html` file, after the `cordova.js` import.
 
 
 Documentation
