@@ -14,9 +14,7 @@ The PayPal SDK Cordova/Phonegap Plugin adds support for the PayPal SDK on iOS an
 
 
 1. Follow the official [Cordova](https://cordova.apache.org) documentation to install command line tools or [Phonegap](http://phonegap.com/install/).
-2. Download the [PayPal iOS SDK](https://github.com/paypal/PayPal-iOS-SDK).
-3. Download the [PayPal Android SDK](https://github.com/paypal/PayPal-Android-SDK).
-4. Create project, add plugin and platforms:
+2. Create project, add plugin and platforms:
 ```bash
    $ cordova create MyShop com.mycompany.myshop "MyShop"
    $ cd MyShop
@@ -24,9 +22,8 @@ The PayPal SDK Cordova/Phonegap Plugin adds support for the PayPal SDK on iOS an
    $ cordova platform add ios
    $ cordova platform add android
 ``` 
-5. For iOS, open the Xcode project in the `platforms/ios` folder and add the `PayPalMobile` folder from step 1. Make sure to read https://github.com/paypal/PayPal-iOS-SDK#add-the-sdk-to-your-project in case of linking errors
-6. For Android, copy the `libs` folder from step 2 to the `libs` folder in `MyShop/platforms/android`.
-7. Run `cordova build` to build the projects for all of the platforms.
+3. Follow Your app integration section below.
+4. Run `cordova build` to build the projects for all of the platforms.
 
 
 Your app integration
@@ -40,9 +37,9 @@ The PayPal SDK Cordova/Phonegap Plugin adds 2 JavaScript files to your project.
 
 Documentation
 -------------
-- All calls to PayPalMobile are asynchronous
+- All calls to PayPalMobile are asynchronous.
 - See `cdv-plugin-paypal-mobile-sdk.js` and `paypal-mobile-js-helper.js` for details and functionality available.
-- For complete documentation regarding the PayPal SDK Cordova Plugin, please refer to the documentation for the underlying [PayPal Mobile SDK](https://developer.paypal.com/webapps/developer/docs/integration/mobile/mobile-sdk-overview/).
+- Plugin fully depends on the native PayPal SDKs for iOS and Android, please refer to the documentation for the underlying [PayPal Mobile SDK](https://developer.paypal.com/webapps/developer/docs/integration/mobile/mobile-sdk-overview/).
 - Not all features available in native sdks have been implemented.
 
 
@@ -171,4 +168,4 @@ Basic Example of the app
    
    app.initialize();
    ```
-3. execute `cordova run ios` or `cordova run android` to install and run your sample code.
+3. execute `cordova run ios` or `cordova run android` to build and run your sample code.
