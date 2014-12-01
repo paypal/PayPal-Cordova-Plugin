@@ -24,8 +24,8 @@ The PayPal SDK Cordova/Phonegap Plugin adds support for the PayPal SDK on iOS an
    $ cordova platform add ios
    $ cordova platform add android
 ``` 
-5. For iOS, open the Xcode project in the `platforms/ios` folder and add the `PayPalMobile` folder from step 1. Make sure to read https://github.com/paypal/PayPal-iOS-SDK#add-the-sdk-to-your-project in case of linking errors
-6. For Android, copy the `libs` folder from step 2 to the `libs` folder in `MyShop/platforms/android`.
+5. For iOS, open the Xcode project in the `platforms/ios` folder and add the `PayPalMobile` folder from step 2. Make sure to read https://github.com/paypal/PayPal-iOS-SDK#add-the-sdk-to-your-project in case of linking errors
+6. For Android, copy the `libs` folder from step 3 to the `libs` folder in `MyShop/platforms/android`.
 7. Run `cordova build` to build the projects for all of the platforms.
 
 
