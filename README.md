@@ -59,6 +59,8 @@ Documentation
 Basic Example of the app
 ------------------------
 
+1. A complete example code can be checked from here https://github.com/romk1n/MyCordovaShop
+
 1. In `MyShop/www/index.html` add the following to lines after `<p class="event received">Device is Ready</p>`:
    ```javascript
       <button id="buyNowBtn"> Buy Now !</button>
