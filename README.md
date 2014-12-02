@@ -23,6 +23,8 @@ The PayPal SDK Cordova/Phonegap Plugin adds support for the PayPal SDK on iOS an
    $ cordova plugin add https://github.com/paypal/PayPal-Cordova-Plugin
    $ cordova platform add ios
    $ cordova platform add android
+   # optional for console.log etc
+   $ cordova plugin add org.apache.cordova.console
 ``` 
 5. For iOS, open the Xcode project in the `platforms/ios` folder and add the `PayPalMobile` folder from step 2. Make sure to read https://github.com/paypal/PayPal-iOS-SDK#add-the-sdk-to-your-project in case of linking errors
 6. For Android, copy the `libs` folder from step 3 to the `libs` folder in `MyShop/platforms/android`.
@@ -35,7 +37,7 @@ The PayPal SDK Cordova/Phonegap Plugin adds 2 JavaScript files to your project.
 
 1. `cdv-plugin-paypal-mobile-sdk.js`: a wrapper around the native SDK. The `PayPalMobile` object is immediately available to use in your `.js` files.
 2. `paypal-mobile-js-helper.js`: a helper file which defines the `PayPalPayment`, `PayPalPaymentDetails` and `PayPalConfiguration` classes for use with `PayPalMobile`.
-3. You must add `<script type="text/javascript" src="js/paypal-mobile-js-helper.js"/>` to your `MyShop/www/index.html` file, after the `cordova.js` import.
+3. You must add `<script type="text/javascript" src="js/paypal-mobile-js-helper.js"></script>` to your `MyShop/www/index.html` file, after the `cordova.js` import.
 
 
 Documentation
@@ -161,7 +163,7 @@ Basic Example of the app
        },
        onPayPalMobileInit : function() {
          // must be called
-         // use PayPalEnvrionmentNoNetwork mode to get look and feel of the flow
+         // use PayPalEnvironmentNoNetwork mode to get look and feel of the flow
          PayPalMobile.prepareToRender("PayPalEnvironmentSandbox", app.configuration(), app.onPrepareRender);
        },
        onUserCanceled : function(result) {
