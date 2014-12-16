@@ -21,6 +21,8 @@ The PayPal SDK Cordova/Phonegap Plugin adds support for the PayPal SDK on iOS an
    $ cordova plugin add https://github.com/paypal/PayPal-Cordova-Plugin
    $ cordova platform add ios
    $ cordova platform add android
+   # optional for console.log etc
+   $ cordova plugin add org.apache.cordova.console
 ``` 
 3. Follow Your app integration section below.
 4. Run `cordova build` to build the projects for all of the platforms.
@@ -32,19 +34,25 @@ The PayPal SDK Cordova/Phonegap Plugin adds 2 JavaScript files to your project.
 
 1. `cdv-plugin-paypal-mobile-sdk.js`: a wrapper around the native SDK. The `PayPalMobile` object is immediately available to use in your `.js` files.
 2. `paypal-mobile-js-helper.js`: a helper file which defines the `PayPalPayment`, `PayPalPaymentDetails` and `PayPalConfiguration` classes for use with `PayPalMobile`.
-3. You must add `<script type="text/javascript" src="js/paypal-mobile-js-helper.js"/>` to your `MyShop/www/index.html` file, after the `cordova.js` import.
+3. You must add 
+```javascript
+   <script type="text/javascript" src="js/paypal-mobile-js-helper.js"></script>
+```
+   to your `MyShop/www/index.html` file, _after_ the `cordova.js` import.
 
 
 Documentation
 -------------
 - All calls to PayPalMobile are asynchronous.
 - See `cdv-plugin-paypal-mobile-sdk.js` and `paypal-mobile-js-helper.js` for details and functionality available.
-- Plugin fully depends on the native PayPal SDKs for iOS and Android, please refer to the documentation for the underlying [PayPal Mobile SDK](https://developer.paypal.com/webapps/developer/docs/integration/mobile/mobile-sdk-overview/).
+- For complete documentation regarding the PayPal SDK Cordova Plugin, please refer to the documentation for the underlying [PayPal Mobile SDK](https://developer.paypal.com/webapps/developer/docs/integration/mobile/mobile-sdk-overview/).
 - Not all features available in native sdks have been implemented.
 
 
 Basic Example of the app
 ------------------------
+
+1. A complete example code can be checked from here https://github.com/romk1n/MyCordovaShop
 
 1. In `MyShop/www/index.html` add the following to lines after `<p class="event received">Device is Ready</p>`:
    ```javascript
@@ -158,7 +166,7 @@ Basic Example of the app
        },
        onPayPalMobileInit : function() {
          // must be called
-         // use PayPalEnvrionmentNoNetwork mode to get look and feel of the flow
+         // use PayPalEnvironmentNoNetwork mode to get look and feel of the flow
          PayPalMobile.prepareToRender("PayPalEnvironmentSandbox", app.configuration(), app.onPrepareRender);
        },
        onUserCanceled : function(result) {
@@ -168,4 +176,4 @@ Basic Example of the app
    
    app.initialize();
    ```
-3. execute `cordova run ios` or `cordova run android` to build and run your sample code.
+3. execute `cordova run ios` or `cordova run android` to install and run your sample code.
