@@ -17,6 +17,7 @@
 - (void)renderSinglePaymentUI:(CDVInvokedUrlCommand *)command;
 
 - (void)applicationCorrelationIDForEnvironment:(CDVInvokedUrlCommand *)command;
+- (void)clientMetadataID:(CDVInvokedUrlCommand *)command;
 - (void)renderFuturePaymentUI:(CDVInvokedUrlCommand *)command;
 - (void)renderProfileSharingUI:(CDVInvokedUrlCommand *)command;
 

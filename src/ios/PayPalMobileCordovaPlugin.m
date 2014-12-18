@@ -56,16 +56,12 @@
 }
 
 - (void)applicationCorrelationIDForEnvironment:(CDVInvokedUrlCommand *)command {
-  NSString *environment = [command.arguments objectAtIndex:0];
-  CDVPluginResult *pluginResult = nil;
-  environment = [self parseEnvironment:environment];
-  if (environment) {
-    NSString *applicaitonId = [PayPalMobile applicationCorrelationIDForEnvironment:environment];
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:applicaitonId];
-  } else {
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"The provided environment is not supported"];
-  }
+  [self clientMetadataID:command];
+}
 
+- (void)clientMetadataID:(CDVInvokedUrlCommand *)command {
+  NSString *clientMetadataID = [PayPalMobile clientMetadataID];
+  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:clientMetadataID];
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 

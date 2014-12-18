@@ -4,9 +4,10 @@
     xmlns:rim="http://www.blackberry.com/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.paypal.cordova.mobilesdk"
-    version="2.2.1">
+    version="3.0.0">
     <name>PayPalMobile</name>
     <description>This plugin allows to add to add PayPal Payments to your application using PayPal Mobile SDK Native library</description>
+    <keywords>paypal, sdk, payments</keywords>
     <license>BSD License, see LICENSE.md for details</license>
     <engines>
             <engine name="cordova" version="&gt;=3.0.0" />
@@ -30,12 +31,32 @@
         <header-file src="src/ios/PayPalMobileCordovaPlugin.h" />
         <source-file src="src/ios/PayPalMobileCordovaPlugin.m" />
 
+        <header-file src="src/ios/PayPalMobile/PayPalConfiguration.h" />
+        <header-file src="src/ios/PayPalMobile/PayPalFuturePaymentViewController.h" />
+        <header-file src="src/ios/PayPalMobile/PayPalMobile.h" />
+        <header-file src="src/ios/PayPalMobile/PayPalOAuthScopes.h" />
+        <header-file src="src/ios/PayPalMobile/PayPalPayment.h" />
+        <header-file src="src/ios/PayPalMobile/PayPalPaymentViewController.h" />
+        <header-file src="src/ios/PayPalMobile/PayPalProfileSharingViewController.h" />
+
+        <source-file src="src/ios/PayPalMobile/libPayPalMobile.a" framework="true" />
+
+        
         <framework src="AudioToolbox.framework" />
         <framework src="AVFoundation.framework" />
-        <framework src="SystemConfiguration.framework" />
-        <framework src="MessageUI.framework" />
-        <framework src="libc++.dylib" />
+        <framework src="CFNetwork.framework" />
         <framework src="CoreLocation.framework" weak="true" />
+        <framework src="CoreMedia.framework" weak="true" />
+        <framework src="MessageUI.framework" />
+        <framework src="OpenGLES.framework" />
+        <framework src="MobileCoreServices.framework" />
+        <framework src="Security.framework" />
+        <framework src="SystemConfiguration.framework" />
+        <framework src="QuartzCore.framework"/>
+        
+
+        <framework src="libc++.dylib" />
+        <framework src="libPayPalMobile.a" />
 
     </platform>
 
@@ -49,6 +70,11 @@
         </config-file>
 
         <source-file src="src/android/PayPalMobileCordovaPlugin.java" target-dir="src/com/paypal/cordova/sdk" />
+        <source-file src="src/android/libs/PayPalAndroidSDK-2.8.3.jar" target-dir="libs" />
+        <source-file src="src/android/libs/armeabi" target-dir="libs" />
+        <source-file src="src/android/libs/armeabi-v7a" target-dir="libs" />
+        <source-file src="src/android/libs/mips" target-dir="libs" />
+        <source-file src="src/android/libs/x86" target-dir="libs" />
 
         <config-file target="AndroidManifest.xml" parent="/manifest">
             <!-- for card.io card scanning -->
