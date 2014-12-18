@@ -79,6 +79,7 @@ PayPalMobile.prototype.renderSinglePaymentUI = function(payment, completionCallb
 
 
 /**
+ * @deprecated
  * Once a user has consented to future payments, when the user subsequently initiates a PayPal payment
  * from their device to be completed by your server, PayPal uses a Correlation ID to verify that the
  * payment is originating from a valid, user-consented device+application.
@@ -96,6 +97,25 @@ PayPalMobile.prototype.applicationCorrelationIDForEnvironment = function(environ
   };
 
   cordova.exec(completionCallback, failureCallback, "PayPalMobile", "applicationCorrelationIDForEnvironment", [environment]);
+};
+
+/**
+ * Once a user has consented to future payments, when the user subsequently initiates a PayPal payment
+ * from their device to be completed by your server, PayPal uses a Correlation ID to verify that the
+ * payment is originating from a valid, user-consented device+application.
+ * This helps reduce fraud and decrease declines.
+ * This method MUST be called prior to initiating a pre-consented payment (a "future payment") from a mobile device.
+ * Pass the result to your server, to include in the payment request sent to PayPal.
+ * Do not otherwise cache or store this value.
+ *
+ * @param {Function} callback: clientMetadataID Your server will send this to PayPal in a 'PayPal-Client-Metadata-Id' header.
+ */
+PayPalMobile.prototype.clientMetadataID = function(completionCallback) {
+  var failureCallback = function(message) {
+    console.log("Could not perform clientMetadataID " + message);
+  };
+
+  cordova.exec(completionCallback, failureCallback, "PayPalMobile", "clientMetadataID", []);
 };
 
 /**

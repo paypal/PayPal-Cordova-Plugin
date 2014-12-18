@@ -46,7 +46,9 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
         } else if (action.equals("prepareToRender")) {
             this.prepareToRender(args);
         } else if (action.equals("applicationCorrelationIDForEnvironment")) {
-            this.applicationCorrelationIDForEnvironment(args);
+            this.clientMetadataID(args);
+        } else if (action.equals("clientMetadataID")) {
+            this.clientMetadataID(args);
         } else if (action.equals("renderSinglePaymentUI")) {
             this.renderSinglePaymentUI(args);
         } else if (action.equals("renderFuturePaymentUI")) {
@@ -112,10 +114,10 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
 
     }
 
-    private void applicationCorrelationIDForEnvironment(JSONArray args) throws JSONException {
+    private void clientMetadataID(JSONArray args) throws JSONException {
         // Environment not used on android
         //String env = args.getString(0);
-        String correlationId = PayPalConfiguration.getApplicationCorrelationId(this.cordova.getActivity());
+        String correlationId = PayPalConfiguration.getClientMetadataId(this.cordova.getActivity());
         this.callbackContext.success(correlationId);
     }
 
