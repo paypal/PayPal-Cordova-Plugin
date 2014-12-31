@@ -48,11 +48,13 @@
     
     NSString *environmentToUse = [self parseEnvironment:environment];
     if (environmentToUse) {
-      // do preconnect
-      [PayPalMobile preconnectWithEnvironment:environmentToUse];
       // save configuration
       PayPalConfiguration *configuration = [self getPayPalConfigurationFromDictionary:[command.arguments objectAtIndex:1]];
       self.configuration = configuration;
+      // do preconnect
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [PayPalMobile preconnectWithEnvironment:environmentToUse];
+      });
     } else {
       pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"The provided environment is not supported"];
     }
@@ -62,9 +64,7 @@
 }
 
 - (void)applicationCorrelationIDForEnvironment:(CDVInvokedUrlCommand *)command {
-  [self.commandDelegate runInBackground:^{
-    [self clientMetadataID:command];
-  }];
+  [self clientMetadataID:command];
 }
 
 - (void)clientMetadataID:(CDVInvokedUrlCommand *)command {
@@ -77,107 +77,113 @@
 
 - (void)renderSinglePaymentUI:(CDVInvokedUrlCommand *)command {
   self.command = command;
-  
-  // check number and type of arguments
-  if ([command.arguments count] != 1) {
-    [self sendErrorToDelegate:@"renderSinglePaymentUI payment object must be provided"];
-    return;
-  }
-  
-  NSDictionary *payment = [command.arguments objectAtIndex:0];
-  if (![payment isKindOfClass:[NSDictionary class]]) {
-    [self sendErrorToDelegate:@"payment must be a PayPalPayment object"];
-    return;
-  }
-  
-  // get the values
-  NSString *amount = payment[@"amount"];
-  NSString *currency = payment[@"currency"];
-  NSString *shortDescription = payment[@"shortDescription"];
-  NSString *intentStr = [payment[@"intent"] lowercaseString];
-  NSString *invoiceNumber = payment[@"invoiceNumber"];
-  NSString *custom = payment[@"custom"];
-  NSString *softDescriptor = payment[@"softDescriptor"];
-  NSString *bnCode = payment[@"bnCode"];
-  NSArray *items = payment[@"items"];
-  
-  PayPalPaymentIntent intent;
-  if ([intentStr isEqualToString:@"order"]) {
-    intent = PayPalPaymentIntentOrder;
-  } else if ([intentStr isEqualToString:@"sale"]) {
-    intent = PayPalPaymentIntentSale;
-  } else {
-    intent = PayPalPaymentIntentAuthorize;
-  }
-  
-  // create payment
-  PayPalPayment *ppPayment = [PayPalPayment paymentWithAmount:[NSDecimalNumber decimalNumberWithString:amount]
-                                                 currencyCode:currency
-                                             shortDescription:shortDescription
-                                                       intent:intent];
-  ppPayment.invoiceNumber = invoiceNumber;
-  ppPayment.custom = custom;
-  ppPayment.softDescriptor = softDescriptor;
-  ppPayment.bnCode = bnCode;
-  ppPayment.items = [self getPayPalItemsFromJSArray:items];
-  
-  ppPayment.paymentDetails = [self getPaymentDetailsFromDictionary:payment[@"details"]];
-  if (!ppPayment.processable) {
-    [self sendErrorToDelegate:@"payment not processable"];
-    return;
-  }
-  
-  
-  PayPalPaymentViewController *controller = [[PayPalPaymentViewController alloc] initWithPayment:ppPayment
-                                                                                   configuration:self.configuration
-                                                                                        delegate:self];
-  if (!controller) {
-    [self sendErrorToDelegate:@"could not instantiate UI please check your arguments"];
-    return;
-  }
-  
-  self.command = command;
-  [self.viewController presentViewController:controller animated:YES completion:nil];
-  
+
+  [self.commandDelegate runInBackground:^{
+    
+    // check number and type of arguments
+    if ([command.arguments count] != 1) {
+      [self sendErrorToDelegate:@"renderSinglePaymentUI payment object must be provided"];
+      return;
+    }
+    
+    NSDictionary *payment = [command.arguments objectAtIndex:0];
+    if (![payment isKindOfClass:[NSDictionary class]]) {
+      [self sendErrorToDelegate:@"payment must be a PayPalPayment object"];
+      return;
+    }
+    
+    // get the values
+    NSString *amount = payment[@"amount"];
+    NSString *currency = payment[@"currency"];
+    NSString *shortDescription = payment[@"shortDescription"];
+    NSString *intentStr = [payment[@"intent"] lowercaseString];
+    NSString *invoiceNumber = payment[@"invoiceNumber"];
+    NSString *custom = payment[@"custom"];
+    NSString *softDescriptor = payment[@"softDescriptor"];
+    NSString *bnCode = payment[@"bnCode"];
+    NSArray *items = payment[@"items"];
+    
+    PayPalPaymentIntent intent;
+    if ([intentStr isEqualToString:@"order"]) {
+      intent = PayPalPaymentIntentOrder;
+    } else if ([intentStr isEqualToString:@"sale"]) {
+      intent = PayPalPaymentIntentSale;
+    } else {
+      intent = PayPalPaymentIntentAuthorize;
+    }
+    
+    // create payment
+    PayPalPayment *ppPayment = [PayPalPayment paymentWithAmount:[NSDecimalNumber decimalNumberWithString:amount]
+                                                   currencyCode:currency
+                                               shortDescription:shortDescription
+                                                         intent:intent];
+    ppPayment.invoiceNumber = invoiceNumber;
+    ppPayment.custom = custom;
+    ppPayment.softDescriptor = softDescriptor;
+    ppPayment.bnCode = bnCode;
+    ppPayment.items = [self getPayPalItemsFromJSArray:items];
+    
+    ppPayment.paymentDetails = [self getPaymentDetailsFromDictionary:payment[@"details"]];
+    if (!ppPayment.processable) {
+      [self sendErrorToDelegate:@"payment not processable"];
+      return;
+    }
+    
+    
+    PayPalPaymentViewController *controller = [[PayPalPaymentViewController alloc] initWithPayment:ppPayment
+                                                                                     configuration:self.configuration
+                                                                                          delegate:self];
+    if (!controller) {
+      [self sendErrorToDelegate:@"could not instantiate UI please check your arguments"];
+      return;
+    }
+    
+    self.command = command;
+    [self.viewController presentViewController:controller animated:YES completion:nil];
+  }];
 }
 
 - (void)renderFuturePaymentUI:(CDVInvokedUrlCommand *)command {
   self.command = command;
-  PayPalFuturePaymentViewController *controller = [[PayPalFuturePaymentViewController alloc] initWithConfiguration:self.configuration delegate:self];
-  if (!controller) {
-    [self sendErrorToDelegate:@"could not instantiate UI please check your arguments"];
-    return;
-  }
+  [self.commandDelegate runInBackground:^{
+    PayPalFuturePaymentViewController *controller = [[PayPalFuturePaymentViewController alloc] initWithConfiguration:self.configuration delegate:self];
+    if (!controller) {
+      [self sendErrorToDelegate:@"could not instantiate UI please check your arguments"];
+      return;
+    }
 
-  [self.viewController presentViewController:controller animated:YES completion:nil];
+    [self.viewController presentViewController:controller animated:YES completion:nil];
+  }];
 }
 
 - (void)renderProfileSharingUI:(CDVInvokedUrlCommand *)command {
   self.command = command;
-  if ([command.arguments count] != 1) {
-    [self sendErrorToDelegate:@"renderProfileSharing scopes object must be provided"];
-    return;
-  }
+  [self.commandDelegate runInBackground:^{
+    if ([command.arguments count] != 1) {
+      [self sendErrorToDelegate:@"renderProfileSharing scopes object must be provided"];
+      return;
+    }
 
-  NSArray *jsArray = [command.arguments objectAtIndex:0];
-  if (![jsArray isKindOfClass:[NSArray class]]) {
-    [self sendErrorToDelegate:@"scopes must be a Array"];
-    return;
-  }
+    NSArray *jsArray = [command.arguments objectAtIndex:0];
+    if (![jsArray isKindOfClass:[NSArray class]]) {
+      [self sendErrorToDelegate:@"scopes must be a Array"];
+      return;
+    }
 
-  NSSet *scopes = [self getPayPalScopesSetFromJSArray:jsArray];
-  if (!scopes.count) {
-    [self sendErrorToDelegate:@"at least 1 scope must be provided"];
-    return;
-  }
+    NSSet *scopes = [self getPayPalScopesSetFromJSArray:jsArray];
+    if (!scopes.count) {
+      [self sendErrorToDelegate:@"at least 1 scope must be provided"];
+      return;
+    }
 
-  PayPalProfileSharingViewController *controller = [[PayPalProfileSharingViewController alloc] initWithScopeValues:scopes configuration:self.configuration delegate:self];
-  if (!controller) {
-    [self sendErrorToDelegate:@"could not instantiate UI please check your arguments"];
-    return;
-  }
+    PayPalProfileSharingViewController *controller = [[PayPalProfileSharingViewController alloc] initWithScopeValues:scopes configuration:self.configuration delegate:self];
+    if (!controller) {
+      [self sendErrorToDelegate:@"could not instantiate UI please check your arguments"];
+      return;
+    }
 
-  [self.viewController presentViewController:controller animated:YES completion:nil];
+    [self.viewController presentViewController:controller animated:YES completion:nil];
+  }];
 }
 
 #pragma mark - Cordova convenience helpers
