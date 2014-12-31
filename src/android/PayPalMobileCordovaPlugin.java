@@ -145,24 +145,69 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
         String amount = paymentObject.getString("amount");
         String currency = paymentObject.getString("currency");
         String shortDescription = paymentObject.getString("shortDescription");
+        String intentString = paymentObject.getString("intent");
+
+        String paymentIntent = null;
+        if ("sale".equalsIgnoreCase(intentString)) {
+            paymentIntent = PayPalPayment.PAYMENT_INTENT_SALE;
+        } else if ("order".equalsIgnoreCase(intentString)) {
+            paymentIntent = PayPalPayment.PAYMENT_INTENT_ORDER;
+        } else {
+            paymentIntent = PayPalPayment.PAYMENT_INTENT_AUTHORIZE;
+        }
+
         // invoice number is optional
         String invoiceNumber = null;
         if (paymentObject.has("invoiceNumber") && !paymentObject.isNull("invoiceNumber")) {
             invoiceNumber = paymentObject.getString("invoiceNumber");
         }
-        String paymentIntent = ("sale".equalsIgnoreCase(paymentObject.getString("intent"))) ? PayPalPayment.PAYMENT_INTENT_SALE : PayPalPayment.PAYMENT_INTENT_AUTHORIZE;
+
+        // optional
+        String custom = null;
+        if (paymentObject.has("custom") && !paymentObject.isNull("custom")) {
+            custom = paymentObject.getString("custom");
+        }
+
+        // optional
+        String softDescriptor = null;
+        if (paymentObject.has("softDescriptor") && !paymentObject.isNull("softDescriptor")) {
+            softDescriptor = paymentObject.getString("softDescriptor");
+        }
+
+        // optional
+        String bnCode = null;
+        if (paymentObject.has("bnCode") && !paymentObject.isNull("bnCode")) {
+            bnCode = paymentObject.getString("bnCode");
+        }        
+
+        // optional
         JSONObject paymentDetails = paymentObject.has("details") ? paymentObject.getJSONObject("details") : null;
+
+        // optional
+        JSONArray items = paymentObject.has("items") ? paymentObject.getJSONArray("items") : null;
 
         // create payment object
         PayPalPayment payment = new PayPalPayment(new BigDecimal(amount),
                 currency, shortDescription, paymentIntent);
+
+        // setup
         payment.invoiceNumber(invoiceNumber);
+        payment.custom(custom);
+        payment.softDescriptor(softDescriptor);
+        payment.bnCode(bnCode);
         payment.paymentDetails(this.parsePaymentDetails(paymentDetails));
+        payment.items(this.parsePaymentItems(items));
 
-
-        Intent intent = new Intent(this.activity, PaymentActivity.class);
-        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
-        this.cordova.startActivityForResult(this, intent, REQUEST_SINGLE_PAYMENT);
+        if (payment.isProcessable()) {
+            Intent intent = new Intent(this.activity, PaymentActivity.class);
+            intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+            this.cordova.startActivityForResult(this, intent, REQUEST_SINGLE_PAYMENT);
+        } else {
+            this.callbackContext
+                    .error("payment not processable");
+            return;
+        }
+        
     }
 
 
@@ -267,6 +312,28 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
 
         PayPalPaymentDetails paymentDetails =  new PayPalPaymentDetails(shipping, subtotal, tax);
         return paymentDetails;
+    }
+
+    private PayPalItem[] parsePaymentItems(JSONArray array) throws JSONException {
+        if (array == null || 0 == array.length()) {
+            return null;
+        }
+
+        PayPalItem[] items = new PayPalItem[array.length()];
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject json = array.getJSONObject(i);
+
+            String name = json.getString("name");
+            int quantity = json.getInt("quantity");
+            BigDecimal price = new BigDecimal(json.getString("price"));
+            String currency = json.getString("currency");
+            String sku = json.getString("sku");
+            PayPalItem item = new PayPalItem(name, quantity, price, currency, sku);
+            
+            items[i] = item;
+        }
+
+        return items;
     }
 
     // onActivityResult

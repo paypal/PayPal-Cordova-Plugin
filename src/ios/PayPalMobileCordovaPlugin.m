@@ -20,110 +20,140 @@
 @implementation PayPalMobileCordovaPlugin
 
 - (void)version:(CDVInvokedUrlCommand *)command {
-  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                                    messageAsString:[PayPalMobile libraryVersion]];
-
-  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+  [self.commandDelegate runInBackground:^{
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                      messageAsString:[PayPalMobile libraryVersion]];
+    
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+  }];
 }
 
 - (void)init:(CDVInvokedUrlCommand *)command {
-  NSDictionary* clientIdsReceived = [command.arguments objectAtIndex:0];
-  NSDictionary* clientIds = @{PayPalEnvironmentProduction: clientIdsReceived[@"PayPalEnvironmentProduction"],
-                              PayPalEnvironmentSandbox: clientIdsReceived[@"PayPalEnvironmentSandbox"]};
-
-  [PayPalMobile initializeWithClientIdsForEnvironments:clientIds];
-
-  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+  [self.commandDelegate runInBackground:^{
+    NSDictionary* clientIdsReceived = [command.arguments objectAtIndex:0];
+    NSDictionary* clientIds = @{PayPalEnvironmentProduction: clientIdsReceived[@"PayPalEnvironmentProduction"],
+                                PayPalEnvironmentSandbox: clientIdsReceived[@"PayPalEnvironmentSandbox"]};
+    
+    [PayPalMobile initializeWithClientIdsForEnvironments:clientIds];
+    
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+  }];
 }
 
 - (void)prepareToRender:(CDVInvokedUrlCommand *)command {
-  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-  NSString *environment = [command.arguments objectAtIndex:0];
-
-  NSString *environmentToUse = [self parseEnvironment:environment];
-  if (environmentToUse) {
-    // do preconnect
-    [PayPalMobile preconnectWithEnvironment:environmentToUse];
-    // save configuration
-    PayPalConfiguration *configuration = [self getPayPalConfigurationFromDictionary:[command.arguments objectAtIndex:1]];
-    self.configuration = configuration;
-  } else {
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"The provided environment is not supported"];
-  }
-
-  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+  [self.commandDelegate runInBackground:^{
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    NSString *environment = [command.arguments objectAtIndex:0];
+    
+    NSString *environmentToUse = [self parseEnvironment:environment];
+    if (environmentToUse) {
+      // do preconnect
+      [PayPalMobile preconnectWithEnvironment:environmentToUse];
+      // save configuration
+      PayPalConfiguration *configuration = [self getPayPalConfigurationFromDictionary:[command.arguments objectAtIndex:1]];
+      self.configuration = configuration;
+    } else {
+      pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"The provided environment is not supported"];
+    }
+    
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+  }];
 }
 
 - (void)applicationCorrelationIDForEnvironment:(CDVInvokedUrlCommand *)command {
-  [self clientMetadataID:command];
+  [self.commandDelegate runInBackground:^{
+    [self clientMetadataID:command];
+  }];
 }
 
 - (void)clientMetadataID:(CDVInvokedUrlCommand *)command {
-  NSString *clientMetadataID = [PayPalMobile clientMetadataID];
-  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:clientMetadataID];
-  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+  [self.commandDelegate runInBackground:^{
+    NSString *clientMetadataID = [PayPalMobile clientMetadataID];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:clientMetadataID];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+  }];
 }
 
 - (void)renderSinglePaymentUI:(CDVInvokedUrlCommand *)command {
+  self.command = command;
+  
   // check number and type of arguments
   if ([command.arguments count] != 1) {
     [self sendErrorToDelegate:@"renderSinglePaymentUI payment object must be provided"];
     return;
   }
-
+  
   NSDictionary *payment = [command.arguments objectAtIndex:0];
   if (![payment isKindOfClass:[NSDictionary class]]) {
     [self sendErrorToDelegate:@"payment must be a PayPalPayment object"];
     return;
   }
-
+  
   // get the values
   NSString *amount = payment[@"amount"];
   NSString *currency = payment[@"currency"];
   NSString *shortDescription = payment[@"shortDescription"];
   NSString *intentStr = [payment[@"intent"] lowercaseString];
   NSString *invoiceNumber = payment[@"invoiceNumber"];
-  PayPalPaymentIntent intent = [intentStr isEqualToString:@"sale"] ? PayPalPaymentIntentSale : PayPalPaymentIntentAuthorize;
-
+  NSString *custom = payment[@"custom"];
+  NSString *softDescriptor = payment[@"softDescriptor"];
+  NSString *bnCode = payment[@"bnCode"];
+  NSArray *items = payment[@"items"];
+  
+  PayPalPaymentIntent intent;
+  if ([intentStr isEqualToString:@"order"]) {
+    intent = PayPalPaymentIntentOrder;
+  } else if ([intentStr isEqualToString:@"sale"]) {
+    intent = PayPalPaymentIntentSale;
+  } else {
+    intent = PayPalPaymentIntentAuthorize;
+  }
+  
   // create payment
-  PayPalPayment *pppayment = [PayPalPayment paymentWithAmount:[NSDecimalNumber decimalNumberWithString:amount]
+  PayPalPayment *ppPayment = [PayPalPayment paymentWithAmount:[NSDecimalNumber decimalNumberWithString:amount]
                                                  currencyCode:currency
                                              shortDescription:shortDescription
                                                        intent:intent];
-  [pppayment setInvoiceNumber:invoiceNumber];
-
-  pppayment.paymentDetails = [self getPaymentDetailsFromDictionary:payment[@"details"]];
-  if (!pppayment.processable) {
+  ppPayment.invoiceNumber = invoiceNumber;
+  ppPayment.custom = custom;
+  ppPayment.softDescriptor = softDescriptor;
+  ppPayment.bnCode = bnCode;
+  ppPayment.items = [self getPayPalItemsFromJSArray:items];
+  
+  ppPayment.paymentDetails = [self getPaymentDetailsFromDictionary:payment[@"details"]];
+  if (!ppPayment.processable) {
     [self sendErrorToDelegate:@"payment not processable"];
     return;
   }
-
-
-  PayPalPaymentViewController *controller = [[PayPalPaymentViewController alloc] initWithPayment:pppayment
+  
+  
+  PayPalPaymentViewController *controller = [[PayPalPaymentViewController alloc] initWithPayment:ppPayment
                                                                                    configuration:self.configuration
                                                                                         delegate:self];
   if (!controller) {
     [self sendErrorToDelegate:@"could not instantiate UI please check your arguments"];
     return;
   }
-
+  
   self.command = command;
   [self.viewController presentViewController:controller animated:YES completion:nil];
+  
 }
 
 - (void)renderFuturePaymentUI:(CDVInvokedUrlCommand *)command {
+  self.command = command;
   PayPalFuturePaymentViewController *controller = [[PayPalFuturePaymentViewController alloc] initWithConfiguration:self.configuration delegate:self];
   if (!controller) {
     [self sendErrorToDelegate:@"could not instantiate UI please check your arguments"];
     return;
   }
 
-  self.command = command;
   [self.viewController presentViewController:controller animated:YES completion:nil];
 }
 
 - (void)renderProfileSharingUI:(CDVInvokedUrlCommand *)command {
+  self.command = command;
   if ([command.arguments count] != 1) {
     [self sendErrorToDelegate:@"renderProfileSharing scopes object must be provided"];
     return;
@@ -147,7 +177,6 @@
     return;
   }
 
-  self.command = command;
   [self.viewController presentViewController:controller animated:YES completion:nil];
 }
 
@@ -224,6 +253,32 @@
     }
   }
   return scopeSet;
+}
+
+- (NSArray *)getPayPalItemsFromJSArray:(NSArray *)array {
+  if (!array || ![array isKindOfClass:[NSArray class]] || !array.count) {
+    return nil;
+  }
+
+  NSMutableArray *mutableArray = [NSMutableArray arrayWithCapacity:10];
+  for (NSDictionary *jsItem in array) {
+    NSString *name = jsItem[@"name"];
+    NSNumber *quantity = jsItem[@"quantity"];
+    NSString *price = jsItem[@"price"];
+    NSString *currency = jsItem[@"currency"];
+    NSString *sku = jsItem[@"sku"];
+    PayPalItem *item = [PayPalItem itemWithName:name
+                                   withQuantity:[quantity unsignedIntegerValue]
+                                   withPrice:[NSDecimalNumber decimalNumberWithString:price]
+                                   withCurrency:currency
+                                   withSku:sku
+                                   ];
+    if (item) {
+      [mutableArray addObject:item];
+    }
+  }
+
+  return (mutableArray.count ? mutableArray : nil);
 }
 
 #pragma mark - PayPalPaymentDelegate implementation
