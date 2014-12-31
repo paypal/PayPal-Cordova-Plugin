@@ -45,14 +45,17 @@
         <framework src="AudioToolbox.framework" />
         <framework src="AVFoundation.framework" />
         <framework src="CFNetwork.framework" />
+        <framework src="CoreGraphics.framework" />
         <framework src="CoreLocation.framework" weak="true" />
         <framework src="CoreMedia.framework" weak="true" />
+        <framework src="CoreVideo.framework"/>
         <framework src="MessageUI.framework" />
         <framework src="OpenGLES.framework" />
         <framework src="MobileCoreServices.framework" />
         <framework src="Security.framework" />
         <framework src="SystemConfiguration.framework" />
         <framework src="QuartzCore.framework"/>
+        <framework src="UIKit.framework"/>
         
 
         <framework src="libc++.dylib" />
