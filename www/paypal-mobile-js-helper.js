@@ -152,6 +152,9 @@ function PayPalConfiguration(options) {
     /// If your app already does its own blurring upon backgrounding, you might choose to disable this.
     /// Defaults to NO.
     disableBlurWhenBackgrounding: false,
+    /// If you will present the SDK's view controller within a popover, then set this property to YES.
+    /// Defaults to NO. (iOS only)
+    presentingInPopover: false,
     /// Sandbox credentials can be difficult to type on a mobile device. Setting this flag to YES will
     /// cause the sandboxUserPassword and sandboxUserPin to always be pre-populated into login fields.
     ///
