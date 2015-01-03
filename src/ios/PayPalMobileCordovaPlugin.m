@@ -102,6 +102,7 @@
     NSString *softDescriptor = payment[@"softDescriptor"];
     NSString *bnCode = payment[@"bnCode"];
     NSArray *items = payment[@"items"];
+    NSDictionary *shippingAddress = payment[@"shippingAddress"];
     
     PayPalPaymentIntent intent;
     if ([intentStr isEqualToString:@"order"]) {
@@ -122,6 +123,7 @@
     ppPayment.softDescriptor = softDescriptor;
     ppPayment.bnCode = bnCode;
     ppPayment.items = [self getPayPalItemsFromJSArray:items];
+    ppPayment.shippingAddress = [self getPayPalShippingAddressFromDictionary:shippingAddress];
     
     ppPayment.paymentDetails = [self getPaymentDetailsFromDictionary:payment[@"details"]];
     if (!ppPayment.processable) {
@@ -285,6 +287,20 @@
   }
 
   return (mutableArray.count ? mutableArray : nil);
+}
+
+- (PayPalShippingAddress *)getPayPalShippingAddressFromDictionary:(NSDictionary *)dictionary {
+  if (!dictionary || ![dictionary isKindOfClass:[NSDictionary class]] || !dictionary.count) {
+    return nil;
+  }
+  PayPalShippingAddress *address = [PayPalShippingAddress new];
+  for (NSString *key in dictionary) {
+    if (dictionary[key] != [NSNull null]) {
+      [address setValue:dictionary[key] forKey:key];
+    }
+  }
+
+  return address;
 }
 
 #pragma mark - PayPalPaymentDelegate implementation

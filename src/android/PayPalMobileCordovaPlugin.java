@@ -28,6 +28,7 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
     private PayPalConfiguration configuration = new PayPalConfiguration();
     private Activity activity = null;
     private boolean serverStarted = false;
+    private int shippingAddressOption = 0;
 
     private static final int REQUEST_SINGLE_PAYMENT = 1;
     private static final int REQUEST_CODE_FUTURE_PAYMENT = 2;
@@ -186,6 +187,9 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
         // optional
         JSONArray items = paymentObject.has("items") ? paymentObject.getJSONArray("items") : null;
 
+        // optional
+        JSONObject shippingAddress = paymentObject.has("shippingAddress") ? paymentObject.getJSONObject("shippingAddress") : null;
+
         // create payment object
         PayPalPayment payment = new PayPalPayment(new BigDecimal(amount),
                 currency, shortDescription, paymentIntent);
@@ -197,6 +201,24 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
         payment.bnCode(bnCode);
         payment.paymentDetails(this.parsePaymentDetails(paymentDetails));
         payment.items(this.parsePaymentItems(items));
+
+        // setup shipping address configuration
+        switch (this.shippingAddressOption) {
+            case 1: // only provided shipping address
+                payment.enablePayPalShippingAddressesRetrieval(false);
+                payment.providedShippingAddress(this.getPayPalShippingAddress(shippingAddress));
+                break;
+            case 2: // only PayPal shipping address
+                payment.enablePayPalShippingAddressesRetrieval(true);
+                break;
+            case 3: // both provided and PayPal shipping addresses
+                payment.enablePayPalShippingAddressesRetrieval(true);
+                payment.providedShippingAddress(this.getPayPalShippingAddress(shippingAddress));
+                break;
+            case 0: // no shipping address
+            default:
+                payment.enablePayPalShippingAddressesRetrieval(false);
+        } 
 
         if (payment.isProcessable()) {
             Intent intent = new Intent(this.activity, PaymentActivity.class);
@@ -299,6 +321,9 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
         if (object.has("sandboxUserPin") && !object.isNull("sandboxUserPin")) {
             this.configuration.sandboxUserPin(object.getString("sandboxUserPin"));
         }
+        if (object.has("payPalShippingAddressOption")) {
+            this.shippingAddressOption = object.getInt("payPalShippingAddressOption");
+        }
     }
 
     private PayPalPaymentDetails parsePaymentDetails(JSONObject object) throws JSONException {
@@ -334,6 +359,20 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
         }
 
         return items;
+    }
+
+    private ShippingAddress getPayPalShippingAddress(JSONObject object) throws JSONException {
+        String name = object.getString("recipientName");
+        String line1 = object.getString("line1");
+        String line2 = object.getString("line2");
+        String city = object.getString("city");
+        String state = !object.isNull("state") ? object.getString("state") : null;
+        String postalCode = !object.isNull("postalCode") ? object.getString("postalCode") : null;
+        String countryCode = object.getString("countryCode");
+        ShippingAddress shippingAddress =
+                new ShippingAddress().recipientName(name).line1(line1).line2(line2)
+                        .city(city).state(state).postalCode(postalCode).countryCode(countryCode);
+        return shippingAddress;
     }
 
     // onActivityResult

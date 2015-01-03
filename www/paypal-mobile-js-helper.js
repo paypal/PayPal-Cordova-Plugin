@@ -96,6 +96,15 @@ PayPalPayment.prototype.items = function(items) {
 };
 
 /**
+ * Optional customer shipping address, if your app wishes to provide this to the SDK.
+ * @note make sure to set `payPalShippingAddressOption` in PayPalConfiguration to 1 or 3.
+ * @param {Object} shippingAddress: PayPalShippingAddress object
+ */
+PayPalPayment.prototype.shippingAddress = function(shippingAddress) {
+  this.shippingAddress = shippingAddress;
+};
+
+/**
  * You use a PayPalConfiguration object to configure many aspects of how the SDK behaves.
  * see defaults for options available
  */
@@ -123,6 +132,16 @@ function PayPalConfiguration(options) {
     /// Future payments (via PayPalFuturePaymentViewController) always use PayPal.
     /// Defaults to YES
     acceptCreditCards: true,
+    /// For single payments, options for the shipping address.
+    /// - 0 - PayPalShippingAddressOptionNone: no shipping address applies.
+    /// - 1 - PayPalShippingAddressOptionProvided: shipping address will be provided by your app,
+    ///   in the shippingAddress property of PayPalPayment.
+    /// - 2 - PayPalShippingAddressOptionPayPal: user will choose from shipping addresses on file
+    ///   for their PayPal account.
+    /// - 3 - PayPalShippingAddressOptionBoth: user will choose from the shipping address provided by your app,
+    ///   in the shippingAddress property of PayPalPayment, plus the shipping addresses on file for the user's PayPal account.
+    /// Defaults to 0 (PayPalShippingAddressOptionNone).
+    payPalShippingAddressOption: 0,
     /// If set to YES, then if the user pays via their PayPal account,
     /// the SDK will remember the user's PayPal username or phone number;
     /// if the user pays via their credit card, then the SDK will remember
@@ -178,4 +197,25 @@ function PayPalConfiguration(options) {
   }
 
   return defaults;
+}
+
+/**
+* See the documentation of the individual properties for more detail.
+* @param {String} recipientName: Name of the recipient at this address. 50 characters max.
+* @param {String} line1: Line 1 of the address (e.g., Number, street, etc). 100 characters max.
+* @param {String} Line 2 of the address (e.g., Suite, apt #, etc). 100 characters max. Optional.
+* @param {String} city: City name. 50 characters max.
+* @param {String} state: 2-letter code for US states, and the equivalent for other countries. 100 characters max. Required in certain countries.
+* @param {String} postalCode: ZIP code or equivalent is usually required for countries that have them. 20 characters max. Required in certain countries.
+* @param {String} countryCode: 2-letter country code. 2 characters max.
+*/
+
+function PayPalShippingAddress(recipientName, line1, line2, city, state, postalCode, countryCode) {
+  this.recipientName = recipientName;
+  this.line1 = line1;
+  this.line2 = line2;
+  this.city = city;
+  this.state = state;
+  this.postalCode = postalCode;
+  this.countryCode = countryCode;
 }
