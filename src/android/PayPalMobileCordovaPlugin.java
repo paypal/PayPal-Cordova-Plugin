@@ -331,9 +331,9 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
             return null;
         }
 
-        BigDecimal subtotal = object.has("subtotal") ? new BigDecimal(object.getString("subtotal")) : null;
-        BigDecimal shipping = object.has("shipping") ? new BigDecimal(object.getString("shipping")) : null;
-        BigDecimal tax = object.has("tax") ? new BigDecimal(object.getString("tax")) : null;
+        BigDecimal subtotal = !object.isNull("subtotal") ? new BigDecimal(object.getString("subtotal")) : null;
+        BigDecimal shipping = !object.isNull("shipping") ? new BigDecimal(object.getString("shipping")) : null;
+        BigDecimal tax = !object.isNull("tax") ? new BigDecimal(object.getString("tax")) : null;
 
         PayPalPaymentDetails paymentDetails =  new PayPalPaymentDetails(shipping, subtotal, tax);
         return paymentDetails;
@@ -352,7 +352,7 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
             int quantity = json.getInt("quantity");
             BigDecimal price = new BigDecimal(json.getString("price"));
             String currency = json.getString("currency");
-            String sku = json.getString("sku");
+            String sku = !json.isNull("sku") ? json.getString("sku") : null;
             PayPalItem item = new PayPalItem(name, quantity, price, currency, sku);
             
             items[i] = item;

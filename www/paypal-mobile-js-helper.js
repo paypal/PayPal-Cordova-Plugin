@@ -18,7 +18,7 @@ function PayPalItem(name, quantity, price, currency, sku) {
   this.quantity = Number(quantity);
   this.price = String(price);
   this.currency = String(currency);
-  this.sku = String(sku);
+  this.sku = sku;
 }
 
 /**
@@ -30,8 +30,8 @@ function PayPalItem(name, quantity, price, currency, sku) {
  */
 function PayPalPaymentDetails(subtotal, shipping, tax) {
   this.subtotal = String(subtotal);
-  this.shipping = String(shipping);
-  this.tax = String(tax);
+  this.shipping = shipping;
+  this.tax = tax;
 }
 
 /**
@@ -57,7 +57,7 @@ function PayPalPayment(amount, currency, shortDescription, intent, details) {
  * @param {String} invoiceNumber: The invoice number for the payment.
  */
 PayPalPayment.prototype.invoiceNumber = function(invoiceNumber) {
-  this.invoiceNumber = String(invoiceNumber);
+  this.invoiceNumber = invoiceNumber;
 };
 
 /**
@@ -65,7 +65,7 @@ PayPalPayment.prototype.invoiceNumber = function(invoiceNumber) {
  * @param {String} custom: The custom text for the payment.
  */
 PayPalPayment.prototype.custom = function(custom) {
-  this.custom = String(custom);
+  this.custom = custom;
 };
 
 /**
@@ -73,7 +73,7 @@ PayPalPayment.prototype.custom = function(custom) {
  * @param {String} softDescriptor: credit card text for payment
  */
 PayPalPayment.prototype.softDescriptor = function(softDescriptor) {
-  this.softDescriptor = String(custom);
+  this.softDescriptor = softDescriptor;
 };
 
 /**
@@ -82,7 +82,7 @@ PayPalPayment.prototype.softDescriptor = function(softDescriptor) {
  * @param {String} bnCode: bnCode for payment
  */
 PayPalPayment.prototype.bnCode = function(bnCode) {
-  this.bnCode = String(bnCode);
+  this.bnCode = bnCode;
 };
 
 /**
