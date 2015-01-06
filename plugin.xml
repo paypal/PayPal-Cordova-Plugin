@@ -4,7 +4,7 @@
     xmlns:rim="http://www.blackberry.com/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.paypal.cordova.mobilesdk"
-    version="3.0.0">
+    version="3.1.0">
     <name>PayPalMobile</name>
     <description>This plugin allows to add to add PayPal Payments to your application using PayPal Mobile SDK Native library</description>
     <keywords>paypal, sdk, payments</keywords>
@@ -45,14 +45,17 @@
         <framework src="AudioToolbox.framework" />
         <framework src="AVFoundation.framework" />
         <framework src="CFNetwork.framework" />
+        <framework src="CoreGraphics.framework" />
         <framework src="CoreLocation.framework" weak="true" />
         <framework src="CoreMedia.framework" weak="true" />
+        <framework src="CoreVideo.framework"/>
         <framework src="MessageUI.framework" />
         <framework src="OpenGLES.framework" />
         <framework src="MobileCoreServices.framework" />
         <framework src="Security.framework" />
         <framework src="SystemConfiguration.framework" />
         <framework src="QuartzCore.framework"/>
+        <framework src="UIKit.framework"/>
         
 
         <framework src="libc++.dylib" />
