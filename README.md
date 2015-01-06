@@ -38,7 +38,7 @@ Your app integration
 --------------------
 The PayPal SDK Cordova/Phonegap Plugin adds 2 JavaScript files to your project.
 
-1. `cdv-plugin-paypal-mobile-sdk.js`: a wrapper around the native SDK. The `PayPalMobile` object is immediately available to use in your `.js` files.
+1. `cdv-plugin-paypal-mobile-sdk.js`: a wrapper around the native SDK. The `PayPalMobile` object is immediately available to use in your `.js` files. You DON'T need to reference it in index.html.
 2. `paypal-mobile-js-helper.js`: a helper file which defines the `PayPalPayment`, `PayPalPaymentDetails` and `PayPalConfiguration` classes for use with `PayPalMobile`.
 3. You must add 
 ```javascript
@@ -137,6 +137,7 @@ Basic Example of the app
        },
        createPayment : function () {
          // for simplicity use predefined amount
+         // optional payment details for more information check [helper js file](https://github.com/paypal/PayPal-Cordova-Plugin/blob/master/www/paypal-mobile-js-helper.js)
          var paymentDetails = new PayPalPaymentDetails("50.00", "0.00", "0.00");
          var payment = new PayPalPayment("50.00", "USD", "Awesome Sauce", "Sale", paymentDetails);
          return payment;
