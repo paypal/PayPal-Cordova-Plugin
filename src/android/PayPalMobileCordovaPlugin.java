@@ -28,6 +28,7 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
     private PayPalConfiguration configuration = new PayPalConfiguration();
     private Activity activity = null;
     private boolean serverStarted = false;
+    private int shippingAddressOption = 0;
 
     private static final int REQUEST_SINGLE_PAYMENT = 1;
     private static final int REQUEST_CODE_FUTURE_PAYMENT = 2;
@@ -145,24 +146,90 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
         String amount = paymentObject.getString("amount");
         String currency = paymentObject.getString("currency");
         String shortDescription = paymentObject.getString("shortDescription");
+        String intentString = paymentObject.getString("intent");
+
+        String paymentIntent = null;
+        if ("sale".equalsIgnoreCase(intentString)) {
+            paymentIntent = PayPalPayment.PAYMENT_INTENT_SALE;
+        } else if ("order".equalsIgnoreCase(intentString)) {
+            paymentIntent = PayPalPayment.PAYMENT_INTENT_ORDER;
+        } else {
+            paymentIntent = PayPalPayment.PAYMENT_INTENT_AUTHORIZE;
+        }
+
         // invoice number is optional
         String invoiceNumber = null;
         if (paymentObject.has("invoiceNumber") && !paymentObject.isNull("invoiceNumber")) {
             invoiceNumber = paymentObject.getString("invoiceNumber");
         }
-        String paymentIntent = ("sale".equalsIgnoreCase(paymentObject.getString("intent"))) ? PayPalPayment.PAYMENT_INTENT_SALE : PayPalPayment.PAYMENT_INTENT_AUTHORIZE;
+
+        // optional
+        String custom = null;
+        if (paymentObject.has("custom") && !paymentObject.isNull("custom")) {
+            custom = paymentObject.getString("custom");
+        }
+
+        // optional
+        String softDescriptor = null;
+        if (paymentObject.has("softDescriptor") && !paymentObject.isNull("softDescriptor")) {
+            softDescriptor = paymentObject.getString("softDescriptor");
+        }
+
+        // optional
+        String bnCode = null;
+        if (paymentObject.has("bnCode") && !paymentObject.isNull("bnCode")) {
+            bnCode = paymentObject.getString("bnCode");
+        }        
+
+        // optional
         JSONObject paymentDetails = paymentObject.has("details") ? paymentObject.getJSONObject("details") : null;
+
+        // optional
+        JSONArray items = paymentObject.has("items") ? paymentObject.getJSONArray("items") : null;
+
+        // optional
+        JSONObject shippingAddress = paymentObject.has("shippingAddress") ? paymentObject.getJSONObject("shippingAddress") : null;
 
         // create payment object
         PayPalPayment payment = new PayPalPayment(new BigDecimal(amount),
                 currency, shortDescription, paymentIntent);
+
+        // setup
         payment.invoiceNumber(invoiceNumber);
+        payment.custom(custom);
+        payment.softDescriptor(softDescriptor);
+        payment.bnCode(bnCode);
         payment.paymentDetails(this.parsePaymentDetails(paymentDetails));
+        payment.items(this.parsePaymentItems(items));
 
+        // setup shipping address configuration
+        switch (this.shippingAddressOption) {
+            case 1: // only provided shipping address
+                payment.enablePayPalShippingAddressesRetrieval(false);
+                payment.providedShippingAddress(this.getPayPalShippingAddress(shippingAddress));
+                break;
+            case 2: // only PayPal shipping address
+                payment.enablePayPalShippingAddressesRetrieval(true);
+                break;
+            case 3: // both provided and PayPal shipping addresses
+                payment.enablePayPalShippingAddressesRetrieval(true);
+                payment.providedShippingAddress(this.getPayPalShippingAddress(shippingAddress));
+                break;
+            case 0: // no shipping address
+            default:
+                payment.enablePayPalShippingAddressesRetrieval(false);
+        } 
 
-        Intent intent = new Intent(this.activity, PaymentActivity.class);
-        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
-        this.cordova.startActivityForResult(this, intent, REQUEST_SINGLE_PAYMENT);
+        if (payment.isProcessable()) {
+            Intent intent = new Intent(this.activity, PaymentActivity.class);
+            intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+            this.cordova.startActivityForResult(this, intent, REQUEST_SINGLE_PAYMENT);
+        } else {
+            this.callbackContext
+                    .error("payment not processable");
+            return;
+        }
+        
     }
 
 
@@ -254,6 +321,9 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
         if (object.has("sandboxUserPin") && !object.isNull("sandboxUserPin")) {
             this.configuration.sandboxUserPin(object.getString("sandboxUserPin"));
         }
+        if (object.has("payPalShippingAddressOption")) {
+            this.shippingAddressOption = object.getInt("payPalShippingAddressOption");
+        }
     }
 
     private PayPalPaymentDetails parsePaymentDetails(JSONObject object) throws JSONException {
@@ -261,12 +331,48 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
             return null;
         }
 
-        BigDecimal subtotal = object.has("subtotal") ? new BigDecimal(object.getString("subtotal")) : null;
-        BigDecimal shipping = object.has("shipping") ? new BigDecimal(object.getString("shipping")) : null;
-        BigDecimal tax = object.has("tax") ? new BigDecimal(object.getString("tax")) : null;
+        BigDecimal subtotal = !object.isNull("subtotal") ? new BigDecimal(object.getString("subtotal")) : null;
+        BigDecimal shipping = !object.isNull("shipping") ? new BigDecimal(object.getString("shipping")) : null;
+        BigDecimal tax = !object.isNull("tax") ? new BigDecimal(object.getString("tax")) : null;
 
         PayPalPaymentDetails paymentDetails =  new PayPalPaymentDetails(shipping, subtotal, tax);
         return paymentDetails;
+    }
+
+    private PayPalItem[] parsePaymentItems(JSONArray array) throws JSONException {
+        if (array == null || 0 == array.length()) {
+            return null;
+        }
+
+        PayPalItem[] items = new PayPalItem[array.length()];
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject json = array.getJSONObject(i);
+
+            String name = json.getString("name");
+            int quantity = json.getInt("quantity");
+            BigDecimal price = new BigDecimal(json.getString("price"));
+            String currency = json.getString("currency");
+            String sku = !json.isNull("sku") ? json.getString("sku") : null;
+            PayPalItem item = new PayPalItem(name, quantity, price, currency, sku);
+            
+            items[i] = item;
+        }
+
+        return items;
+    }
+
+    private ShippingAddress getPayPalShippingAddress(JSONObject object) throws JSONException {
+        String name = object.getString("recipientName");
+        String line1 = object.getString("line1");
+        String line2 = object.getString("line2");
+        String city = object.getString("city");
+        String state = !object.isNull("state") ? object.getString("state") : null;
+        String postalCode = !object.isNull("postalCode") ? object.getString("postalCode") : null;
+        String countryCode = object.getString("countryCode");
+        ShippingAddress shippingAddress =
+                new ShippingAddress().recipientName(name).line1(line1).line2(line2)
+                        .city(city).state(state).postalCode(postalCode).countryCode(countryCode);
+        return shippingAddress;
     }
 
     // onActivityResult
