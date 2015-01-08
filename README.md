@@ -24,7 +24,10 @@ The PayPal SDK Cordova/Phonegap Plugin adds support for the PayPal SDK on iOS an
 ```bash
    $ cordova create MyShop com.mycompany.myshop "MyShop"
    $ cd MyShop
-   $ cordova plugin add https://github.com/paypal/PayPal-Cordova-Plugin
+   # using cordova repository (many thanks to @Ramneekhanda for helping with this)
+   $ cordova plugin add com.paypal.cordova.mobilesdk
+   # or you can also install directly from github
+   #$ cordova plugin add https://github.com/paypal/PayPal-Cordova-Plugin
    $ cordova platform add ios
    $ cordova platform add android
    # optional for console.log etc
