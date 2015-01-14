@@ -8,7 +8,7 @@ We have created the initial version of the plugin to show how easy it is to use 
 As features are added to the mSDK, we will be happy to review and merge any Pull Requests that add these features to the plugin.
 
 
-Updating from ealier versions < 3.0.0
+Updating from earlier versions < 3.0.0
 -----------------------------
 Please remove your local copies of the native sdks, the Plugin now includes sdks distributions as part of the source code to make integration and version parity easier to maintain.
 
