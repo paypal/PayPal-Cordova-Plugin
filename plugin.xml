@@ -73,7 +73,7 @@
         </config-file>
 
         <source-file src="src/android/PayPalMobileCordovaPlugin.java" target-dir="src/com/paypal/cordova/sdk" />
-        <source-file src="src/android/libs/PayPalAndroidSDK-2.8.5.jar" target-dir="libs" />
+        <source-file src="src/android/libs/PayPalAndroidSDK-2.8.6.jar" target-dir="libs" />
         <source-file src="src/android/libs/armeabi" target-dir="libs" />
         <source-file src="src/android/libs/armeabi-v7a" target-dir="libs" />
         <source-file src="src/android/libs/mips" target-dir="libs" />
