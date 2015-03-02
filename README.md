@@ -37,6 +37,10 @@ The PayPal SDK Cordova/Phonegap Plugin adds support for the PayPal SDK on iOS an
 4. Run `cordova build` to build the projects for all of the platforms.
 
 
+Phonegap Build
+--------------
+If you using phonegap build just add `<gap:plugin name="com.paypal.cordova.mobilesdk" source="plugins.cordova.io" />` to your config.xml. For more details check http://docs.build.phonegap.com/en_US/configuring_plugins.md.html#Plugins
+
 Your app integration
 --------------------
 The PayPal SDK Cordova/Phonegap Plugin adds 2 JavaScript files to your project.
