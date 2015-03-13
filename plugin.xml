@@ -4,7 +4,7 @@
     xmlns:rim="http://www.blackberry.com/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.paypal.cordova.mobilesdk"
-    version="3.1.3">
+    version="3.1.4">
     <name>PayPalMobile</name>
     <description>This plugin allows to add to add PayPal Payments to your application using PayPal Mobile SDK Native library</description>
     <keywords>paypal, sdk, payments</keywords>
@@ -73,7 +73,7 @@
         </config-file>
 
         <source-file src="src/android/PayPalMobileCordovaPlugin.java" target-dir="src/com/paypal/cordova/sdk" />
-        <source-file src="src/android/libs/PayPalAndroidSDK-2.8.6.jar" target-dir="libs" />
+        <source-file src="src/android/libs/PayPalAndroidSDK-2.8.8.jar" target-dir="libs" />
         <source-file src="src/android/libs/armeabi" target-dir="libs" />
         <source-file src="src/android/libs/armeabi-v7a" target-dir="libs" />
         <source-file src="src/android/libs/mips" target-dir="libs" />
