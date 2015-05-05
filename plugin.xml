@@ -42,6 +42,7 @@
         <source-file src="src/ios/PayPalMobile/libPayPalMobile.a" framework="true" />
 
         
+        <framework src="Accelerate.framework" />
         <framework src="AudioToolbox.framework" />
         <framework src="AVFoundation.framework" />
         <framework src="CFNetwork.framework" />
