@@ -279,7 +279,7 @@
     NSNumber *quantity = jsItem[@"quantity"];
     NSString *price = jsItem[@"price"];
     NSString *currency = jsItem[@"currency"];
-    NSString *sku = jsItem[@"sku"];
+    NSString *sku = (jsItem[@"sku"] == [NSNull null]) ? nil : jsItem[@"sku"];
     PayPalItem *item = [PayPalItem itemWithName:name
                                    withQuantity:[quantity unsignedIntegerValue]
                                    withPrice:[NSDecimalNumber decimalNumberWithString:price]
