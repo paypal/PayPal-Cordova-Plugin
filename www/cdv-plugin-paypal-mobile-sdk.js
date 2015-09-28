@@ -15,10 +15,12 @@ function PayPalMobile() {}
  *
  * @param {Function} completionCallback: a callback function accepting a string
  */
-PayPalMobile.prototype.version = function(completionCallback) {
-  var failureCallback = function() {
-    console.log("Could not retrieve PayPal library version");
-  };
+PayPalMobile.prototype.version = function(completionCallback, failureCallback) {
+  if(!failureCallback || typeof failureCallback !== "function") {
+    failureCallback = function() {
+      console.log("Could not retrieve PayPal library version");
+    }; 
+  }
 
   cordova.exec(completionCallback, failureCallback, "PayPalMobile", "version", []);
 };
@@ -36,10 +38,12 @@ PayPalMobile.prototype.version = function(completionCallback) {
  *  }
  * @param {Function} completionCallback: a callback function on success
  */
-PayPalMobile.prototype.init = function(clientIdsForEnvironments, completionCallback) {
-  var failureCallback = function(error) {
-    console.log(error);
-  };
+PayPalMobile.prototype.init = function(clientIdsForEnvironments, completionCallback, failureCallback) {
+  if(!failureCallback || typeof failureCallback !== "function") {
+      failureCallback = function(error) {
+      console.log(error);
+    }; 
+  }
 
   cordova.exec(completionCallback, failureCallback, "PayPalMobile", "init", [clientIdsForEnvironments]);
 };
@@ -55,11 +59,12 @@ PayPalMobile.prototype.init = function(clientIdsForEnvironments, completionCallb
  *      and merchantUserAgreementURL must be set be set
  * @param {Function} completionCallback: a callback function on success
  */
-PayPalMobile.prototype.prepareToRender = function(environment, configuration, completionCallback) {
-  var failureCallback = function(error) {
-    console.log(error);
-  };
-
+PayPalMobile.prototype.prepareToRender = function(environment, configuration, completionCallback, failureCallback) {
+  if(!failureCallback || typeof failureCallback !== "function") {
+      failureCallback = function(error) {
+      console.log(error);
+    }; 
+  }
   cordova.exec(completionCallback, failureCallback, "PayPalMobile", "prepareToRender", [environment, configuration]);
 };
 
@@ -91,10 +96,12 @@ PayPalMobile.prototype.renderSinglePaymentUI = function(payment, completionCallb
  * @param {String} environment: available options are "PayPalEnvironmentNoNetwork", "PayPalEnvironmentProduction" and "PayPalEnvironmentSandbox"
  * @param {Function} callback: applicationCorrelationID Your server will send this to PayPal in a 'Paypal-Application-Correlation-Id' header.
  */
-PayPalMobile.prototype.applicationCorrelationIDForEnvironment = function(environment, completionCallback) {
-  var failureCallback = function(message) {
-    console.log("Could not perform applicationCorrelationIDForEnvironment " + message);
-  };
+PayPalMobile.prototype.applicationCorrelationIDForEnvironment = function(environment, completionCallback, failureCallback) {
+  if(!failureCallback || typeof failureCallback !== "function") {
+    failureCallback = function(message) {
+      console.log("Could not perform applicationCorrelationIDForEnvironment " + message);
+    }; 
+  }
 
   cordova.exec(completionCallback, failureCallback, "PayPalMobile", "applicationCorrelationIDForEnvironment", [environment]);
 };
@@ -110,10 +117,12 @@ PayPalMobile.prototype.applicationCorrelationIDForEnvironment = function(environ
  *
  * @param {Function} callback: clientMetadataID Your server will send this to PayPal in a 'PayPal-Client-Metadata-Id' header.
  */
-PayPalMobile.prototype.clientMetadataID = function(completionCallback) {
-  var failureCallback = function(message) {
-    console.log("Could not perform clientMetadataID " + message);
-  };
+PayPalMobile.prototype.clientMetadataID = function(completionCallback, failureCallback) {
+  if(!failureCallback || typeof failureCallback !== "function") {
+    failureCallback = function(message) {
+      console.log("Could not perform clientMetadataID " + message);
+    }; 
+  }
 
   cordova.exec(completionCallback, failureCallback, "PayPalMobile", "clientMetadataID", []);
 };
