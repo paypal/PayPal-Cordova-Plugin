@@ -65,6 +65,9 @@
 
         <framework src="libc++.dylib" />
         <framework src="libPayPalMobile.a" />
+        <framework src="libCardIO.a" />
+        <framework src="libopencv_core.a" />
+        <framework src="libopencv_imgproc.a" />
 
     </platform>
 
