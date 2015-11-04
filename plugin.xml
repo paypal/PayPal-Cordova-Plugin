@@ -40,6 +40,9 @@
         <header-file src="src/ios/PayPalMobile/PayPalProfileSharingViewController.h" />
 
         <source-file src="src/ios/PayPalMobile/libPayPalMobile.a" framework="true" />
+        <source-file src="src/ios/PayPalMobile/libCardIO.a" framework="true" />
+        <source-file src="src/ios/PayPalMobile/libopencv_core.a" framework="true" />
+        <source-file src="src/ios/PayPalMobile/libopencv_imgproc.a" framework="true" />
 
 
         <framework src="Accelerate.framework" />
