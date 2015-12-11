@@ -81,47 +81,8 @@
         </config-file>
 
         <source-file src="src/android/PayPalMobileCordovaPlugin.java" target-dir="src/com/paypal/cordova/sdk" />
-        <source-file src="src/android/libs/PayPalAndroidSDK-2.11.0.jar" target-dir="libs" />
-        <source-file src="src/android/libs/arm64-v8a" target-dir="libs" />
-        <source-file src="src/android/libs/armeabi" target-dir="libs" />
-        <source-file src="src/android/libs/armeabi-v7a" target-dir="libs" />
-        <source-file src="src/android/libs/mips" target-dir="libs" />
-        <source-file src="src/android/libs/x86" target-dir="libs" />
-        <source-file src="src/android/libs/x86_64" target-dir="libs" />
-
-
-        <config-file target="AndroidManifest.xml" parent="/manifest">
-            <!-- for card.io card scanning -->
-            <uses-permission android:name="android.permission.CAMERA" />
-            <uses-permission android:name="android.permission.VIBRATE" />
-
-            <uses-feature android:name="android.hardware.camera" android:required="false" />
-            <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
-
-            <!-- for most things, including card.io & paypal -->
-            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-            <uses-permission android:name="android.permission.INTERNET"/>
-        </config-file>
-
-        <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <service android:name="com.paypal.android.sdk.payments.PayPalService"
-            android:exported="false" />
-            <activity android:name="com.paypal.android.sdk.payments.PaymentActivity" />
-            <activity android:name="com.paypal.android.sdk.payments.LoginActivity" />
-            <activity android:name="com.paypal.android.sdk.payments.PaymentMethodActivity" />
-            <activity android:name="com.paypal.android.sdk.payments.PaymentConfirmActivity" />
-            <activity android:name="com.paypal.android.sdk.payments.PayPalFuturePaymentActivity" />
-            <activity android:name="com.paypal.android.sdk.payments.FuturePaymentConsentActivity" />
-            <activity android:name="com.paypal.android.sdk.payments.FuturePaymentInfoActivity" />
-            <activity android:name="com.paypal.android.sdk.payments.PayPalProfileSharingActivity" />
-            <activity android:name="com.paypal.android.sdk.payments.ProfileSharingConsentActivity" />
-            <activity
-                android:name="io.card.payment.CardIOActivity"
-                android:configChanges="keyboardHidden|orientation" />
-            <activity android:name="io.card.payment.DataEntryActivity" />
-        </config-file>
-
+	      <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
+        
     </platform>
 
 </plugin>
