@@ -1,6 +1,11 @@
 PayPal Cordova Plugin Release Notes
 ===================================
 
+3.1.22 (Upcoming)
+------
+* iOS : Update SDK to [2.13.1](https://github.com/paypal/PayPal-iOS-SDK/releases/tag/2.13.1)
+* iOS : Update card.io dependency to [5.3.1](https://github.com/card-io/card.io-iOS-SDK/releases/tag/5.3.1)
+
 3.1.21 
 ------
 * iOS : Update SDK to [2.13.0](https://github.com/paypal/PayPal-iOS-SDK/releases/tag/2.13.0)
