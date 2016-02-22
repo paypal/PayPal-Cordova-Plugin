@@ -50,6 +50,7 @@ function PayPalPayment(amount, currency, shortDescription, intent, details) {
   this.shortDescription = String(shortDescription);
   this.intent = String(intent);
   this.details = details;
+  this.bnCode = "PhoneGap_SP";
 }
 
 /**
