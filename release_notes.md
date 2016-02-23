@@ -1,6 +1,12 @@
 PayPal Cordova Plugin Release Notes
 ===================================
 
+3.1.23 
+------
+* Android: Update okhttp dependency to 3.1.2.
+* Android: Really fixes issue related to okhttp 3.1.2 [#258](https://github.com/paypal/PayPal-Android-SDK/issues/258).
+* Andriod: added bnCode value to payment call
+
 3.1.22 
 ------
 * iOS : Update SDK to [2.13.1](https://github.com/paypal/PayPal-iOS-SDK/releases/tag/2.13.1)
