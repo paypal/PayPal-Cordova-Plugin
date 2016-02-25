@@ -1,6 +1,12 @@
 PayPal Cordova Plugin Release Notes
 ===================================
 
+3.1.24 (Upcoming)
+------
+* iOS: Update SDK to [2.14.0](https://github.com/paypal/PayPal-iOS-SDK/releases/tag/2.14.0)
+* iOS: Support for right to left language layouts in iOS 9
+* iOS: Fix for dynamic text in prices
+
 3.1.23 
 ------
 * Android: Update okhttp dependency to 3.1.2.
