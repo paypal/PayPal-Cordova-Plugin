@@ -1,5 +1,10 @@
 PayPal Cordova Plugin Release Notes
 ===================================
+3.1.25
+------
+* Android: Update card.io to 5.3.2.
+* Android: Add proguard config to aar file.
+* Android: Minor bug fixes.
 
 3.1.24
 ------
