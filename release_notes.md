@@ -1,5 +1,9 @@
 PayPal Cordova Plugin Release Notes
 ===================================
+3.1.26
+------
+* Android: Update card.io to 5.3.4.
+
 3.1.25
 ------
 * Android: Update card.io to 5.3.2.
