@@ -1,6 +1,7 @@
 .DS_Store
 npm-debug.log
 report
+.idea/
 
 lib-cov
 *.seed
