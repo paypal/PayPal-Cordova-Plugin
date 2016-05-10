@@ -3,7 +3,7 @@
 
 Disclaimer
 -----------
-The intention for this plugin is to make it community driven. 
+The intention for this plugin is to make it community driven.
 We have created the initial version of the plugin to show how easy it is to use our native SDKs (iOS and Android) on the Cordova/Phonegap platforms.
 As features are added to the mSDK, we will be happy to review and merge any Pull Requests that add these features to the plugin.
 
@@ -32,7 +32,7 @@ The PayPal SDK Cordova/Phonegap Plugin adds support for the PayPal SDK on iOS an
    $ cordova platform add android
    # optional for console.log etc
    $ cordova plugin add org.apache.cordova.console
-``` 
+```
 3. Follow Your app integration section below.
 4. Run `cordova build` to build the projects for all of the platforms.
 
@@ -48,7 +48,7 @@ The PayPal SDK Cordova/Phonegap Plugin adds 2 JavaScript files to your project.
 
 1. `cdv-plugin-paypal-mobile-sdk.js`: a wrapper around the native SDK. The `PayPalMobile` object is immediately available to use in your `.js` files. You DON'T need to reference it in index.html.
 2. `paypal-mobile-js-helper.js`: a helper file which defines the `PayPalPayment`, `PayPalPaymentDetails` and `PayPalConfiguration` classes for use with `PayPalMobile`.
-3. You must add 
+3. You must add
 ```javascript
    <script type="text/javascript" src="js/paypal-mobile-js-helper.js"></script>
 ```
@@ -62,6 +62,11 @@ Documentation
 - For complete documentation regarding the PayPal SDK Cordova Plugin, please refer to the documentation for the underlying [PayPal Mobile SDK](https://developer.paypal.com/webapps/developer/docs/integration/mobile/mobile-sdk-overview/).
 - Not all features available in native sdks have been implemented.
 
+Using card.io scanning abilities independently
+----------------------------------------------
+
+PayPal SDK Cordova Plugin now allows you to directly invoke card.io scanning abilities as provided by [card.io Cordova Plugin](https://github.com/card-io/card.io-Cordova-Plugin). The implementation is shown below in the samples.
+
 
 Basic Example of the app
 ------------------------
@@ -73,11 +78,12 @@ Basic Example of the app
       <button id="buyNowBtn"> Buy Now !</button>
       <button id="buyInFutureBtn"> Pay in Future !</button>
       <button id="profileSharingBtn"> Profile Sharing !</button>
+      <button id="cardScanBtn">Scan Credit Card !</button>
    ```
 
 2. Replace `MyShop/www/js/index.js` with the following code:
    ```javascript
-      
+
    /*
     * Licensed to the Apache Software Foundation (ASF) under one
     * or more contributor license agreements.  See the NOTICE file
@@ -120,12 +126,12 @@ Basic Example of the app
            var parentElement = document.getElementById(id);
            var listeningElement = parentElement.querySelector('.listening');
            var receivedElement = parentElement.querySelector('.received');
-   
+
            listeningElement.setAttribute('style', 'display:none;');
            receivedElement.setAttribute('style', 'display:block;');
-   
+
            console.log('Received Event: ' + id);
-   
+
            // start to initialize PayPalMobile library
            app.initPaymentUI();
        },
@@ -135,10 +141,13 @@ Basic Example of the app
            "PayPalEnvironmentSandbox": "YOUR_SANDBOX_CLIENT_ID"
          };
          PayPalMobile.init(clientIDs, app.onPayPalMobileInit);
-   
+
        },
        onSuccesfulPayment : function(payment) {
          console.log("payment success: " + JSON.stringify(payment, null, 4));
+       },
+       onCardIOComplete: function(card) {
+         console.log("Card Scanned success: " + JSON.stringify(card, null, 4));
        },
        onAuthorizationCallback : function(authorization) {
          console.log("authorization: " + JSON.stringify(authorization, null, 4));
@@ -163,21 +172,34 @@ Basic Example of the app
          var buyNowBtn = document.getElementById("buyNowBtn");
          var buyInFutureBtn = document.getElementById("buyInFutureBtn");
          var profileSharingBtn = document.getElementById("profileSharingBtn");
-   
+         var cardScanBtn = document.getElementById("cardScanBtn");
+
          buyNowBtn.onclick = function(e) {
            // single payment
            PayPalMobile.renderSinglePaymentUI(app.createPayment(), app.onSuccesfulPayment, app.onUserCanceled);
          };
-   
+
          buyInFutureBtn.onclick = function(e) {
            // future payment
            PayPalMobile.renderFuturePaymentUI(app.onAuthorizationCallback, app.onUserCanceled);
          };
-   
+
          profileSharingBtn.onclick = function(e) {
            // profile sharing
            PayPalMobile.renderProfileSharingUI(["profile", "email", "phone", "address", "futurepayments", "paypalattributes"], app.onAuthorizationCallback, app.onUserCanceled);
          };
+         cardScanBtn.onclick = function(e) {
+           // profile sharing
+           CardIO.scan({
+                        "requireExpiry": true,
+                        "requireCVV": false,
+                        "requirePostalCode": false,
+                        "restrictPostalCodeToNumericOnly": true
+                      },
+                      app.onCardIOComplete,
+                      app.onUserCanceled
+                    );
+          };
        },
        onPayPalMobileInit : function() {
          // must be called
@@ -188,7 +210,7 @@ Basic Example of the app
          console.log(result);
        }
    };
-   
+
    app.initialize();
    ```
 3. execute `cordova run ios` or `cordova run android` to install and run your sample code.
