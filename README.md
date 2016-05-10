@@ -192,3 +192,6 @@ Basic Example of the app
    app.initialize();
    ```
 3. execute `cordova run ios` or `cordova run android` to install and run your sample code.
+
+## License
+Code released under [BSD LICENSE](LICENSE)
