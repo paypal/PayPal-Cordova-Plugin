@@ -195,3 +195,6 @@ Basic Example of the app
 
 ## License
 Code released under [BSD LICENSE](LICENSE)
+
+## Contributions 
+ Pull requests and new issues are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
