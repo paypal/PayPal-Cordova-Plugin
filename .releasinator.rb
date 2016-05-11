@@ -9,15 +9,22 @@ configatron.prerelease_checklist_items = [
 ]
 
 def validate_version_match()
-  require 'releasinator/version'
-  spec_version = Releasinator::VERSION
-  if spec_version != @current_release.version
-    Printer.fail("Ruby gem spec version #{spec_version} does not match changelog version #{@current_release.version}.")
+  if plugin_version != @current_release.version
+    Printer.fail("Plugin.xml version #{plugin_version} does not match changelog version #{@current_release.version}.")
     abort()
   end
+  Printer.success("Plugin.xml version #{plugin_version} matches latest changelog version.")
 
-  Printer.success("Ruby gem spec version #{spec_version} matches latest changelog version.")
+  if package_version != @current_release.version
+      Printer.fail("Package.json version #{package_version} does not match changelog version #{@current_release.version}.")
+      abort()
+    end
+    Printer.success("Package.json version #{package_version} matches latest changelog version.")
 end
+
+configatron.custom_validation_methods = [
+  method(:validate_version_match)
+]
 
 def build_method
   # run tests first
@@ -57,3 +64,25 @@ configatron.wait_for_package_manager_method = method(:wait_for_package_manager)
 
 # Whether to publish the root repo to GitHub.  Required.
 configatron.release_to_github = true
+
+
+def plugin_version()
+  f=File.new("plugin.xml", 'r')
+  f.each do |line|
+     if line.match (/version=\"\d*\.\d*\.\d*\"/)
+       return line.strip.split('=')[1].strip.split('"')[1]
+    end
+  end
+  f.close
+end
+
+def package_version()
+f=File.new("Package.json", 'r')
+  f.each do |line|
+    if line.match (/\"version\": \"\d*\.\d*\.\d*\"/)
+      return line.strip.split(':')[1].strip.split('"')[1]
+    end
+  end
+  f.close
+end
+
