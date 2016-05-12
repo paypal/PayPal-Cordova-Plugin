@@ -43,7 +43,7 @@ configatron.publish_to_package_manager_method = method(:publish_to_package_manag
 
 
 def wait_for_package_manager(version)
-  CommandProcessor.wait_for("wget -U \"non-empty-user-agent\" -qO- https://www.npmjs.com/package/com.paypal.cordova.mobilesdk |grep @current_release.version | cat")
+  CommandProcessor.wait_for("wget -U \"non-empty-user-agent\" -qO- https://www.npmjs.com/package/com.paypal.cordova.mobilesdk |grep #{@current_release.version} | cat")
 end
 
 # The method that waits for the package manager to be done.  Required
