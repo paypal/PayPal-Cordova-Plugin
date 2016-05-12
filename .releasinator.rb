@@ -34,8 +34,7 @@ end
 configatron.build_method = method(:build_method)
 
 def publish_to_package_manager(version)
-   CommandProcessor.command("git push origin #{@current_release.version}")
-   CommandProcessor.command("npm publish .")
+  CommandProcessor.command("npm publish .")
 end
 
 # The method that publishes the sdk to the package manager.  Required.
