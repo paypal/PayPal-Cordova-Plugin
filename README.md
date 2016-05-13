@@ -78,7 +78,7 @@ Basic Example of the app
       <button id="buyNowBtn"> Buy Now !</button>
       <button id="buyInFutureBtn"> Pay in Future !</button>
       <button id="profileSharingBtn"> Profile Sharing !</button>
-      <button id="cardScanBtn">Scan Credit Card !</button>
+      <button id="cardScanBtn">Advanced: Use card.io scan only</button>
    ```
 
 2. Replace `MyShop/www/js/index.js` with the following code:
@@ -146,6 +146,7 @@ Basic Example of the app
        onSuccesfulPayment : function(payment) {
          console.log("payment success: " + JSON.stringify(payment, null, 4));
        },
+       // This code is only used for independent card.io scanning abilities
        onCardIOComplete: function(card) {
          console.log("Card Scanned success: " + JSON.stringify(card, null, 4));
        },
@@ -169,6 +170,7 @@ Basic Example of the app
          //  <button id="buyNowBtn"> Buy Now !</button>
          //  <button id="buyInFutureBtn"> Pay in Future !</button>
          //  <button id="profileSharingBtn"> ProfileSharing !</button>
+         //  <button id="cardScanBtn">Advanced: Use card.io scan only</button>
          var buyNowBtn = document.getElementById("buyNowBtn");
          var buyInFutureBtn = document.getElementById("buyInFutureBtn");
          var profileSharingBtn = document.getElementById("profileSharingBtn");
@@ -188,8 +190,10 @@ Basic Example of the app
            // profile sharing
            PayPalMobile.renderProfileSharingUI(["profile", "email", "phone", "address", "futurepayments", "paypalattributes"], app.onAuthorizationCallback, app.onUserCanceled);
          };
+         
          cardScanBtn.onclick = function(e) {
-           // profile sharing
+           // card.io scanning independent of paypal payments. 
+           // This is used for cases where you only need to scan credit cards and not use PayPal as funding option.
            CardIO.scan({
                         "requireExpiry": true,
                         "requireCVV": false,
