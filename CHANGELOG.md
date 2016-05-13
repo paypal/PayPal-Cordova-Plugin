@@ -1,5 +1,10 @@
 PayPal Cordova Plugin Release Notes
 ===================================
+
+3.2.0
+------
+* Enabled card.io plugin capabilities.
+
 3.1.26
 ------
 * Android: Update card.io to 5.3.4.
@@ -19,19 +24,19 @@ PayPal Cordova Plugin Release Notes
 * Android: Update okhttp dependency to 3.2.0.
 * Android: Fixes issue related to non-ascii characters in user agent [#271](https://github.com/paypal/PayPal-Android-SDK/issues/271).
 
-3.1.23 
+3.1.23
 ------
 * Android: Update okhttp dependency to 3.1.2.
 * Android: Really fixes issue related to okhttp 3.1.2 [#258](https://github.com/paypal/PayPal-Android-SDK/issues/258).
 * Andriod: added bnCode value to payment call
 
-3.1.22 
+3.1.22
 ------
 * iOS : Update SDK to [2.13.1](https://github.com/paypal/PayPal-iOS-SDK/releases/tag/2.13.1)
 * iOS : Update card.io dependency to [5.3.1](https://github.com/card-io/card.io-iOS-SDK/releases/tag/5.3.1)
 * Android: Fix issue preventing the SDK from app-switching to newer versions of the PayPal App.
 
-3.1.21 
+3.1.21
 ------
 * iOS : Update SDK to [2.13.0](https://github.com/paypal/PayPal-iOS-SDK/releases/tag/2.13.0)
 * Android : Fix sandbox pinning issue [#228](https://github.com/paypal/PayPal-Android-SDK/issues/228)
