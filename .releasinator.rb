@@ -22,7 +22,13 @@ def validate_version_match()
     Printer.success("Package.json version #{package_version} matches latest changelog version.")
 end
 
+def validate_paths
+  @validator.validate_in_path("wget")
+  @validator.validate_in_path("jq")
+end
+
 configatron.custom_validation_methods = [
+  method(:validate_paths),
   method(:validate_version_match)
 ]
 
@@ -42,7 +48,7 @@ configatron.publish_to_package_manager_method = method(:publish_to_package_manag
 
 
 def wait_for_package_manager(version)
-  CommandProcessor.wait_for("wget -U \"non-empty-user-agent\" -qO- https://www.npmjs.com/package/com.paypal.cordova.mobilesdk | grep #{@current_release.version} | cat")
+  CommandProcessor.wait_for("wget -U \"non-empty-user-agent\" -qO- https://registry.npmjs.org/com.paypal.cordova.mobilesdk | jq '.[\"dist-tags\"][\"latest\"]' | grep #{version} | cat")
 end
 
 # The method that waits for the package manager to be done.  Required
