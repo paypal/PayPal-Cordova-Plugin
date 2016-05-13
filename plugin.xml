@@ -13,10 +13,12 @@
             <engine name="cordova" version="&gt;=3.0.0" />
     </engines>
 
-
     <js-module src="www/cdv-plugin-paypal-mobile-sdk.js" name="PayPalMobile">
         <clobbers target="PayPalMobile" />
     </js-module>
+
+    <!-- adding card.io cordova plugin dependency -->
+    <dependency id="card.io.cordova.mobilesdk" version="2.0.1" />
 
     <asset src="www/paypal-mobile-js-helper.js" target="js/paypal-mobile-js-helper.js" />
 
@@ -40,10 +42,6 @@
         <header-file src="src/ios/PayPalMobile/PayPalProfileSharingViewController.h" />
 
         <source-file src="src/ios/PayPalMobile/libPayPalMobile.a" framework="true" />
-        <source-file src="src/ios/PayPalMobile/libCardIO.a" framework="true" />
-        <source-file src="src/ios/PayPalMobile/libopencv_core.a" framework="true" />
-        <source-file src="src/ios/PayPalMobile/libopencv_imgproc.a" framework="true" />
-
 
         <framework src="Accelerate.framework" />
         <framework src="AudioToolbox.framework" />
@@ -65,10 +63,6 @@
 
         <framework src="libc++.dylib" />
         <framework src="libPayPalMobile.a" />
-        <framework src="libCardIO.a" />
-        <framework src="libopencv_core.a" />
-        <framework src="libopencv_imgproc.a" />
-
     </platform>
 
     <!-- android -->
