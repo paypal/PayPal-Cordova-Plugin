@@ -1,5 +1,10 @@
 PayPal Cordova Plugin Release Notes
 ===================================
+TODO
+-----
+* Android: Update card.io to 5.4.0.
+* Android: Update okhttp dependency to 3.3.1.
+
 
 3.2.0
 ------
