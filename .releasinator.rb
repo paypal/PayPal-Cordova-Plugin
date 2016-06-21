@@ -27,8 +27,21 @@ def validate_paths
   @validator.validate_in_path("jq")
 end
 
+def validate_npm_version()
+  npm_version_output = CommandProcessor.command("npm --version").strip
+  expected_npm_version = "2.15.5"
+
+  if Gem::Version.new(expected_npm_version) > Gem::Version.new(npm_version_output)
+    Printer.fail("Actual npm version " + npm_version_output.bold + " is smaller than expected npm version " + expected_npm_version.bold)
+    abort()
+  else
+    Printer.success("npm version " + npm_version_output.bold + " found, and is higher than or equal to expected npm version " + expected_npm_version.bold)
+  end
+end
+
 configatron.custom_validation_methods = [
   method(:validate_paths),
+  method(:validate_npm_version),
   method(:validate_version_match)
 ]
 
