@@ -10,16 +10,16 @@ configatron.prerelease_checklist_items = [
 
 def validate_version_match()
   if plugin_version() != @current_release.version
-    Printer.fail("Plugin.xml version #{plugin_version} does not match changelog version #{@current_release.version}.")
+    Printer.fail("plugin.xml version #{plugin_version} does not match changelog version #{@current_release.version}.")
     abort()
   end
-  Printer.success("Plugin.xml version #{plugin_version} matches latest changelog version.")
+  Printer.success("plugin.xml version #{plugin_version} matches latest changelog version.")
 
   if package_version() != @current_release.version
-      Printer.fail("Package.json version #{package_version} does not match changelog version #{@current_release.version}.")
+      Printer.fail("package.json version #{package_version} does not match changelog version #{@current_release.version}.")
       abort()
     end
-    Printer.success("Package.json version #{package_version} matches latest changelog version.")
+    Printer.success("package.json version #{package_version} matches latest changelog version.")
 end
 
 def validate_paths
@@ -59,7 +59,7 @@ configatron.release_to_github = true
 
 
 def plugin_version()
-  f=File.open("plugin.xml", 'r') do |f|
+  File.open("plugin.xml", 'r') do |f|
     f.each_line do |line|
       if line.match (/version=\"\d*\.\d*\.\d*\"/)
         return line.strip.split('=')[1].strip.split('"')[1]
@@ -69,7 +69,7 @@ def plugin_version()
 end
 
 def package_version()
-  f=File.open("Package.json", 'r') do |f|
+  File.open("package.json", 'r') do |f|
     f.each_line do |line|
       if line.match (/\"version\": \"\d*\.\d*\.\d*\"/)
         return line.strip.split(':')[1].strip.split('"')[1]
