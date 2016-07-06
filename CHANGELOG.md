@@ -1,8 +1,18 @@
 PayPal Cordova Plugin Release Notes
 ===================================
+TODO
+-----
+* Android: Minor bug fixes.
+* Android: Updated gradle version to 2.14.
+* Android: Include `org.json.*` exceptions in default proguard file [#299](https://github.com/paypal/PayPal-Android-SDK/issues/299).
+
 
 3.2.1
 -----
+* Android: Minor bug fixes.
+* Android: Updated gradle version to 2.14.
+* Android: Include `org.json.*` exceptions in default proguard file [#299](https://github.com/paypal/PayPal-Android-SDK/issues/299).
+
 * Android: Update card.io to 5.4.0.
 * Android: Update okhttp dependency to 3.3.1.
 

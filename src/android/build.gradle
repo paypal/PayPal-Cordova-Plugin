@@ -3,7 +3,7 @@ repositories{
 }
 
 dependencies {
-   compile('com.paypal.sdk:paypal-android-sdk:2.14.3') {
+   compile('com.paypal.sdk:paypal-android-sdk:2.14.4') {
       exclude group: 'io.card'
    }
 }
