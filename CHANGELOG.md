@@ -1,13 +1,24 @@
 PayPal Cordova Plugin Release Notes
 ===================================
+TODO
+-----
+* iOS: Update localized messages.
+* iOS: Fix issue with truncated text in certain table cells. See [issue #367](https://github.com/paypal/PayPal-iOS-SDK/issues/367).
+
 3.2.2
 -----
+* iOS: Update localized messages.
+* iOS: Fix issue with truncated text in certain table cells. See [issue #367](https://github.com/paypal/PayPal-iOS-SDK/issues/367).
+
 * Android: Minor bug fixes.
 * Android: Updated gradle version to 2.14.
 * Android: Include `org.json.*` exceptions in default proguard file [#299](https://github.com/paypal/PayPal-Android-SDK/issues/299).
 
 3.2.1
 -----
+* iOS: Update localized messages.
+* iOS: Fix issue with truncated text in certain table cells. See [issue #367](https://github.com/paypal/PayPal-iOS-SDK/issues/367).
+
 * Android: Update card.io to 5.4.0.
 * Android: Update okhttp dependency to 3.3.1.
 
