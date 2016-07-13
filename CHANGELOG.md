@@ -4,21 +4,24 @@ TODO
 -----
 * iOS: Update localized messages.
 * iOS: Fix issue with truncated text in certain table cells. See [issue #367](https://github.com/paypal/PayPal-iOS-SDK/issues/367).
+* iOS: Change layout for 1Password icon to be in the email/phone field. See [issue #405](https://github.com/paypal/PayPal-iOS-SDK/issues/405)
+* iOS: Allow configuration option to disable shake animations for accessibility.
+  See [issue #380](https://github.com/paypal/PayPal-iOS-SDK/issues/380)
+  See `PayPalConfiguration disableShakeAnimations` option
+* iOS: Fix issue with missing 1Password data.
+  See [issue #427](https://github.com/paypal/PayPal-iOS-SDK/issues/427)
+* iOS: Fix issue with network request timeouts
+* iOS: Update card.io to iOS 5.3.2
+* iOS: Fix missing nullability headers See issue #404
 
 3.2.2
 -----
-* iOS: Update localized messages.
-* iOS: Fix issue with truncated text in certain table cells. See [issue #367](https://github.com/paypal/PayPal-iOS-SDK/issues/367).
-
 * Android: Minor bug fixes.
 * Android: Updated gradle version to 2.14.
 * Android: Include `org.json.*` exceptions in default proguard file [#299](https://github.com/paypal/PayPal-Android-SDK/issues/299).
 
 3.2.1
 -----
-* iOS: Update localized messages.
-* iOS: Fix issue with truncated text in certain table cells. See [issue #367](https://github.com/paypal/PayPal-iOS-SDK/issues/367).
-
 * Android: Update card.io to 5.4.0.
 * Android: Update okhttp dependency to 3.3.1.
 
