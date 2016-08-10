@@ -9,22 +9,7 @@ TODO
   (e.g. "To scan credit cards."). This string will be displayed when the app initially requests permission to access
   the camera.
 
-TODO
 -----
-* iOS: Fix issue with Bitcode when archiving [#443](https://github.com/paypal/PayPal-iOS-SDK/issues/443).
-* iOS: If you use card.io to scan credit cards, you should add the key
-  [`NSCameraUsageDescription`](https://developer.apple.com/library/prerelease/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW24)
-  to your app's `Info.plist` and set the value to be a string describing why your app needs to use the camera
-  (e.g. "To scan credit cards."). This string will be displayed when the app initially requests permission to access
-  the camera.
-
------
-* iOS: Fix issue with Bitcode when archiving [#443](https://github.com/paypal/PayPal-iOS-SDK/issues/443).
-* iOS: If you use card.io to scan credit cards, you should add the key
-  [`NSCameraUsageDescription`](https://developer.apple.com/library/prerelease/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW24)
-  to your app's `Info.plist` and set the value to be a string describing why your app needs to use the camera
-  (e.g. "To scan credit cards."). This string will be displayed when the app initially requests permission to access
-  the camera.
 
 * iOS: Update localized messages.
 * iOS: Fix issue with truncated text in certain table cells. See [issue #367](https://github.com/paypal/PayPal-iOS-SDK/issues/367).
@@ -37,26 +22,12 @@ TODO
 
 3.2.2
 -----
-* iOS: Fix issue with Bitcode when archiving [#443](https://github.com/paypal/PayPal-iOS-SDK/issues/443).
-* iOS: If you use card.io to scan credit cards, you should add the key
-  [`NSCameraUsageDescription`](https://developer.apple.com/library/prerelease/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW24)
-  to your app's `Info.plist` and set the value to be a string describing why your app needs to use the camera
-  (e.g. "To scan credit cards."). This string will be displayed when the app initially requests permission to access
-  the camera.
-
 * Android: Minor bug fixes.
 * Android: Updated gradle version to 2.14.
 * Android: Include `org.json.*` exceptions in default proguard file [#299](https://github.com/paypal/PayPal-Android-SDK/issues/299).
 
 3.2.1
 -----
-* iOS: Fix issue with Bitcode when archiving [#443](https://github.com/paypal/PayPal-iOS-SDK/issues/443).
-* iOS: If you use card.io to scan credit cards, you should add the key
-  [`NSCameraUsageDescription`](https://developer.apple.com/library/prerelease/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW24)
-  to your app's `Info.plist` and set the value to be a string describing why your app needs to use the camera
-  (e.g. "To scan credit cards."). This string will be displayed when the app initially requests permission to access
-  the camera.
-
 * Android: Update card.io to 5.4.0.
 * Android: Update okhttp dependency to 3.3.1.
 
