@@ -2,6 +2,18 @@ PayPal Cordova Plugin Release Notes
 ===================================
 TODO
 -----
+* Android: Update okhttp dependency to 3.4.1.
+* Android: Fix crash when app does not have READ_PHONE_STATE permission [#321](https://github.com/paypal/PayPal-Android-SDK/issues/321).
+
+TODO
+-----
+* Android: Update okhttp dependency to 3.4.1.
+* Android: Fix crash when app does not have READ_PHONE_STATE permission [#321](https://github.com/paypal/PayPal-Android-SDK/issues/321).
+
+-----
+* Android: Update okhttp dependency to 3.4.1.
+* Android: Fix crash when app does not have READ_PHONE_STATE permission [#321](https://github.com/paypal/PayPal-Android-SDK/issues/321).
+
 * iOS: Fix issue with Bitcode when archiving [#443](https://github.com/paypal/PayPal-iOS-SDK/issues/443).
 * iOS: If you use card.io to scan credit cards, you should add the key
   [`NSCameraUsageDescription`](https://developer.apple.com/library/prerelease/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW24)
@@ -10,6 +22,9 @@ TODO
   the camera.
 
 -----
+* Android: Update okhttp dependency to 3.4.1.
+* Android: Fix crash when app does not have READ_PHONE_STATE permission [#321](https://github.com/paypal/PayPal-Android-SDK/issues/321).
+
 
 * iOS: Update localized messages.
 * iOS: Fix issue with truncated text in certain table cells. See [issue #367](https://github.com/paypal/PayPal-iOS-SDK/issues/367).
@@ -22,12 +37,18 @@ TODO
 
 3.2.2
 -----
+* Android: Update okhttp dependency to 3.4.1.
+* Android: Fix crash when app does not have READ_PHONE_STATE permission [#321](https://github.com/paypal/PayPal-Android-SDK/issues/321).
+
 * Android: Minor bug fixes.
 * Android: Updated gradle version to 2.14.
 * Android: Include `org.json.*` exceptions in default proguard file [#299](https://github.com/paypal/PayPal-Android-SDK/issues/299).
 
 3.2.1
 -----
+* Android: Update okhttp dependency to 3.4.1.
+* Android: Fix crash when app does not have READ_PHONE_STATE permission [#321](https://github.com/paypal/PayPal-Android-SDK/issues/321).
+
 * Android: Update card.io to 5.4.0.
 * Android: Update okhttp dependency to 3.3.1.
 
