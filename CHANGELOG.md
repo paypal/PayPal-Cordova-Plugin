@@ -4,6 +4,7 @@ TODO
 -----
 * Android: Update okhttp dependency to 3.4.1.
 * Android: Fix crash when app does not have READ_PHONE_STATE permission [#321](https://github.com/paypal/PayPal-Android-SDK/issues/321).
+* iOS: Update to card.io 5.4.1.
 * iOS: Update to card.io 5.4.0 to help avoid API name collisions [#456](https://github.com/paypal/PayPal-iOS-SDK/issues/456).
 * iOS: Fix issue with localization not being correctly merged based on preferences [#449](https://github.com/paypal/PayPal-iOS-SDK/issues/449).
 * iOS: If you use card.io to scan credit cards, you should add the key
