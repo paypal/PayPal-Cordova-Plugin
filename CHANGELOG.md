@@ -1,7 +1,10 @@
 PayPal Cordova Plugin Release Notes
 ===================================
+
 TODO
 -----
+* Android: Fix issue where okhttp cannot find the `TrustManager` [#341](https://github.com/paypal/PayPal-Android-SDK/issues/341).
+* Android: Update card.io to 5.4.1.
 * Android: Update okhttp dependency to 3.4.1.
 * Android: Fix crash when app does not have READ_PHONE_STATE permission [#321](https://github.com/paypal/PayPal-Android-SDK/issues/321).
 * iOS: Update to card.io 5.4.1.
