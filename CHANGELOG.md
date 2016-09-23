@@ -16,19 +16,13 @@ TODO
   (e.g. "To scan credit cards."). This string will be displayed when the app initially requests permission to access
   the camera.
 * iOS: Fix issue with Bitcode when archiving [#443](https://github.com/paypal/PayPal-iOS-SDK/issues/443).
-* iOS: If you use card.io to scan credit cards, you should add the key
-  [`NSCameraUsageDescription`](https://developer.apple.com/library/prerelease/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW24)
-  to your app's `Info.plist` and set the value to be a string describing why your app needs to use the camera
-  (e.g. "To scan credit cards."). This string will be displayed when the app initially requests permission to access
-  the camera.
 * iOS: Update localized messages.
 * iOS: Fix issue with truncated text in certain table cells. See [issue #367](https://github.com/paypal/PayPal-iOS-SDK/issues/367).
 * iOS: Change layout for 1Password icon to be in the email/phone field. See [issue #405](https://github.com/paypal/PayPal-iOS-SDK/issues/405)
 * iOS: Allow configuration option to disable shake animations for accessibility. See [issue #380](https://github.com/paypal/PayPal-iOS-SDK/issues/380). See `PayPalConfiguration disableShakeAnimations` option.
 * iOS: Fix issue with missing 1Password data. See [issue #427](https://github.com/paypal/PayPal-iOS-SDK/issues/427).
-* iOS: Fix issue with network request timeouts
-* iOS: Update card.io to iOS 5.3.2
-* iOS: Fix missing nullability headers See issue #404
+* iOS: Fix issue with network request timeouts.
+* iOS: Fix missing nullability headers See issue #404.
 
 3.2.2
 -----
