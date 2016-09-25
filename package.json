@@ -1,6 +1,6 @@
 {
   "name": "com.paypal.cordova.mobilesdk",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "description": "This plugin allows to add to add PayPal Payments to your application using PayPal Mobile SDK Native library",
   "cordova": {
     "id": "com.paypal.cordova.mobilesdk",
