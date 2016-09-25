@@ -18,7 +18,7 @@
     </js-module>
 
     <!-- adding card.io cordova plugin dependency -->
-    <dependency id="card.io.cordova.mobilesdk" version="2.0.1" />
+    <dependency id="card.io.cordova.mobilesdk" version="2.1.0" />
 
     <asset src="www/paypal-mobile-js-helper.js" target="js/paypal-mobile-js-helper.js" />
 
