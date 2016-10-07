@@ -2,10 +2,11 @@ PayPal Cordova Plugin Release Notes
 ===================================
 TODO
 -----
+* iOS: Add support for third-party receivers [#140](https://github.com/paypal/PayPal-iOS-SDK/issues/140). Available as an optional property, `PayPalPayment.payeeEmail`. This property is only available for PayPal payments, not Direct Credit Card (DCC) payments.
+* iOS: Direct Credit Card (DCC) payments are now deprecated in this SDK.  Please use [Braintree Payments](https://www.braintreepayments.com/), a PayPal Company, which is the easiest way to accept PayPal, credit cards, and many other payment methods.
 * Android: Add support for third-party receivers [iOS #140](https://github.com/paypal/PayPal-iOS-SDK/issues/140). Available as an optional property, `PayPalPayment.payeeEmail()`. This property is only available for PayPal payments, not Direct Credit Card (DCC) payments.
 * Android: Direct Credit Card (DCC) payments are now deprecated in this SDK.  Please use [Braintree Payments](https://www.braintreepayments.com/), a PayPal Company, which is the easiest way to accept PayPal, credit cards, and many other payment methods. All new integrations should [disable direct credit card payments](README.md#disabling-direct-credit-card-payments).
 * Android: Update card.io to 5.4.2.
-
 
 3.3.1
 -----
