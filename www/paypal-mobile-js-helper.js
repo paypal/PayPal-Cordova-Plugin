@@ -156,7 +156,7 @@ function PayPalConfiguration(options) {
     rememberUser: true,
     /// If not set, or if set to nil, defaults to the device's current language setting.
     ///
-    /// Can be specified as a language code ("en", "fr", "zh-Hans", etc.) or as a locale ("en_AU", "fr_FR", "zh-Hant_HK", etc.).
+    /// Can be specified as a language code ("en", "fr", "zh-Hans", etc.) or as a locale ("en_AU", "fr_FR", "zh-Hant", etc.).
     /// If the library does not contain localized strings for a specified locale, then will fall back to the language. E.g., "es_CO" -> "es".
     /// If the library does not contain localized strings for a specified language, then will fall back to American English.
     ///
@@ -165,7 +165,7 @@ function PayPalConfiguration(options) {
     /// E.g., specifying "en" on a device set to "English" and "United Kingdom" will result in "en_GB".
     ///
     /// These localizations are currently included:
-    /// da,de,en,en_AU,en_GB,en_SV,es,es_MX,fr,he,it,ja,ko,nb,nl,pl,pt,pt_BR,ru,sv,tr,zh-Hans,zh-Hant_HK,zh-Hant_TW.
+    /// da,de,en,en_AU,en_GB,es,es_MX,fr,he,it,ja,ko,nb,nl,pl,pt,pt_BR,ru,sv,tr,zh-Hans,zh-Hant,zh-Hant_TW.
     languageOrLocale: null,
     /// Normally, the SDK blurs the screen when the app is backgrounded,
     /// to obscure credit card or PayPal account details in the iOS-saved screenshot.
