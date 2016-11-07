@@ -2,6 +2,11 @@ PayPal Cordova Plugin Release Notes
 ===================================
 TODO
 -----
+* Android: Removed trustall trustmanager to resolve google play security issue [#364](https://github.com/paypal/PayPal-Android-SDK/issues/364).
+* Android: Shows amount properly in all devices [#357](https://github.com/paypal/PayPal-Android-SDK/issues/357).
+
+TODO
+-----
 * iOS: Improve network code reliability.
 
 TODO
