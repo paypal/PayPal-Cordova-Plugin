@@ -2,6 +2,12 @@ PayPal Cordova Plugin Release Notes
 ===================================
 TODO
 -----
+* Android: Add mandatory res folder in aar during release [#383](https://github.com/paypal/PayPal-Android-SDK/issues/383).
+* Android: Updated card.io to 5.5.0.
+* Android: Updated okhttp to 3.6.0.
+
+TODO
+-----
 * Android: Removed trustall trustmanager to resolve google play security issue [#364](https://github.com/paypal/PayPal-Android-SDK/issues/364).
 * Android: Shows amount properly in all devices [#357](https://github.com/paypal/PayPal-Android-SDK/issues/357).
 
