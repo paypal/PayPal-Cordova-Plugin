@@ -1,31 +1,16 @@
 PayPal Cordova Plugin Release Notes
 ===================================
-TODO
+
+3.4.O
 -----
 * Android: Update risk-component to 3.5.7.
-
-TODO
------
 * Android: Add mandatory res folder in aar during release [#383](https://github.com/paypal/PayPal-Android-SDK/issues/383).
 * Android: Updated card.io to 5.5.0.
 * Android: Updated okhttp to 3.6.0.
-
-TODO
------
 * Android: Removed trustall trustmanager to resolve google play security issue [#364](https://github.com/paypal/PayPal-Android-SDK/issues/364).
 * Android: Shows amount properly in all devices [#357](https://github.com/paypal/PayPal-Android-SDK/issues/357).
-
-TODO
------
 * iOS: Improve network code reliability.
-
-TODO
------
-* iOS: Add support for third-party receivers [#140](https://github.com/paypal/PayPal-iOS-SDK/issues/140). Available as an optional property, `PayPalPayment.payeeEmail`. This property is only available for PayPal payments, not Direct Credit Card (DCC) payments.
-* iOS: Direct Credit Card (DCC) payments are now deprecated in this SDK.  Please use [Braintree Payments](https://www.braintreepayments.com/), a PayPal Company, which is the easiest way to accept PayPal, credit cards, and many other payment methods.
-* Android: Add support for third-party receivers [iOS #140](https://github.com/paypal/PayPal-iOS-SDK/issues/140). Available as an optional property, `PayPalPayment.payeeEmail()`. This property is only available for PayPal payments, not Direct Credit Card (DCC) payments.
-* Android: Direct Credit Card (DCC) payments are now deprecated in this SDK.  Please use [Braintree Payments](https://www.braintreepayments.com/), a PayPal Company, which is the easiest way to accept PayPal, credit cards, and many other payment methods. All new integrations should [disable direct credit card payments](README.md#disabling-direct-credit-card-payments).
-* Android: Update card.io to 5.4.2.
+* Android and iOS: Direct Credit Card (DCC) payments are now deprecated in this SDK.  Please use [Braintree Payments](https://www.braintreepayments.com/), a PayPal Company, which is the easiest way to accept PayPal, credit cards, and many other payment methods.
 
 3.3.1
 -----
