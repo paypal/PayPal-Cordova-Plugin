@@ -1,7 +1,7 @@
 PayPal Cordova Plugin Release Notes
 ===================================
 
-3.4.O
+3.4.0
 -----
 * Android: Update risk-component to 3.5.7.
 * Android: Add mandatory res folder in aar during release [#383](https://github.com/paypal/PayPal-Android-SDK/issues/383).
