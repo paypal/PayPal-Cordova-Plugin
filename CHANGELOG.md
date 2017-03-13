@@ -1,5 +1,9 @@
 PayPal Cordova Plugin Release Notes
 ===================================
+TODO
+-----
+* iOS: Prevent issue with loading older versions of card.io [#506](https://github.com/paypal/PayPal-iOS-SDK/issues/506).
+
 
 3.4.0
 -----
