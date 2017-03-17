@@ -1,5 +1,9 @@
 PayPal Cordova Plugin Release Notes
 ===================================
+TODO
+-----
+* iOS: Fix issue with parsing API responses [#508](https://github.com/paypal/PayPal-iOS-SDK/issues/508).
+
 
 3.4.0
 -----
