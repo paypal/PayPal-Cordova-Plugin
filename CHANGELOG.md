@@ -1,15 +1,13 @@
 PayPal Cordova Plugin Release Notes
 ===================================
-TODO
+
+3.5.0
 -----
 * iOS: Add documentation to use string initializer for NSDecimalNumber [#520](https://github.com/paypal/PayPal-iOS-SDK/issues/520).
 * iOS: Fix issue with potential `data parameter is nil` when decoding JSON [#523](https://github.com/paypal/PayPal-iOS-SDK/issues/523).
 * iOS: iOS version 6.1 is no longer supported by this SDK.
-
-TODO
------
 * iOS: Fix issue with parsing API responses [#508](https://github.com/paypal/PayPal-iOS-SDK/issues/508).
-
+* Android and iOS: Add payeeEmail field [#232](https://github.com/paypal/PayPal-Cordova-Plugin/pull/232).
 
 3.4.0
 -----
