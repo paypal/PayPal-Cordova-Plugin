@@ -176,6 +176,12 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
         }
 
         // optional
+        String payeeEmail = null;
+        if (paymentObject.has("payeeEmail") && !paymentObject.isNull("payeeEmail")) {
+            payeeEmail = paymentObject.getString("payeeEmail");
+        }
+
+        // optional
         String bnCode = null;
         if (paymentObject.has("bnCode") && !paymentObject.isNull("bnCode")) {
             bnCode = paymentObject.getString("bnCode");
@@ -198,6 +204,7 @@ public class PayPalMobileCordovaPlugin extends CordovaPlugin {
         payment.invoiceNumber(invoiceNumber);
         payment.custom(custom);
         payment.softDescriptor(softDescriptor);
+        payment.payeeEmail(payeeEmail);
         payment.bnCode(bnCode);
         payment.paymentDetails(this.parsePaymentDetails(paymentDetails));
         payment.items(this.parsePaymentItems(items));

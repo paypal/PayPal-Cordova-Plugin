@@ -100,6 +100,7 @@
     NSString *invoiceNumber = payment[@"invoiceNumber"];
     NSString *custom = payment[@"custom"];
     NSString *softDescriptor = payment[@"softDescriptor"];
+    NSString *payeeEmail = payment[@"payeeEmail"];
     NSString *bnCode = payment[@"bnCode"];
     NSArray *items = payment[@"items"];
     NSDictionary *shippingAddress = payment[@"shippingAddress"];
@@ -121,6 +122,7 @@
     ppPayment.invoiceNumber = invoiceNumber;
     ppPayment.custom = custom;
     ppPayment.softDescriptor = softDescriptor;
+    ppPayment.payeeEmail = payeeEmail;
     ppPayment.bnCode = bnCode;
     ppPayment.items = [self getPayPalItemsFromJSArray:items];
     ppPayment.shippingAddress = [self getPayPalShippingAddressFromDictionary:shippingAddress];

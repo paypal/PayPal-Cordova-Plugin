@@ -97,6 +97,14 @@ PayPalPayment.prototype.items = function(items) {
 };
 
 /**
+ * Optional payee email, if your app is paying a third-party merchant.
+ * @param {String} payeeEmail: The payee's email. It must be a valid PayPal email address.
+ */
+PayPalPayment.prototype.payeeEmail = function(payeeEmail) {
+  this.payeeEmail = payeeEmail;
+};
+
+/**
  * Optional customer shipping address, if your app wishes to provide this to the SDK.
  * @note make sure to set `payPalShippingAddressOption` in PayPalConfiguration to 1 or 3.
  * @param {Object} shippingAddress: PayPalShippingAddress object
