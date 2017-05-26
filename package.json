@@ -28,7 +28,7 @@
     }
   ],
   "author": "paypal",
-  "license": "BSD License, see LICENSE.md for details",
+  "license": "BSD License, see LICENSE for details",
   "bugs": {
     "url": "https://github.com/paypal/PayPal-Cordova-Plugin/issues"
   },
