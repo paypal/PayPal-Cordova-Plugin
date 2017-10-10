@@ -1,5 +1,10 @@
 PayPal Cordova Plugin Release Notes
 ===================================
+TODO
+-----
+* iOS: Fix text field first responder animation issue in iOS 11 [#548](https://github.com/paypal/PayPal-iOS-SDK/issues/548).
+* iOS: Fix memory retain issue cycle during initialization [#538](https://github.com/paypal/PayPal-iOS-SDK/issues/538).
+
 
 3.5.0
 -----
