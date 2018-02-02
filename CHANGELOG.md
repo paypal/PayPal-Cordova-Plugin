@@ -2,6 +2,12 @@ PayPal Cordova Plugin Release Notes
 ===================================
 TODO
 -----
+* iOS: PayPal Mobile SDKs are Deprecated and only existing integrations are supported. For all new integrations, use [Braintree Direct](https://www.braintreepayments.com/products/braintree-direct) in [supported countries](https://www.braintreepayments.com/country-selection). In other countries, use [Express Checkout](https://developer.paypal.com/docs/accept-payments/express-checkout/ec-braintree-sdk/get-started/) and choose the Braintree SDK integration option.
+* iOS: Update translations.
+* iOS: Compiled with Xcode 9.2.
+
+TODO
+-----
 * iOS: Fix text field first responder animation issue in iOS 11 [#548](https://github.com/paypal/PayPal-iOS-SDK/issues/548).
 * iOS: Fix memory retain issue cycle during initialization [#538](https://github.com/paypal/PayPal-iOS-SDK/issues/538).
 
