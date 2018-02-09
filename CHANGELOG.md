@@ -2,6 +2,12 @@ PayPal Cordova Plugin Release Notes
 ===================================
 TODO
 -----
+* Android: Return transactionId on success [#402](https://github.com/paypal/PayPal-Android-SDK/issues/402).
+* Android: Update translations.
+* Android: Update SSL pinning cerificates.
+
+TODO
+-----
 * iOS: PayPal Mobile SDKs are Deprecated and only existing integrations are supported. For all new integrations, use [Braintree Direct](https://www.braintreepayments.com/products/braintree-direct) in [supported countries](https://www.braintreepayments.com/country-selection). In other countries, use [Express Checkout](https://developer.paypal.com/docs/accept-payments/express-checkout/ec-braintree-sdk/get-started/) and choose the Braintree SDK integration option.
 * iOS: Update translations.
 * iOS: Compiled with Xcode 9.2.
